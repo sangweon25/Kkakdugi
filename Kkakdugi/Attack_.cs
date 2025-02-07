@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 
 namespace Kkakdugi
 {
@@ -88,10 +90,23 @@ namespace Kkakdugi
         public static void AttackResult(Monster monster, Player player, int FinalAtk)
         {
             Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("Battle!!");
+            Console.ResetColor(); // 컬러 리셋
+
             Console.WriteLine();
-            Console.WriteLine($"{player.Name}의 공격!");
-            Console.WriteLine($"Lv.{monster.Lev} {monster.Name}을(를) 맞췄습니다. [데미지 : {FinalAtk}]");
+
+            Console.WriteLine($"{player.Name} 의 공격!");
+            Console.Write($"Lv.");
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.Write($"{monster.Lev}");
+            Console.ResetColor();
+            Console.Write($"{monster.Name}을(를) 맞췄습니다. [데미지 : ");
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.Write($"{FinalAtk}");
+            Console.ResetColor();
+            Console.WriteLine("]");
+
             Console.WriteLine();
             Console.WriteLine($"Lv.{monster.Lev} {monster.Name}");
 
