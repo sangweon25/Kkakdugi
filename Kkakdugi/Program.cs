@@ -1,73 +1,51 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Kkakdugi
+﻿namespace Kkakdugi
 {
-    static public class ConsoleUtil
-    {
-        static public int GetInput(int min, int max)
-        {
-            while (true)
-            {
-                if (int.TryParse(Console.ReadLine(), out int input) && (input >= min) && (input <= max))
-                    return input;
-
-                Console.WriteLine("잘못된 입력입니다. 다시 입력해 주세요");
-
-                switch (input)
-                {
-                    case 0:
-                        // 메인
-                        break;
-
-                }
-            }
-        }
-    }
     internal class Program
     {
-        public void Result(string[] args)
+        static void Main(string[] args)
         {
-            int playerHP = 100;
-            int monster = 3;
-            Random random = new Random();
-
-            while (playerHP > 0 && monster > 0)
+            SceneManager sceneManager = new SceneManager();
+        
+            Console.WriteLine("스파르타 던전에 오신 여러분 환영합니다.");
+            Console.WriteLine("이제 전투를 시작할 수 있습니다.");
+            Console.WriteLine("1. 상태 보기");
+            Console.WriteLine("2. 전투 시작");
+            // 출력.예외 포함..if
+            int input = InputManager.GetInput(1,2);
+            switch (input)
             {
-                int damage = random.Next(10);
-                playerHP -= damage;
-                monster--;
-
-                Console.WriteLine("Battle!! - Result");
-
-                if (playerHP > 0 && monster == 0)
-                {
-                    Console.WriteLine("Victory");
-                    Console.WriteLine("던전에서 몬스터 3마리를 잡았습니다.");
-                    Console.WriteLine($"Lv.1 Chad\nHp -> {playerHP}");
+                case 1:
+                    //상태보기 창으로 이동
                     break;
-                }
-                else if (monster > 0 && playerHP <= 0)
-                {
-                    Console.WriteLine("You Lose");
-                    Console.WriteLine($"Lv.1 Chad\nHp -> {playerHP}");
+                case 2:
+                    //전투시작 창으로 이동
+                    Console.Clear();
+                    sceneManager.MonsterPrintInfo();
                     break;
-                }
-
+             
             }
-            Console.WriteLine("0. 다음");
-            Console.Write(">>");
-            Console.ReadLine();
-            int intput = ConsoleUtil.GetInput(0, 0);
 
+            //Console.WriteLine("상태 보기");
+            //Console.WriteLine("캐릭터의 정보가 표시됩니다.");
 
+            ////캐릭터 객체 생성 및 초기화
+            //bool gameRunning = true;
+            //while (gameRunning)
+            //{
+            //    // 캐릭터 상태 보기 출력
+            //    Console.Write("원하시는 행동을 입력해주세요.");
+            //    string str = Console.ReadLine();
+            //    switch (str)
+            //    {
+            //        case "1":
+            //            Console.WriteLine("1");
+            //            break;
+            //        case "0":
+            //            Console.WriteLine("0. 나가기");
+            //            break;
 
+            //    }
+            //}
         }
-
     }
-
-
 }
