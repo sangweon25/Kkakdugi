@@ -6,13 +6,12 @@ using System.Threading.Tasks;
 
 namespace Kkakdugi
 {
-    static public class ConsoleUtility
+    static public class ConsoleUtil
     {
         static public int GetInput(int min, int max)
         {
             while (true)
             {
-                Console.WriteLine("");
                 if (int.TryParse(Console.ReadLine(), out int input) && (input >= min) && (input <= max))
                     return input;
 
@@ -21,7 +20,7 @@ namespace Kkakdugi
                 switch (input)
                 {
                     case 0:
-                        //GameStartScene
+                        // 메인
                         break;
 
                 }
@@ -51,7 +50,7 @@ namespace Kkakdugi
                     Console.WriteLine($"Lv.1 Chad\nHp -> {playerHP}");
                     break;
                 }
-                else if (monster > 0 && playerHP == 0)
+                else if (monster > 0 && playerHP <= 0)
                 {
                     Console.WriteLine("You Lose");
                     Console.WriteLine($"Lv.1 Chad\nHp -> {playerHP}");
@@ -62,7 +61,7 @@ namespace Kkakdugi
             Console.WriteLine("0. 다음");
             Console.Write(">>");
             Console.ReadLine();
-            int intput = ConsoleUtility.GetInput(0, 0);
+            int intput = ConsoleUtil.GetInput(0, 0);
 
 
 
