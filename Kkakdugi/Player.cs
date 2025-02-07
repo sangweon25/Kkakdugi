@@ -30,9 +30,15 @@ namespace Kkakdugi
             Gold = gold;    
         }
 
+        //플레이어 필드 내용 출력 함수
         public void PrintPlayer()
         {
 
+        }
+
+        public int RecieveDamage(int damage)
+        {
+            return Hp - damage;
         }
 
     }

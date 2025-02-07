@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace Kkakdugi
 {
+    //아이템 무기,방어구 
     enum AbilityType
     {
-        Attack = 0,
-        Defense = 1,
+        Weapon = 0,
+        Armor = 1,
     }
     
     internal class Item
@@ -23,6 +24,7 @@ namespace Kkakdugi
         public bool IsEquip {  get; set; }
 
 
+        //아이템 생성자
         public Item(string name, string desc,int abil, AbilityType abilType,int gold )
         {
             Name = name;
