@@ -133,7 +133,7 @@ namespace Kkakdugi
             }
         }
 
-        public void AttackInfo() // 공격 할 때 출력 할 창
+        public void AttackInfo(List<Monster> monster) // 공격 할 때 출력 할 창
         {
             // 기본 화면 구성해보기 (우선 예제와 똑같이 했습니다)
             Console.WriteLine("Battle!!");
@@ -159,12 +159,12 @@ namespace Kkakdugi
             Console.WriteLine();
             // 내 정보 받아오기
             // 테스트 용으로 모든 값을 임의로 집어넣었습니다 !
-            Player player = new Player("손효정", 1, 100, 10, "전사");
+            Player player = new Player("손효정","전사", 1, 100, 10,1000);
             
 
             Console.WriteLine("[내정보]");
             Console.WriteLine();
-            Console.WriteLine($"Lv.{player.Lev} {player.Name} ({player.Job})");
+            Console.WriteLine($"Lv.{player.Lv} {player.Name} ({player.Job})");
             Console.WriteLine($"HP {player.Hp}/100");
             Console.WriteLine();
             Console.WriteLine("0. 취소");

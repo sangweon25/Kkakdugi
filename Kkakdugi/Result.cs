@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Kkakdugi
 {
-   
-    internal class Program
+
+    internal class Result
     {
-        public void Result(string[] args)
+        public void Result1()
         {
             int playerHP = 100;
             int monster = 3;
@@ -41,7 +41,7 @@ namespace Kkakdugi
             Console.WriteLine("0. 다음");
             Console.Write(">>");
             Console.ReadLine();
-            int intput = ConsoleUtility.GetInput(0, 0);
+            int intput = InputManager.GetInput(0, 0);
 
             if (intput == 0)
             {
@@ -49,19 +49,5 @@ namespace Kkakdugi
             }
         }
 
-    }
-    static public class ConsoleUtility
-    {
-        static public int GetInput(int min, int max)
-        {
-            while (true)
-            {
-                Console.WriteLine("");
-                if (int.TryParse(Console.ReadLine(), out int input) && (input >= min) && (input <= max))
-                    return input;
-
-                Console.WriteLine("잘못된 입력입니다. 다시 입력해 주세요");
-            }
-        }
     }
 }

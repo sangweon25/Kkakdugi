@@ -21,7 +21,32 @@ namespace Kkakdugi
             };
         }
 
+        // 몬스터 정보 출력
+        public void MonsterPrintInfo()
+        {
+            Console.WriteLine("Battle!!");
+            Random random = new Random();
+            List<Monster> monsters = new List<Monster>
+            {
+                 new Monster("솔트", 1, 10, 3),
+                 new Monster("슈가", 2, 10, 5),
+                 new Monster("다이콘", 3, 15, 10),
+                 new Monster("레드파우더", 5, 25, 15)
+            };
+            List<Monster> randmonsters = new List<Monster>();
 
+            int rand = random.Next(1,monsters.Count+1);
+
+            for (int i = 0; i < rand; i++)
+            {
+                int monsterIndex = random.Next(monsters.Count); // 0~3번까지의 인덱스 랜덤선택
+                randmonsters.Add(monsters[monsterIndex]); // 랜덤 인덱스를 랜덤으로 생겨난 몬스터 리스트에 저장
+            }
+            foreach (Monster m in randmonsters)
+            {
+                m.MonsterState(m);
+            }
+        }
         //매개변수로 들어온 몬스터가 공격 
         public void EnemyPhase(Monster monster,Player player)
         {
