@@ -34,33 +34,17 @@ namespace Kkakdugi
             public int Hp { get; set; }
             public int Atk { get; set; }
 
-        }
-
-        public class Salt : Monster
-        {
-            public void SaltScene()
+            public Monster(string name, int lev, int hp, int atk)
             {
-                Console.WriteLine();
-            }
-        }
+                Name = name;
+                Lev = lev;
+                Hp = hp;
+                Atk = atk;
+            }   
 
-        public class Daikon : Monster
-        {
-            public void DaikonScene()
-            {
-                Console.WriteLine();
-            }
-
-        }
-        public class Redpowder : Monster
-        {
-            public void RedpowderScene()
-            {
-                Console.WriteLine();
-
-            }
 
         }
 
+      
     }
 }
