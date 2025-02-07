@@ -8,6 +8,7 @@ namespace Kkakdugi
 {
     internal class Attack_
     {
+        /*
         public class Monster
         {
             //다른 분이 구현하신 몬스터 클래스 (잠시 따왔습니다)
@@ -47,6 +48,7 @@ namespace Kkakdugi
                 Job = job;
             }
         }
+        */
 
         public static void Attack(Monster monster, Player player)
         {
@@ -115,6 +117,8 @@ namespace Kkakdugi
                 Console.WriteLine("Enemy Phase 시작");
             }
         }
+
+        /*
         static void Main(string[] args)
         {
             // 리스트로 테스트 몬스터 만들기
@@ -194,7 +198,7 @@ namespace Kkakdugi
                 Console.WriteLine("잘못된 입력입니다.");
             }
         }
-
+        */
     }
 }
 
