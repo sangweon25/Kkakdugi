@@ -24,6 +24,8 @@ namespace Kkakdugi
     // 몬스터 클래스 생성
     public class Monster
     {
+        internal bool isDead;
+
         // 몬스터의 이름 레벨 체력 공격력 설정
         public string Name { get; set; }
         public int Lev { get; set; }
