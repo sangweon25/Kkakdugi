@@ -31,7 +31,7 @@ namespace Kkakdugi
     }
     internal class Program
     {
-        static void Main(string[] args)
+        public void Result(string[] args)
         {
             int playerHP = 100;
             int monster = 3;
