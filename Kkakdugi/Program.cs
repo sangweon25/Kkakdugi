@@ -26,7 +26,6 @@ namespace Kkakdugi
 
                 }
             }
-
         }
     }
     internal class Program
