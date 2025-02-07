@@ -6,27 +6,7 @@ using System.Threading.Tasks;
 
 namespace Kkakdugi
 {
-    static public class ConsoleUtil
-    {
-        static public int GetInput(int min, int max)
-        {
-            while (true)
-            {
-                if (int.TryParse(Console.ReadLine(), out int input) && (input >= min) && (input <= max))
-                    return input;
-
-                Console.WriteLine("잘못된 입력입니다. 다시 입력해 주세요");
-
-                switch (input)
-                {
-                    case 0:
-                        // 메인
-                        break;
-
-                }
-            }
-        }
-    }
+   
     internal class Program
     {
         public void Result(string[] args)
@@ -61,13 +41,27 @@ namespace Kkakdugi
             Console.WriteLine("0. 다음");
             Console.Write(">>");
             Console.ReadLine();
-            int intput = ConsoleUtil.GetInput(0, 0);
+            int intput = ConsoleUtility.GetInput(0, 0);
 
-
-
+            if (intput == 0)
+            {
+                //Main();
+            }
         }
 
     }
+    static public class ConsoleUtility
+    {
+        static public int GetInput(int min, int max)
+        {
+            while (true)
+            {
+                Console.WriteLine("");
+                if (int.TryParse(Console.ReadLine(), out int input) && (input >= min) && (input <= max))
+                    return input;
 
-
+                Console.WriteLine("잘못된 입력입니다. 다시 입력해 주세요");
+            }
+        }
+    }
 }
