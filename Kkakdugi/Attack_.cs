@@ -133,6 +133,47 @@ namespace Kkakdugi
             }
         }
 
+        public void AttackInfo() // 공격 할 때 출력 할 창
+        {
+            // 기본 화면 구성해보기 (우선 예제와 똑같이 했습니다)
+            Console.WriteLine("Battle!!");
+            Console.WriteLine(); // 한 줄 공백
+
+            // 반복문 이용해서 리스트 출력
+            for (int i = 0; i < monster.Count; i++)
+            {
+                if (monster[i].isDead == true)
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                    Console.WriteLine($"{i + 1}. Lv.{monster[i].Lev} {monster[i].Name} HP dead");
+                    Console.ResetColor();
+
+                }
+                else
+                {
+                    Console.WriteLine($"{i + 1}. Lv.{monster[i].Lev} {monster[i].Name} HP {monster[i].Hp}");
+                }
+
+            }
+
+            Console.WriteLine();
+            // 내 정보 받아오기
+            // 테스트 용으로 모든 값을 임의로 집어넣었습니다 !
+            Player player = new Player("손효정", 1, 100, 10, "전사");
+            
+
+            Console.WriteLine("[내정보]");
+            Console.WriteLine();
+            Console.WriteLine($"Lv.{player.Lev} {player.Name} ({player.Job})");
+            Console.WriteLine($"HP {player.Hp}/100");
+            Console.WriteLine();
+            Console.WriteLine("0. 취소");
+            Console.WriteLine();
+            Console.WriteLine("대상을 선택해주세요.");
+            Console.Write(">>");
+
+            //input 값 받아서 그에 맞는 조건문 넣기
+        }
         /*
         static void Main(string[] args)
         {
@@ -213,6 +254,23 @@ namespace Kkakdugi
                 Console.WriteLine("잘못된 입력입니다.");
             }
         }
+        */
+
+
+        /* 병합 할 때 해야 할 것들 정리
+          
+        만들어진 몬스터 가져오기, 랜덤 값 있으면 받아오기
+        반복문 이용해서 출력하기 (앞에 번호 생기게 하기)
+
+        플레이어 정보 가져오기. 
+        원하는 만큼 출력 시키기.
+
+        Input 값 받아서 원하는 조건에 맞는지 검사하기
+        1. 몬스터 번호가 벗어나지 않았는가? 
+        2. 몬스터가 죽었는가?
+
+        두 개 조건 검사 후 다 통과한다면? 공격 시작.
+
         */
     }
 }
