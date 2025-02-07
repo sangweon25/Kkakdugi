@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 
 namespace Kkakdugi
 {
     internal class Attack_
     {
+        
         /*
-        public class Monster
+        public class Monster //임의로 만든 플레이어 클래스 입니다. 
         {
-            //다른 분이 구현하신 몬스터 클래스 (잠시 따왔습니다)
             public string Name { get; set; }
             public int Lev { get; set; }
             public int Hp { get; set; }
@@ -30,7 +32,7 @@ namespace Kkakdugi
             }
         }
 
-        public class Player //임의로 만든 플레이어 클래스 입니다. (효정)
+        public class Player //임의로 만든 플레이어 클래스 입니다. 
         {
             public int Lev { get; set; }
             public string Name { get; set; }
@@ -52,7 +54,7 @@ namespace Kkakdugi
 
         public static void Attack(Monster monster, Player player)
         {
-            //해당하는 몬스터를 공격
+            // 호출이 됐으면 해당하는 몬스터를 공격
             // 몬스터 체력 -= 플레이어 공격력
 
             //오차 구현
@@ -64,22 +66,22 @@ namespace Kkakdugi
 
             //랜덤 추출 
             Random rand = new Random();
-            int randomDamage = rand.Next(-CellingNum, CellingNum + 1);
+            int randomDamage = rand.Next(- CellingNum, CellingNum + 1); //최대, 최소값 생성해서 그 중에 랜덤으로 선택 
 
             //최종 데미지 저장
             int FinalAtk = player.Atk + randomDamage;
 
             monster.Hp -= FinalAtk;
 
-            //테스트 출력
-            Console.WriteLine($"테스트 : {CellingNum},{randomDamage},{FinalAtk}");
+            //테스트 출력 CellingNum등 다른 변수 값을 알아보기 위해 잠시 적어뒀습니다.
+            //Console.WriteLine($"테스트 : {CellingNum},{randomDamage},{FinalAtk}");
 
             //만약 몬스터의 hp가 0 이하라면?
             if (monster.Hp <= 0)
             {
                 monster.isDead = true;
-                //몬스터 출력 색상 바뀌기. Dead 출력하기 구현
             }
+
             //공격 후 결과화면 출력 창 이동
             AttackResult(monster, player, FinalAtk);
 
@@ -87,11 +89,24 @@ namespace Kkakdugi
 
         public static void AttackResult(Monster monster, Player player, int FinalAtk)
         {
-            //Console.Clear();
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("Battle!!");
+            Console.ResetColor(); // 컬러 리셋
+
             Console.WriteLine();
-            Console.WriteLine($"{player.Name}의 공격!");
-            Console.WriteLine($"Lv.{monster.Lev} {monster.Name}을(를) 맞췄습니다. [데미지 : {FinalAtk}]");
+
+            Console.WriteLine($"{player.Name} 의 공격!");
+            Console.Write($"Lv.");
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.Write($"{monster.Lev}");
+            Console.ResetColor();
+            Console.Write($"{monster.Name}을(를) 맞췄습니다. [데미지 : ");
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.Write($"{FinalAtk}");
+            Console.ResetColor();
+            Console.WriteLine("]");
+
             Console.WriteLine();
             Console.WriteLine($"Lv.{monster.Lev} {monster.Name}");
 
