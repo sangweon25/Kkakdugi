@@ -45,7 +45,7 @@ namespace Kkakdugi
 
                 Console.WriteLine("Battle!! - Result");
 
-                if(playerHP > 0 && monster == 0)
+                if (playerHP > 0 && monster == 0)
                 {
                     Console.WriteLine("Victory");
                     Console.WriteLine("던전에서 몬스터 3마리를 잡았습니다.");
@@ -64,12 +64,12 @@ namespace Kkakdugi
             Console.Write(">>");
             Console.ReadLine();
             int intput = ConsoleUtility.GetInput(0, 0);
-           
-            
+
+
 
         }
 
     }
 
-   
+
 }
