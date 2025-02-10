@@ -35,7 +35,7 @@ namespace Kkakdugi
             }
         }
 
-        public static int SelectTarget()
+        public static int WrongInput()
         {
             while (true)
             {

@@ -36,9 +36,33 @@ namespace Kkakdugi
                 new Monster("몬스터3",5,25,8,false),
             };
         }
-
-        // 몬스터 정보 출력
-
+        public void MainScene()
+        {
+            Console.WriteLine("스파르타 던전에 오신 여러분 환영합니다.");
+            Console.WriteLine("이제 전투를 시작할 수 있습니다.\n");
+            Console.WriteLine("1. 상태 보기");
+            Console.WriteLine("2. 전투 시작");
+            Console.WriteLine("3. 상점");
+            Console.WriteLine();
+            // 출력.예외 포함..if
+            //GetInput(switch문 케이스 범위만큼 입력)
+            int input = InputManager.GetInput(1, 3);
+            switch (input)
+            {
+                case 1:
+                    //상태보기 창으로 이동
+                    break;
+                case 2:
+                    //전투시작 창으로 이동
+                    Console.Clear();
+                    MonsterPrintInfo();
+                    break;
+                case 3:
+                    Console.Clear();
+                    StoreScene();
+                    break;
+            }
+        }
         public void MonsterPrintInfo()
         {
             Console.WriteLine("Battle!!");
@@ -64,8 +88,7 @@ namespace Kkakdugi
             {
                 m.MonsterState(m);
             }
-
-
+            //플레이어 간단한 정보와 체력 출력
             player.PrintPlayer();
 
             Console.WriteLine();
@@ -74,10 +97,9 @@ namespace Kkakdugi
             if (InputManager.GetInput(1, 1) == 1)
             {
                 Console.Clear();
-                //현재 AttackInfo내에 player객체를 넘겨줘서 사용해야함.
-                AttackInfo(randmonsters);
+                //AttackInfo(randmonsters);
+                AttackStart(randmonsters, player); //효정 추가
             }
-            AttackStart(randmonsters, player); //효정 추가
         }//MonsterPrintInfo Method
 
         static void AttackStart(List<Monster> monster, Player player)
@@ -94,7 +116,6 @@ namespace Kkakdugi
                     Console.ForegroundColor = ConsoleColor.DarkGray;
                     Console.WriteLine($"{i + 1}. Lv.{monster[i].Lev} {monster[i].Name} HP dead");
                     Console.ResetColor();
-
                 }
                 else
                 {
@@ -146,83 +167,102 @@ namespace Kkakdugi
             }
         }
     
-    public void AttackInfo(List<Monster> monster) // 공격 할 때 출력 할 창
-    {
-        // 기본 화면 구성해보기 (우선 예제와 똑같이 했습니다)
-        Console.WriteLine("Battle!!");
-        Console.WriteLine(); // 한 줄 공백
-
-        // 반복문 이용해서 리스트 출력
-        for (int i = 0; i < monster.Count; i++)
+        public void AttackInfo(List<Monster> monster) // 공격 할 때 출력 할 창
         {
-            if (monster[i].isDead == true)
+            // 기본 화면 구성해보기 (우선 예제와 똑같이 했습니다)
+            Console.WriteLine("Battle!!");
+            Console.WriteLine(); // 한 줄 공백
+
+            // 반복문 이용해서 리스트 출력
+            for (int i = 0; i < monster.Count; i++)
             {
-                Console.ForegroundColor = ConsoleColor.DarkGray;
-                Console.WriteLine($"{i + 1}. Lv.{monster[i].Lev} {monster[i].Name} HP dead");
-                Console.ResetColor();
+                if (monster[i].isDead == true)
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                    Console.WriteLine($"{i + 1}. Lv.{monster[i].Lev} {monster[i].Name} HP dead");
+                    Console.ResetColor();
+
+                }
+                else
+                {
+                    Console.WriteLine($"{i + 1}. Lv.{monster[i].Lev} {monster[i].Name} HP {monster[i].Hp}");
+                }
 
             }
-            else
-            {
-                Console.WriteLine($"{i + 1}. Lv.{monster[i].Lev} {monster[i].Name} HP {monster[i].Hp}");
-            }
+
+            Console.WriteLine();
+
+            Console.WriteLine("[내정보]");
+            Console.WriteLine();
+            Console.WriteLine($"Lv.{player.Lv} {player.Name} ({player.Job})");
+            Console.WriteLine($"HP {player.Hp}/100");
+            Console.WriteLine();
+            Console.WriteLine("0. 취소");
+            Console.WriteLine();
+            Console.WriteLine("대상을 선택해주세요.");
+            Console.Write(">>");
+
+            //input 값 받아서 그에 맞는 조건문 넣기
 
         }
 
-        Console.WriteLine();
-
-        Console.WriteLine("[내정보]");
-        Console.WriteLine();
-        Console.WriteLine($"Lv.{player.Lv} {player.Name} ({player.Job})");
-        Console.WriteLine($"HP {player.Hp}/100");
-        Console.WriteLine();
-        Console.WriteLine("0. 취소");
-        Console.WriteLine();
-        Console.WriteLine("대상을 선택해주세요.");
-        Console.Write(">>");
-
-        //input 값 받아서 그에 맞는 조건문 넣기
-
-    }
-
-    //매개변수로 들어온 몬스터가 공격 
-    public void EnemyPhase(Monster monster, Player player)
-    {
-        Console.WriteLine("Battle!!\n");
-        Console.WriteLine($"{player} 을(를) 맞췄습니다. [데미지 :{monster.Atk}]");
-
-        //if 플레이어가 Dead상태가 아니라면 공격하지 않는다.
-        //플레이어 데미지 받는 함수는 플레이어 내부에 구현 예정
-        Console.WriteLine($"Lv. {player.Lv} {player.Name}");
-        Console.WriteLine($"HP {player.Hp} -> {player.RecieveDamage(monster.Atk)}\n");
-
-        InputManager.inputNext();
-
-    }//EnemyPhase Method
-
-    //===============================상점===============================
-
-    public void StoreScene()
-    {
-        Console.WriteLine("Store");
-
-        Console.WriteLine("[아이템 목록]");
-        Console.WriteLine();
-        //Console.WriteLine("|분류\t|이름\t\t|능력치\t|설명\t\t\t|가격|");
-        SortingString();
-        Console.WriteLine("===================================================================");
-        for (int i = 0; i < itemList.Count; i++)
+        //매개변수로 들어온 몬스터가 공격 
+        public void EnemyPhase(Monster monster, Player player)
         {
-            itemList[i].PrintItems();
+            Console.WriteLine("Battle!!\n");
+            Console.WriteLine($"{player} 을(를) 맞췄습니다. [데미지 :{monster.Atk}]");
+
+            //if 플레이어가 Dead상태가 아니라면 공격하지 않는다.
+            //플레이어 데미지 받는 함수는 플레이어 내부에 구현 예정
+            Console.WriteLine($"Lv. {player.Lv} {player.Name}");
+            Console.WriteLine($"HP {player.Hp} -> {player.RecieveDamage(monster.Atk)}\n");
+
+            InputManager.inputNext();
+
+        }//EnemyPhase Method
+
+        //===============================상점===============================
+
+        public void StoreScene()
+        {
+            Console.WriteLine("Store");
+
+            Console.WriteLine("[아이템 목록]");
+            Console.WriteLine();
+            //Console.WriteLine("|분류\t|이름\t\t|능력치\t|설명\t\t\t|가격|");
+            SortingString();
+            Console.WriteLine("===================================================================");
+            for (int i = 0; i < itemList.Count; i++)
+            {
+                itemList[i].PrintItems();
+            }
+            Console.WriteLine("\n1. 아이템 구매");
+            Console.WriteLine("2. 아이템 판매");
+            Console.WriteLine("0. 나가기\n");
+            int input =  InputManager.GetInput(0,2);
+            switch (input)
+            {
+                case 1:
+                    break;
+                case 2:
+                    break;
+                default:
+                    Console.Clear();
+                    MainScene();
+                    break;
+            }
+        }//StoreScene Method
+
+        public void StoreBuyScene()
+        {
+
         }
 
-    }
-
-    //아이템 상점에 출력될 문자열 간격을 맞춰주는 함수
-    public void SortingString()
-    {
-        Console.WriteLine("{0,-15}| {1,-15}| {2,-15}| {3,-15}| {4,-15}|", "분류", "이름", "능력치", "설명", "가격");
-    }
+        //아이템 상점에 출력될 문자열 간격을 맞춰주는 함수
+        public void SortingString()
+        {
+            Console.WriteLine("{0,-15}| {1,-15}| {2,-15}| {3,-15}| {4,-15}|", "분류", "이름", "능력치", "설명", "가격");
+        }
 
     }//class SceneManager
 }//namespace
