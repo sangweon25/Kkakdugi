@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
@@ -222,7 +223,27 @@ namespace Kkakdugi
         }//EnemyPhase Method
 
         //===============================상점===============================
+        
+        //=============================인벤토리=============================
 
+        public void InventoryChoice()
+        {
+            Console.WriteLine("1. 장착 관리\n");
+            Console.WriteLine("0. 나가기");
+            int input = InputManager.GetInput(0, 1);
+            
+            switch (input)
+            {
+                case 0:
+                    Console.Clear();
+                    MainScene();
+                    break;
+                case 1:
+                    Console.Clear();
+                    break;
+            }    
+        }
+        //==================================================================
         public void StoreScene()
         {
             Console.WriteLine("Store");
