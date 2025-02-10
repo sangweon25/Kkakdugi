@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Security;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,6 +9,7 @@ namespace Kkakdugi
 {
     internal class Player
     {
+
         //플레이어 능력치, 세부정보
         public string Name { get; set; }
         public int Lv { get; set; }
@@ -21,43 +22,43 @@ namespace Kkakdugi
         public int EquipDef { get; set; }
         public int Gold { get; set; }
 
-        public Player(string name,string job, int lv, int maxHp, int atk, int gold, int def)
+        public Player(string name, string job, int lv, int maxHp, int atk, int gold)
         {
             Name = name;
-            Job = "전사";
+            Job = job;
             Lv = lv;
+            MaxHp = maxHp;
             Hp = maxHp;
             Atk = atk;
             Gold = gold;
-            EquipAtk = 0;
-            Def = def;
         }
-
 
         public void StatusDisplay()
         {
-            Console.WriteLine($"Lv. {AuthenticationLevel.ToString("00")}");
+            Console.WriteLine($"Lv. {Lv.ToString("00")}");
             Console.WriteLine($"{Name} ({Job}");
-            
+
             string str = EquipAtk == 0 ? $"공격력 : {Atk}" : $"공격력: {Atk + EquipAtk} (+{EquipAtk})";
             Console.WriteLine(str);
-            str=EquipDef == 0 ? $"방어력 : {Def}" : $"방어력 : {Def + EquipDef} (+{EquipDef})";
+            str = EquipDef == 0 ? $"방어력 : {Def}" : $"방어력 : {Def + EquipDef} (+{EquipDef})";
             Console.WriteLine(str);
-            
+
             Console.WriteLine($"체력: {Hp} / {MaxHp}");
             Console.WriteLine($"Gold : {Gold} G");
-            
         }
+
         //플레이어 필드 내용 출력 함수
         public void PrintPlayer()
         {
-
+            Console.WriteLine("\n\n[내정보]\n");
+            Console.WriteLine($"Lv.{Lv} {Name} ({Job})");
+            Console.WriteLine($"HP {Hp}/{MaxHp}");
         }
+
 
         public int RecieveDamage(int damage)
         {
             return Hp - damage;
         }
-
-    }
+    }//Player Class
 }
