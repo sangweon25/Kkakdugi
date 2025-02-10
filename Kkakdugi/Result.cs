@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Kkakdugi
 {
@@ -41,12 +40,12 @@ namespace Kkakdugi
             Console.WriteLine("0. 다음");
             Console.Write(">>");
             Console.ReadLine();
-            int intput = InputManager.GetInput(0, 0);
+            //int intput = InputManager.GetInput(0, 0);
 
-            if (intput == 0)
-            {
-                //Main();
-            }
+            //if (intput == 0)
+            //{
+            //    sceneManager.MainScene();
+            //}
         }
 
     }
