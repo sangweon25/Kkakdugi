@@ -2,6 +2,7 @@
 {
     internal class Program
     {
+        
         static void Main(string[] args)
         {
             SceneManager sceneManager = new SceneManager();
@@ -29,6 +30,30 @@
 
             //    }
             //}
+            
         }//Main Method
+        public void StatusScreen()
+        {
+            Console.Clear();
+            Console.WriteLine("상태 보기");
+            Console.WriteLine("캐릭터의 정보가 표시됩니다.");
+            Console.WriteLine();
+                
+            Console.WriteLine();
+            Console.WriteLine("1");
+            Console.WriteLine();
+            Console.WriteLine("0. 나가기");
+            Console.WriteLine();
+
+            int input = InputManager.GetInput(1, 2);
+            switch (input)
+            {
+                case 1:
+                    //상태보기 창으로 이동
+                    StatusScreen();
+                    break;
+            }
+        }
     }//class Program
+    
 }//namespace
