@@ -50,6 +50,7 @@
                         StatusScreen();
                         break;
                     case 2:
+                        //초기화면, 나가기
                         MainScreen();
                         break;
                 }
