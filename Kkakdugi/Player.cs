@@ -63,5 +63,10 @@ namespace Kkakdugi
             else
                 return Hp =0;
         }
+        public int BuyItem(int gold)
+        {
+            return Gold -= gold;
+        }
+
     }//Player Class
 }

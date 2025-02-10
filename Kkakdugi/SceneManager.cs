@@ -281,24 +281,43 @@ namespace Kkakdugi
 
         public void StoreBuyScene()
         {
-            Console.WriteLine("Store - Buy");
-            PrintStore();
-            Console.WriteLine("0. 나가기\n");
-            int input = InputManager.GetInput(0, 2);
-            switch (input)
+            bool state = true;
+            while (state)
             {
-                case 1:
-                    Console.Clear();
-                    StoreBuyScene();
-                    break;
-                case 2:
-                    Console.Clear();
-                    StoreSellScene();
-                    break;
-                default:
-                    Console.Clear();
-                    MainScene();
-                    break;
+                Console.WriteLine("Store - Buy");
+                PrintStore();
+                Console.WriteLine("0. 나가기\n");
+                int input = InputManager.GetInput(0, itemList.Count);
+                if (0 < input && input <= itemList.Count)
+                {
+                    //구매완료라면
+                    if (itemList[input - 1].IsSold == true)
+                    {
+                        Console.Clear();
+                        Console.WriteLine("이미 구매한 아이템입니다.\n");
+                    }
+                    else
+                    {
+                        //구매하지 않았는데 보유금액이 충분하면
+                        if (player.Gold >= itemList[input - 1].Gold)
+                        {
+                            player.BuyItem(itemList[input - 1].Gold);
+                            //플레이어 인벤토리에 Add(itemList[input - 1]) 추가해야함.
+                            itemList[input - 1].IsSold = true;
+                            Console.Clear();
+                            Console.WriteLine("구매를 완료했습니다.\n");
+                        }
+                        else // 보유금액이 부족
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Gold가 부족합니다.\n");
+                        }
+                    }
+                }
+                else if(input == 0)
+                {
+                    state = false;
+                }
             }
         }//StoreBuyScene Method
 
@@ -306,6 +325,15 @@ namespace Kkakdugi
         {
             Console.WriteLine("Store - Sell");
             PrintStore();
+            Console.WriteLine("0. 나가기\n");
+            int input = InputManager.GetInput(0, 0);
+            switch (input)
+            {
+                case 0:
+                    Console.Clear();
+                    MainScene();
+                    break;
+            }
 
         }//StoreSellScene Method
 

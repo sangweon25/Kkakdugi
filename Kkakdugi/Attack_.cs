@@ -90,6 +90,8 @@ namespace Kkakdugi
                 {
                     //Enemy Phase로 넘어가기
                     Console.WriteLine("Enemy Phase 시작");
+
+                    sceneManager.EnemyPhase(monster, player);
                 }
             }
             else
