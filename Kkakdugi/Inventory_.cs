@@ -8,6 +8,7 @@ namespace Kkakdugi
 {
     internal class Inventory_
     {
+        // 보유한 아이템 리스트 생성
         private List<Item> item;
         public Inventory_()
         {
