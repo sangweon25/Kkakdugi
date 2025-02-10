@@ -12,7 +12,8 @@ namespace Kkakdugi
 
     internal class Attack_
     {
-        
+        static SceneManager sceneManager = new SceneManager();
+
         public static void Attack(Monster monster, Player player)
         {
             bool isCritical = false; //치명타
@@ -136,8 +137,9 @@ namespace Kkakdugi
 
                 if (num == 0)
                 {
-                    //Enemy Phase로 넘어가기
+                    //Enemy Phase로 넘어가기 (상원님 여기에 연결시켜주시면 됩니다.)
                     Console.WriteLine("Enemy Phase 시작");
+                    sceneManager.EnemyPhase(monster, player);
                 }
             }
             
