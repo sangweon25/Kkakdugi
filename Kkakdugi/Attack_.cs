@@ -17,7 +17,7 @@ namespace Kkakdugi
         {
             // 호출이 됐으면 해당하는 몬스터를 공격
             // 몬스터 체력 -= 플레이어 공격력
-
+            bool isCritical = false;
             Random rand = new Random();
             //오차 구현
             //공격력의 10% 계산 
@@ -32,17 +32,15 @@ namespace Kkakdugi
             double FinalAtk = player.Atk + randomDamage;
             
             //치명타 구현 (15% 확률)
-            if (rand.Next(1, 101) <= 15)
+            if (rand.Next(1, 101) <= 100)
             {
+                isCritical = true;
                 Console.WriteLine("치명타 발생!"); //테스트용
                 double critical = 1.6;
                 FinalAtk = FinalAtk * critical;
             }
 
             monster.Hp -= (int)FinalAtk;
-
-            //테스트 출력 CellingNum등 다른 변수 값을 알아보기 위해 잠시 적어뒀습니다.
-            //Console.WriteLine($"테스트 : {CellingNum},{randomDamage},{FinalAtk}");
 
             //만약 몬스터의 hp가 0 이하라면?
             if (monster.Hp <= 0)
@@ -75,12 +73,12 @@ namespace Kkakdugi
             Console.ResetColor();
             Console.Write("]");
 
-            ////만약 치명타가 터졌다면
-            //bool isCritical = FinalAtk > player.Atk * 1.6 - 1; 
-            //if (isCritical)
-            //{
-            //    Console.WriteLine(" - 치명타 공격 !!");
-            //}
+            //만약 치명타가 터졌다면
+            bool isCritical = FinalAtk > player.Atk * 1.6 - 1; 
+            if (isCritical)
+            {
+                Console.WriteLine(" - 치명타 공격 !!");
+            }
 
             Console.WriteLine();
             Console.WriteLine();

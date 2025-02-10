@@ -106,7 +106,7 @@ namespace Kkakdugi
                 Console.WriteLine("전투 취소");
                 //이전 화면으로 돌아가기 (?)
             }
-            else if (num > 0 && num <= monster.Count)
+            else if (num > 0 && num <= monster.Count + 1)
             {
                 if (monster[num].isDead == false) //안 죽었을 때
                 {
