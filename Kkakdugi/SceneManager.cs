@@ -37,8 +37,6 @@ namespace Kkakdugi
             };
         }
 
-        // 몬스터 정보 출력
-
         public void MonsterPrintInfo()
         {
             Console.WriteLine("Battle!!");
@@ -64,8 +62,7 @@ namespace Kkakdugi
             {
                 m.MonsterState(m);
             }
-
-
+            //플레이어 간단한 정보와 체력 출력
             player.PrintPlayer();
 
             Console.WriteLine();
@@ -74,10 +71,9 @@ namespace Kkakdugi
             if (InputManager.GetInput(1, 1) == 1)
             {
                 Console.Clear();
-                //현재 AttackInfo내에 player객체를 넘겨줘서 사용해야함.
-                AttackInfo(randmonsters);
+                //AttackInfo(randmonsters);
+                AttackStart(randmonsters, player); //효정 추가
             }
-            AttackStart(randmonsters, player); //효정 추가
         }//MonsterPrintInfo Method
 
         static void AttackStart(List<Monster> monster, Player player)
@@ -94,7 +90,6 @@ namespace Kkakdugi
                     Console.ForegroundColor = ConsoleColor.DarkGray;
                     Console.WriteLine($"{i + 1}. Lv.{monster[i].Lev} {monster[i].Name} HP dead");
                     Console.ResetColor();
-
                 }
                 else
                 {
