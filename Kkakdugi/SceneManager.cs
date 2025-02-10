@@ -10,14 +10,18 @@ namespace Kkakdugi
     {
         List<Monster> monsters;
 
+        // 내 정보 받아오기
+        // 테스트 용으로 모든 값을 임의로 집어넣었습니다 !
+        Player player = new Player("손효정", "직업 없음", 1, 100, 10, 1000);
+
         public SceneManager()
         {
 
             monsters = new List<Monster>
             {
-                new Monster("몬스터1",2,15,5),
-                new Monster("몬스터2",3,10,9),
-                new Monster("몬스터3",5,25,8),
+                new Monster("몬스터1",2,15,5,false),
+                new Monster("몬스터2",3,10,9,false),
+                new Monster("몬스터3",5,25,8,false),
             };
         }
 
@@ -28,11 +32,12 @@ namespace Kkakdugi
             Random random = new Random();
             List<Monster> monsters = new List<Monster>
             {
-                 new Monster("솔트", 1, 10, 3),
-                 new Monster("슈가", 2, 10, 5),
-                 new Monster("다이콘", 3, 15, 10),
-                 new Monster("레드파우더", 5, 25, 15)
+                 new Monster("솔트", 1, 10, 3,false),
+                 new Monster("슈가", 2, 10, 5,false),
+                 new Monster("다이콘", 3, 15, 10,false),
+                 new Monster("레드파우더", 5, 25, 15,false)
             };
+
             List<Monster> randmonsters = new List<Monster>();
 
             int rand = random.Next(1,monsters.Count+1);
@@ -46,6 +51,117 @@ namespace Kkakdugi
             {
                 m.MonsterState(m);
             }
+
+            AttackStart(randmonsters, player); //효정 추가
+        }
+
+        static void AttackStart(List<Monster> monster, Player player)
+        {
+            // 리스트로 테스트 몬스터 만들기
+
+
+            //리스트 번호 받아오기
+
+            // 기본 화면 구성해보기 (우선 예제와 똑같이 했습니다)
+            Console.WriteLine("Battle!!");
+            Console.WriteLine(); // 한 줄 공백
+
+            // 반복문 이용해서 리스트 출력
+            for (int i = 0; i < monster.Count; i++)
+            {
+                if (monster[i].isDead == true)
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                    Console.WriteLine($"{i + 1}. Lv.{monster[i].Lev} {monster[i].Name} HP dead");
+                    Console.ResetColor();
+
+                }
+                else
+                {
+                    Console.WriteLine($"{i + 1}. Lv.{monster[i].Lev} {monster[i].Name} HP {monster[i].Hp}");
+                }
+
+            }
+
+            Console.WriteLine();
+
+
+            Console.WriteLine("[내정보]");
+            Console.WriteLine();
+            Console.WriteLine($"Lv.{player.Lv} {player.Name} ({player.Job})");
+            Console.WriteLine($"HP {player.Hp}/100");
+            Console.WriteLine();
+            Console.WriteLine("0. 취소");
+            Console.WriteLine();
+            Console.WriteLine("대상을 선택해주세요.");
+            Console.Write(">>");
+
+            //input 값 받아서 그에 맞는 조건문 넣기
+            string Input = Console.ReadLine();
+            int num = int.Parse(Input);
+            
+            //번호 확인 
+            if (num == 0)
+            {
+                Console.WriteLine("전투 취소");
+                //이전 화면으로 돌아가기 (?)
+            }
+            else if (num > 0 && num <= monster.Count)
+            {
+                if (monster[num].isDead == false) //안 죽었을 때
+                {
+                    Console.WriteLine($"선택한 몬스터는 {num}");
+                    //공격
+                    Attack_.Attack(monster[num - 1], player);
+                }
+                else // 죽었다면?
+                {
+                    Console.WriteLine("잘못된 입력입니다.");
+                }
+
+            }
+            else // 0도 아니고 몬스터 카운트보다 작은 숫자도 아닐 때 
+            {
+                Console.WriteLine("잘못된 입력입니다.");
+            }
+        }
+        public void AttackInfo(List<Monster> monster) // 공격 할 때 출력 할 창
+        {
+            // 기본 화면 구성해보기 (우선 예제와 똑같이 했습니다)
+            Console.WriteLine("Battle!!");
+            Console.WriteLine(); // 한 줄 공백
+
+            // 반복문 이용해서 리스트 출력
+            for (int i = 0; i < monster.Count; i++)
+            {
+                if (monster[i].isDead == true)
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                    Console.WriteLine($"{i + 1}. Lv.{monster[i].Lev} {monster[i].Name} HP dead");
+                    Console.ResetColor();
+
+                }
+                else
+                {
+                    Console.WriteLine($"{i + 1}. Lv.{monster[i].Lev} {monster[i].Name} HP {monster[i].Hp}");
+                }
+
+            }
+
+            Console.WriteLine();
+            
+            Console.WriteLine("[내정보]");
+            Console.WriteLine();
+            Console.WriteLine($"Lv.{player.Lv} {player.Name} ({player.Job})");
+            Console.WriteLine($"HP {player.Hp}/100");
+            Console.WriteLine();
+            Console.WriteLine("0. 취소");
+            Console.WriteLine();
+            Console.WriteLine("대상을 선택해주세요.");
+            Console.Write(">>");
+
+            //input 값 받아서 그에 맞는 조건문 넣기
+            
         }
         //매개변수로 들어온 몬스터가 공격 
         public void EnemyPhase(Monster monster,Player player)

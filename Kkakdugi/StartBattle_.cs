@@ -23,14 +23,15 @@ namespace Kkakdugi
         public int Lev { get; set; }
         public int Hp { get; set; }
         public int Atk { get; set; }
-
+        
         // 생성자로 몬스터 속성 초기화
-        public Monster(string name, int lev, int hp, int atk)
+        public Monster(string name, int lev, int hp, int atk, bool Dead)
         {
             Name = name;
             Lev = lev;
             Hp = hp;
             Atk = atk;
+            isDead= Dead; //효정 추가 
         }
         public void MonsterState(Monster m)
         {
