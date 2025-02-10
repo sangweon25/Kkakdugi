@@ -57,11 +57,6 @@ namespace Kkakdugi
 
         static void AttackStart(List<Monster> monster, Player player)
         {
-            // 리스트로 테스트 몬스터 만들기
-
-
-            //리스트 번호 받아오기
-
             // 기본 화면 구성해보기 (우선 예제와 똑같이 했습니다)
             Console.WriteLine("Battle!!");
             Console.WriteLine(); // 한 줄 공백
@@ -108,9 +103,9 @@ namespace Kkakdugi
             }
             else if (num > 0 && num <= monster.Count + 1)
             {
-                if (monster[num].isDead == false) //안 죽었을 때
+                if (monster[num - 1].isDead == false) //안 죽었을 때
                 {
-                    Console.WriteLine($"선택한 몬스터는 {num}");
+                    Console.WriteLine($"선택한 몬스터는 {monster[num - 1]}");
                     //공격
                     Attack_.Attack(monster[num - 1], player);
                 }
