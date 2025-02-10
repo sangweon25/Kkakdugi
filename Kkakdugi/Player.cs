@@ -33,6 +33,20 @@ namespace Kkakdugi
             Gold = gold;
         }
 
+        public void StatusDisplay()
+        {
+            Console.WriteLine($"Lv. {Lv.ToString("00")}");
+            Console.WriteLine($"{Name} ({Job}");
+
+            string str = EquipAtk == 0 ? $"공격력 : {Atk}" : $"공격력: {Atk + EquipAtk} (+{EquipAtk})";
+            Console.WriteLine(str);
+            str = EquipDef == 0 ? $"방어력 : {Def}" : $"방어력 : {Def + EquipDef} (+{EquipDef})";
+            Console.WriteLine(str);
+
+            Console.WriteLine($"체력: {Hp} / {MaxHp}");
+            Console.WriteLine($"Gold : {Gold} G");
+        }
+
         //플레이어 필드 내용 출력 함수
         public void PrintPlayer()
         {

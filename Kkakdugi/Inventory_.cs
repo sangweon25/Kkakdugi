@@ -8,6 +8,7 @@ namespace Kkakdugi
 {
     internal class Inventory_
     {
+        // 보유한 아이템 리스트 생성
         private List<Item> item;
         public Inventory_()
         {
@@ -17,7 +18,7 @@ namespace Kkakdugi
         // 인벤토리 창 선택시 아이템 목록 출력
         public void ItemprintInfo()
         {
-            Console.WriteLine("[아이템 목록]\n");
+            Console.WriteLine("[아이템 목록]\n"); 
             if (item == null)
             {
                 Console.WriteLine("인벤토리가 비어 있습니다.");
@@ -28,8 +29,8 @@ namespace Kkakdugi
                 {
                     Console.WriteLine(items);
                 }
-            }
+            }         
         }
-       
+
     }
 }
