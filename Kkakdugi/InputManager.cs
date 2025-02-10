@@ -23,6 +23,19 @@ namespace Kkakdugi
             }
         }
 
+        //인벤토리 ,상점에서 아이템을 선택할 경우 사용하는 함수
+        public static int SelectItem(int min, int max)
+        {
+            while (true)
+            {
+                Console.Write("아이템을 선택해주세요.\n>>");
+                if (int.TryParse(Console.ReadLine(), out int input) && min <= input && input <= max)
+                    return input;
+                else
+                    Console.WriteLine("잘못된 입력입니다.\n");
+            }
+        }
+
         public static int inputNext()
         {
             while (true)

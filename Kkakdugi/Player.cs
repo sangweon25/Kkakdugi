@@ -44,7 +44,10 @@ namespace Kkakdugi
 
         public int RecieveDamage(int damage)
         {
-            return Hp - damage;
+            if (Hp > 0)
+                return Hp - damage;
+            else
+                return Hp =0;
         }
     }//Player Class
 }

@@ -40,7 +40,7 @@ namespace Kkakdugi
         {
             //inItem의 타입, 이름, 능력치,설명,가격순으로 출력 // ? 아이템이 팔렸다면Sold Out 출력 : 아니라면 가격을 출력;
             string soldCheck = IsSold ?"Sold Out" : Gold.ToString();
-            Console.WriteLine("{0,-15}| {1,-15}| {2,-15}| {3,-15}| {4,-15}\n",Type,Name,Ability,Description,soldCheck);
+            Console.WriteLine("{0,-15}| {1,-15}| {2,-15}| {3,-15}| {4,-15}",Type,Name,Ability,Description,soldCheck);
         }
 
     }//Item Class
