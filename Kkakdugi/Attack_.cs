@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 
 namespace Kkakdugi
@@ -11,11 +12,12 @@ namespace Kkakdugi
 
     internal class Attack_
     {
-        
+        static SceneManager sceneManager = new SceneManager();
+
         public static void Attack(Monster monster, Player player)
         {
-            // 호출이 됐으면 해당하는 몬스터를 공격
-            // 몬스터 체력 -= 플레이어 공격력
+            bool isCritical = false; //치명타
+            bool isEvasion = false; //회피
 
             Random rand = new Random();
             //오차 구현
@@ -30,94 +32,120 @@ namespace Kkakdugi
             //최종 데미지 저장
             double FinalAtk = player.Atk + randomDamage;
             
-            //치명타 구현 (15% 확률)
-            if (rand.Next(1, 101) <= 15)
+            //회피 구현 (10% 확률)
+            if (rand.Next(1,101) <= 10) //10%확률로 회피
             {
-                Console.WriteLine("치명타 발생!"); //테스트용
-                double critical = 1.6;
-                FinalAtk = FinalAtk * critical;
+                isEvasion = true;
+
+            }
+            else // 회피 안했으니 공격
+            {
+                //치명타 구현 (15% 확률)
+                if (rand.Next(1, 101) <= 15)
+                {
+                    isCritical = true;
+                    double critical = 1.6;
+                    FinalAtk = FinalAtk * critical;
+                }
+
+                monster.Hp -= (int)FinalAtk;
+
+                //만약 몬스터의 hp가 0 이하라면?
+                if (monster.Hp <= 0)
+                {
+                    monster.isDead = true;
+                }
             }
 
-            monster.Hp -= (int)FinalAtk;
-
-            //테스트 출력 CellingNum등 다른 변수 값을 알아보기 위해 잠시 적어뒀습니다.
-            //Console.WriteLine($"테스트 : {CellingNum},{randomDamage},{FinalAtk}");
-
-            //만약 몬스터의 hp가 0 이하라면?
-            if (monster.Hp <= 0)
-            {
-                monster.isDead = true;
-            }
-
-            //공격 후 결과화면 출력 창 이동
-            AttackResult(monster, player, FinalAtk);
-
+            AttackResult(monster, player, FinalAtk, isCritical, isEvasion);
         }
 
-        public static void AttackResult(Monster monster, Player player, double FinalAtk)
+        public static void AttackResult(Monster monster, Player player, double FinalAtk, bool isCritical, bool isEvasion)
         {
+            
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("Battle!!");
             Console.ResetColor(); // 컬러 리셋
 
             Console.WriteLine();
-
             Console.WriteLine($"{player.Name} 의 공격!");
-            Console.Write($"Lv.");
-            Console.ForegroundColor = ConsoleColor.DarkRed;
-            Console.Write($"{monster.Lev}");
-            Console.ResetColor();
-            Console.Write($"{monster.Name}을(를) 맞췄습니다. [데미지 : ");
-            Console.ForegroundColor = ConsoleColor.DarkRed;
-            Console.Write($"{FinalAtk}");
-            Console.ResetColor();
-            Console.Write("]");
 
-            ////만약 치명타가 터졌다면
-            //if(isCritical == true)
-            //{
-            //    Console.WriteLine(" - 치명타 공격 !!");
-            //}
-            Console.WriteLine();
-            Console.WriteLine($"Lv.{monster.Lev} {monster.Name}");
-
-            // 몬스터 출력 여부 다르게 하기
-            if (monster.Hp <= 0)
+            //회피 했다면
+            if (isEvasion)
             {
-                Console.WriteLine($"HP {monster.Hp + FinalAtk} -> [Dead]");
+                Console.Write($"Lv.");
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.Write($"{monster.Lev} ");
+                Console.ResetColor();
+                Console.WriteLine($"{monster.Name}을(를) 공격했지만 아무일도 일어나지 않았습니다.");
+                Console.WriteLine();
+                Console.WriteLine("0. 다음");
+
+                //InputManager.inputNext();
+                string Input = Console.ReadLine();
+                int num = int.Parse(Input);
+
+                if (num == 0)
+                {
+                    //Enemy Phase로 넘어가기
+                    Console.WriteLine("Enemy Phase 시작");
+                }
             }
             else
             {
-                Console.WriteLine($"HP {monster.Hp + FinalAtk} -> {monster.Hp}");
+                Console.Write($"Lv.");
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.Write($"{monster.Lev} ");
+                Console.ResetColor();
+                Console.Write($"{monster.Name}을(를) 맞췄습니다. [데미지 : ");
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.Write($"{FinalAtk}");
+                Console.ResetColor();
+                Console.Write("]");
+
+                //만약 치명타가 터졌다면
+                if (isCritical)
+                {
+                    Console.WriteLine(" - 치명타 공격 !!");
+                }
+
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.Write($"Lv.");
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.Write($"{monster.Lev} ");
+                Console.ResetColor();
+                Console.WriteLine($"{monster.Name}");
+
+                // 몬스터 출력 여부 다르게 하기
+                if (monster.Hp <= 0)
+                {
+                    Console.WriteLine($"HP {monster.Hp + (int)FinalAtk} -> [Dead]");
+                }
+                else
+                {
+                    Console.WriteLine($"HP {monster.Hp + (int)FinalAtk} -> {monster.Hp}");
+                }
+
+                Console.WriteLine();
+                Console.WriteLine("0. 다음");
+
+                //InputManager.inputNext();
+                string Input = Console.ReadLine();
+                int num = int.Parse(Input);
+
+                if (num == 0)
+                {
+                    //Enemy Phase로 넘어가기 (상원님 여기에 연결시켜주시면 됩니다.)
+                    Console.WriteLine("Enemy Phase 시작");
+                    sceneManager.EnemyPhase(monster, player);
+                }
             }
-
-            Console.WriteLine();
-            Console.WriteLine("0. 다음");
-
-            //InputManager.inputNext();
-            string Input = Console.ReadLine();
-            int num = int.Parse(Input);
-
-            if (num == 0)
-            {
-                //Enemy Phase로 넘어가기
-                Console.WriteLine("Enemy Phase 시작");
-            }
+            
+            
         }
 
-        
-    
-        /* 병합 할 때 해야 할 것들 정리
-          
-        만들어진 몬스터 가져오기, 랜덤 값 있으면 받아오기
-        반복문 이용해서 출력하기 (앞에 번호 생기게 하기)
-
-        플레이어 정보 가져오기. 
-        원하는 만큼 출력 시키기.
-
-
-        */
     }
 }
 
