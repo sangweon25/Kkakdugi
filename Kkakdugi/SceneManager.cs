@@ -61,12 +61,15 @@ namespace Kkakdugi
             Console.WriteLine("스파르타 던전에 오신 여러분 환영합니다.");
             Console.WriteLine("이제 전투를 시작할 수 있습니다.\n");
             Console.WriteLine("1. 상태 보기");
-            Console.WriteLine("2. 전투 시작");
+            Console.WriteLine("2. 인벤토리");
             Console.WriteLine("3. 상점");
+            Console.WriteLine("4. 전투 시작");
             Console.WriteLine();
             // 출력.예외 포함..if
             //GetInput(switch문 케이스 범위만큼 입력)
-            int input = InputManager.GetInput(1, 3);
+            Inventory_ inventory = new Inventory_();
+            
+            int input = InputManager.GetInput(1, 4);
             switch (input)
             {
                 case 1:
@@ -74,13 +77,19 @@ namespace Kkakdugi
                     StatusScreen();
                     break;
                 case 2:
-                    //전투시작 창으로 이동
+                    //인벤토리 창으로 이동
                     Console.Clear();
-                    MonsterPrintInfo();
+                    inventory.ItemprintInfo();
+                    InventoryChoice();
                     break;
                 case 3:
                     Console.Clear();
                     StoreScene();
+                    break;
+                case 4:
+                    //전투시작 창으로 이동
+                    Console.Clear();
+                    MonsterPrintInfo();
                     break;
             }
         }
@@ -315,8 +324,15 @@ namespace Kkakdugi
                     break;
                 case 1:
                     Console.Clear();
+                    EquipChoice();
                     break;
             }    
+        }
+        public void EquipChoice()
+        {
+            Inventory_ inventory = new Inventory_();
+            inventory.ItemprintInfo();
+
         }
         //==================================================================
         
