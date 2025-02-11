@@ -1,55 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
+using System.Xml.Linq;
 
 namespace Kkakdugi
 {
-    internal class Result
+    public class Result // ()매개변수 안에다가 이미 정의된 플레이어와 몬스터함수를 가져오고 밑에 변수 고치기
     {
-        internal class Player
+        public Player  // 플레이어와 몬스터를 다른방법으,로 가져오기
         {
-            //플레이어 능력치, 세부정보
-            public string Name { get; set; }
-            public int Lv { get; set; }
-            public int Hp { get; set; }
-            public int MaxHp { get; set; }
-
-            public Player(string name, int lv, int maxHp)
+            Player player = new Player("깍두기","무", 1, 100, 10, 1000);
+            Monster monster = new Monster(" ", 1, 10, 11, false);
+            public void Player(string name, int lv, int maxHp)
             {
-                Name = name;
-                Lv = lv;
-                Hp = maxHp;
+                player.Name = name;
+            player.Lv = lv;
+            player.Hp = maxHp;
             }
         }
 
-        public class Monster
-        {
-            // 몬스터의 공격력 
-            public int Atk { get; set; }
-
-            // 생성자로 몬스터 속성 초기화
-            public Monster(int atk)
-            {
-                Atk = atk;
-            }
-        }
-        public static void Result1(string name, int lv, int maxHp, int atk)
+        public static void BattleEnd(string name, int lv, int maxHp, int atk)
         {
             int monster = 4;
+            int killCount = 0;
 
             while (maxHp > 0 && monster > 0)
             {
 
                 maxHp -= atk;
                 monster--;
+                killCount++;
 
                 Console.WriteLine("Battle!! - Result");
 
                 if (maxHp > 0 && monster <= 0) // 플레이어가 살아 있고, 모든 몬스터를 잡았을 때 승리
                 {
                     Console.WriteLine("Victory");
-                    Console.WriteLine("던전에서 몬스터 3마리를 잡았습니다.");
+                    Console.WriteLine($"던전에서 몬스터 {killCount}를 잡았습니다.");
                     Console.WriteLine($"Lv.{lv} {name}\nHp 100 -> {maxHp}");
                     break;
                 }
