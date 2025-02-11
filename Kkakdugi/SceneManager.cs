@@ -292,7 +292,7 @@ namespace Kkakdugi
                 else
                 {
                     //만약 플레이어가 죽었다면 result화면으로 가야함.
-                    result.Result1();
+                   // result.Result1();
                 }
             }
 
