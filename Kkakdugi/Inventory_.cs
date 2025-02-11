@@ -32,16 +32,18 @@ namespace Kkakdugi
                 Console.WriteLine("인벤토리가 비어 있습니다.");
                 return;
             }
-            else
+            
+            foreach (Item items in getitems)
             {
-                foreach ( Item items in getitems)
-                {
+                // 장착된 아이템에 [E] 표시
+                string displayName = items.IsEquip ? "[E]" + items.Name : items.Name;
+                Console.WriteLine(displayName);
+            }
                     
-                    Console.WriteLine(items);
-                }
-            }         
         }
 
+        
+        
     }
     
 

@@ -37,8 +37,9 @@ namespace Kkakdugi
         }
 
         //아이템 장착 가능 여부
-        public Item(bool IsEquip)
+        public Item(string name)
         {
+            Name = name;
             IsEquip = false; // 처음엔 장착x
         }
 
