@@ -287,5 +287,8 @@ namespace Kkakdugi
             Console.WriteLine("{0,-15}| {1,-15}| {2,-15}| {3,-15}| {4,-15}|", "분류", "이름", "능력치", "설명", "가격");
         }
 
+            
     }//class SceneManager
 }//namespace
+
+
