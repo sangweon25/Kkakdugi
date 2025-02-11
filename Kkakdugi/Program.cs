@@ -5,6 +5,7 @@
         
         static void Main(string[] args)
         {
+            Inventory_ inventory = new Inventory_();
             SceneManager sceneManager = new SceneManager();
 
             sceneManager.MainScene();
