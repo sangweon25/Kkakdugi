@@ -36,7 +36,7 @@ namespace Kkakdugi
         public void StatusDisplay()
         {
             Console.WriteLine($"Lv. {Lv.ToString("00")}");
-            Console.WriteLine($"{Name} ({Job}");
+            Console.WriteLine($"{Name} ({Job})");
 
             string str = EquipAtk == 0 ? $"공격력 : {Atk}" : $"공격력: {Atk + EquipAtk} (+{EquipAtk})";
             Console.WriteLine(str);
