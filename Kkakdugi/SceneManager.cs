@@ -137,7 +137,8 @@ namespace Kkakdugi
             for (int i = 0; i < rand; i++)
             {
                 int monsterIndex = random.Next(monsters.Count); // 0~3번까지의 인덱스 랜덤선택
-                randmonsters.Add(monsters[monsterIndex]); // 랜덤 인덱스를 랜덤으로 생겨난 몬스터 리스트에 저장
+                //randmonsters.Add(monsters[monsterIndex]); // 랜덤 인덱스를 랜덤으로 생겨난 몬스터 리스트에 저장
+                randmonsters.Add(monsters[monsterIndex].Clone()); // 새로운 몬스터 객체 추가 
             }
             //저장된 randomonsters 반복하며 출력하는 함수
             foreach (Monster m in randmonsters)
