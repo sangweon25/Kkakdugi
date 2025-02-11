@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
 using System.Numerics;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,10 +11,41 @@ namespace Kkakdugi
 {
     internal class SceneManager
     {
-        //Player player1 = new Player("김치", "음식", 1, 100, 15, 1000);
+        Player player = new Player("김치", "음식", 1, 100, 15, 1000);
         Attack_ attack = new Attack_();
         Result result = new Result();
+        Inventory_ inventory = new Inventory_();
         private static SceneManager? sceneManager;
+
+        public List<Monster> randmonsters = new List<Monster>();
+
+        public List<Monster> monsters = new List<Monster>
+        {
+            new Monster("솔트", 1, 10, 3,false),
+            new Monster("슈가", 2, 10, 5,false),
+            new Monster("다이콘", 3, 15, 10,false),
+            new Monster("레드파우더", 5, 25, 15,false)
+        };
+
+        public void SetRandomMonsters()
+        {
+            randmonsters.Clear();  // 기존 리스트를 초기화
+
+            Random random = new Random();
+            int rand = random.Next(1, monsters.Count + 1);  // 개수 최소 1부터 랜덤 설정
+
+            for (int i = 0; i < rand; i++)
+            {
+                int monsterIndex = random.Next(monsters.Count);  // 몬스터 선택
+                randmonsters.Add(monsters[monsterIndex].Clone());  // 새로운 몬스터 객체 추가
+            }
+        }
+
+        public void EndBattle()
+        {
+            // 전투 끝났을 때 새로운 랜덤 몬스터 리스트로 설정
+            SetRandomMonsters();
+        }
 
         //GetInstance 메서드 호출시 싱글톤 객체인 sceneManager를 리턴
         //다른 클래스에서 sceneManager의 메서드를 호출할수있다.
@@ -35,12 +67,9 @@ namespace Kkakdugi
             new Item(AbilityType.무기,"돌칼",4,"약간은 날카로운 돌이다.",1000),
         };
 
-        List<Monster> monsters;
+        //List<Monster> monsters;
 
-        // 내 정보 받아오기
-        // 테스트 용으로 모든 값을 임의로 집어넣었습니다 !
-        Player player = new Player("손효정", "직업 없음", 1, 100, 10, 1000);
-
+       
         //씬 매니저 생성자
         public SceneManager()
         {
@@ -67,7 +96,7 @@ namespace Kkakdugi
             Console.WriteLine();
             // 출력.예외 포함..if
             //GetInput(switch문 케이스 범위만큼 입력)
-            Inventory_ inventory = new Inventory_();
+            
             
             int input = InputManager.GetInput(1, 4);
             switch (input)
@@ -120,44 +149,28 @@ namespace Kkakdugi
         //2.전투시작 입장시 화면
         public void MonsterPrintInfo()
         {
+            Console.Clear();
             Console.WriteLine("Battle!!");
-            Random random = new Random();
-            List<Monster> monsters = new List<Monster>
-            {
-                new Monster("솔트", 1, 10, 3,false),
-                new Monster("슈가", 2, 10, 5,false),
-                new Monster("다이콘", 3, 15, 10,false),
-                new Monster("레드파우더", 5, 25, 15,false)
-            };
 
-            List<Monster> randmonsters = new List<Monster>();
+            SetRandomMonsters();
 
-            int rand = random.Next(1, monsters.Count + 1);
-            //생성자에서 초기화한 monsters의 정보를 랜덤한 값으로 randomonsters에 저장
-            for (int i = 0; i < rand; i++)
-            {
-                int monsterIndex = random.Next(monsters.Count); // 0~3번까지의 인덱스 랜덤선택
-                //randmonsters.Add(monsters[monsterIndex]); // 랜덤 인덱스를 랜덤으로 생겨난 몬스터 리스트에 저장
-                randmonsters.Add(monsters[monsterIndex].Clone()); // 새로운 몬스터 객체 추가 
-            }
-            //저장된 randomonsters 반복하며 출력하는 함수
+            // 'randmonsters'에 있는 몬스터 출력
             foreach (Monster m in randmonsters)
             {
                 m.MonsterState(m);
             }
-            //플레이어 간단한 정보와 체력 출력
+
+            // 플레이어 출력
             player.PrintPlayer();
 
-            Console.WriteLine();
-            Console.WriteLine("0. 전투취소");
+            Console.WriteLine("0. 전투 취소");
             Console.WriteLine("1. 공격");
 
-            //1이외에 값을 입력하면 재입력
-            if (InputManager.GetInput(0, 1) == 1)
+            int input = InputManager.GetInput(0, 1);
+            if (input == 1)
             {
                 Console.Clear();
-                //랜덤으로 생성된 몬스터들 번호를 메겨 선택 화면 출력
-                AttackStart(randmonsters, player); //효정 추가
+                AttackStart(randmonsters, player);  // 기존 몬스터 리스트 사용
             }
             else
             {
@@ -171,9 +184,8 @@ namespace Kkakdugi
             while(inBattle)
             {
                 Console.Clear();
-                // 기본 화면 구성해보기 (우선 예제와 똑같이 했습니다)
                 Console.WriteLine("Battle!!");
-                Console.WriteLine(); // 한 줄 공백
+                Console.WriteLine(); 
 
                 // 반복문 이용해서 리스트 출력
                 for (int i = 0; i < monster.Count; i++)
@@ -218,7 +230,7 @@ namespace Kkakdugi
                 {
                     if (monster[num - 1].isDead == false) //안 죽었을 때
                     {
-                        Console.WriteLine($"선택한 몬스터는 {monster[num - 1]}");
+                        Console.WriteLine($"선택한 몬스터는 {monster[num - 1].Name}");
                         //공격
                         attack.Attack(monster[num - 1], player);
                     }
@@ -232,48 +244,18 @@ namespace Kkakdugi
                 {
                     Console.WriteLine("잘못된 입력입니다.");
                 }
+
+                if (monster.All(m => m.isDead)) //몬스터가 모두 죽었다면
+                {
+                    inBattle = false;
+                    EndBattle();  // 전투 종료 후 새로운 랜덤 몬스터 설정
+                    Result.Result1(player.Name, player.Lv, player.Hp, player.Atk);
+                }
+                
             }
         }
 
-        public void AttackInfo(List<Monster> monster) // 공격 할 때 출력 할 창
-        {
-            // 기본 화면 구성해보기 (우선 예제와 똑같이 했습니다)
-            Console.WriteLine("Battle!!");
-            Console.WriteLine(); // 한 줄 공백
-
-            // 반복문 이용해서 리스트 출력
-            for (int i = 0; i < monster.Count; i++)
-            {
-                if (monster[i].isDead == true)
-                {
-                    Console.ForegroundColor = ConsoleColor.DarkGray;
-                    Console.WriteLine($"{i + 1}. Lv.{monster[i].Lev} {monster[i].Name} HP dead");
-                    Console.ResetColor();
-
-                }
-                else
-                {
-                    Console.WriteLine($"{i + 1}. Lv.{monster[i].Lev} {monster[i].Name} HP {monster[i].Hp}");
-                }
-
-            }
-
-            Console.WriteLine();
-
-            Console.WriteLine("[내정보]");
-            Console.WriteLine();
-            Console.WriteLine($"Lv.{player.Lv} {player.Name} ({player.Job})");
-            Console.WriteLine($"HP {player.Hp}/100");
-            Console.WriteLine();
-            Console.WriteLine("0. 취소");
-            Console.WriteLine();
-            Console.WriteLine("대상을 선택해주세요.");
-            Console.Write(">>");
-
-            //input 값 받아서 그에 맞는 조건문 넣기
-
-        }
-
+       
         //매개변수로 들어온 몬스터가 공격 
         public void EnemyPhase(Monster monster, Player player)
         {
@@ -313,7 +295,7 @@ namespace Kkakdugi
 
         public void InventoryChoice()
         {
-            Console.WriteLine("1. 장착 관리\n");
+            Console.WriteLine("\n\n1. 장착 관리\n");
             Console.WriteLine("0. 나가기");
             int input = InputManager.GetInput(0, 1);
             
@@ -331,9 +313,17 @@ namespace Kkakdugi
         }
         public void EquipChoice()
         {
-            Inventory_ inventory = new Inventory_();
+            //Inventory_ inventory = new Inventory_();
             inventory.ItemprintInfo();
-
+            Console.WriteLine("\n\n0. 나가기");
+            int input = InputManager.GetInput(0, 0);
+            switch (input)
+            {
+                case 0:
+                    Console.Clear();
+                    MainScene();
+                    break;
+            }
         }
         //==================================================================
         
@@ -344,7 +334,7 @@ namespace Kkakdugi
             Console.WriteLine("Store");
 
             //아이템 목록 출력 함수 
-            PrintStore();
+            PrintStore(false);
             Console.WriteLine("\n1. 아이템 구매");
             Console.WriteLine("2. 아이템 판매");
             Console.WriteLine("0. 나가기\n");
@@ -369,10 +359,11 @@ namespace Kkakdugi
         public void StoreBuyScene()
         {
             bool state = true;
+            bool buyScene = true;
             while (state)
             {
                 Console.WriteLine("Store - Buy");
-                PrintStore();
+                PrintStore(buyScene);
                 Console.WriteLine("0. 나가기\n");
                 int input = InputManager.GetInput(0, itemList.Count);
                 if (0 < input && input <= itemList.Count)
@@ -390,6 +381,7 @@ namespace Kkakdugi
                         {
                             player.BuyItem(itemList[input - 1].Gold);
                             //플레이어 인벤토리에 Add(itemList[input - 1]) 추가해야함.
+                            inventory.AddItem(itemList[input-1]);
                             itemList[input - 1].IsSold = true;
                             Console.Clear();
                             Console.WriteLine("구매를 완료했습니다.\n");
@@ -411,7 +403,7 @@ namespace Kkakdugi
         public void StoreSellScene()
         {
             Console.WriteLine("Store - Sell");
-            PrintStore();
+            PrintStore(true);
             Console.WriteLine("0. 나가기\n");
             int input = InputManager.GetInput(0, 0);
             switch (input)
@@ -424,7 +416,7 @@ namespace Kkakdugi
 
         }//StoreSellScene Method
 
-        public void PrintStore()
+        public void PrintStore(bool buyScene)
         {
             Console.WriteLine("\n[아이템 목록]");
             Console.WriteLine();
@@ -433,6 +425,8 @@ namespace Kkakdugi
             Console.WriteLine("===================================================================");
             for (int i = 0; i < itemList.Count; i++)
             {
+                if (buyScene == true)
+                    Console.Write($"{i+1}.");
                 itemList[i].PrintItems();
             }
         }
