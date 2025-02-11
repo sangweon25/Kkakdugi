@@ -40,6 +40,7 @@ namespace Kkakdugi
         }
         public void MainScene()
         {
+            Console.Clear();
             Console.WriteLine("스파르타 던전에 오신 여러분 환영합니다.");
             Console.WriteLine("이제 전투를 시작할 수 있습니다.\n");
             Console.WriteLine("1. 상태 보기");
@@ -53,6 +54,7 @@ namespace Kkakdugi
             {
                 case 1:
                     //상태보기 창으로 이동
+                    StatusScreen();
                     break;
                 case 2:
                     //전투시작 창으로 이동
@@ -62,6 +64,29 @@ namespace Kkakdugi
                 case 3:
                     Console.Clear();
                     StoreScene();
+                    break;
+            }
+        }
+        public void StatusScreen()
+        {
+            Console.Clear();
+            Console.WriteLine("상태 보기");
+            Console.WriteLine("캐릭터의 정보가 표시됩니다.");
+            Console.WriteLine();
+
+            player.StatusDisplay();
+            Console.WriteLine();
+            Console.WriteLine("1");
+            Console.WriteLine();
+            Console.WriteLine("0. 나가기");
+            Console.WriteLine();
+
+            int input = InputManager.GetInput(0,0);
+            switch (input)
+            {
+                case 0:
+                    //상태보기 창으로 이동
+                    MainScene();
                     break;
             }
         }
@@ -316,7 +341,7 @@ namespace Kkakdugi
                 }
                 else if(input == 0)
                 {
-                    state = false;
+                    MainScene();
                 }
             }
         }//StoreBuyScene Method
