@@ -60,6 +60,7 @@ namespace Kkakdugi
 
         public  void AttackResult(Monster monster, Player player, double FinalAtk, bool isCritical, bool isEvasion)
         {
+            
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("Battle!!");
@@ -85,9 +86,7 @@ namespace Kkakdugi
 
                 if (num == 0)
                 {
-                    //Enemy Phase로 넘어가기
-                    Console.WriteLine("Enemy Phase 시작");
-
+                    //Enemy Phase 시작!
                     SceneManager.GetInstance().EnemyPhase(monster, player);
                 }
             }

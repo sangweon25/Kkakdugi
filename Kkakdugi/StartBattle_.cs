@@ -35,7 +35,7 @@ namespace Kkakdugi
             isDead= Dead; //효정 추가 
         }
 
-        public Monster Clone() //각각의 몬스터 객체를 만들기 위한 메서드 효
+        public Monster Clone() //각각의 몬스터 객체를 만들기 위한 메서드 
         {
             return new Monster(Name, Lev, Hp, Atk, isDead);
         }
