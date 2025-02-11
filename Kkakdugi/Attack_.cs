@@ -12,9 +12,7 @@ namespace Kkakdugi
 
     internal class Attack_
     {
-        static SceneManager sceneManager = new SceneManager();
-
-        public static void Attack(Monster monster, Player player)
+        public void Attack(Monster monster, Player player)
         {
             bool isCritical = false; //치명타
             bool isEvasion = false; //회피
@@ -60,9 +58,8 @@ namespace Kkakdugi
             AttackResult(monster, player, FinalAtk, isCritical, isEvasion);
         }
 
-        public static void AttackResult(Monster monster, Player player, double FinalAtk, bool isCritical, bool isEvasion)
+        public  void AttackResult(Monster monster, Player player, double FinalAtk, bool isCritical, bool isEvasion)
         {
-            
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("Battle!!");
@@ -91,10 +88,10 @@ namespace Kkakdugi
                     //Enemy Phase로 넘어가기
                     Console.WriteLine("Enemy Phase 시작");
 
-                    sceneManager.EnemyPhase(monster, player);
+                    SceneManager.GetInstance().EnemyPhase(monster, player);
                 }
             }
-            else
+            else if(monster.isDead == false) //공격을 맞았지만 죽지 않았을때
             {
                 Console.Write($"Lv.");
                 Console.ForegroundColor = ConsoleColor.DarkRed;
@@ -141,10 +138,10 @@ namespace Kkakdugi
                 {
                     //Enemy Phase로 넘어가기 (상원님 여기에 연결시켜주시면 됩니다.)
                     Console.WriteLine("Enemy Phase 시작");
-                    sceneManager.EnemyPhase(monster, player);
+                    SceneManager.GetInstance().EnemyPhase(monster, player);
                 }
             }
-            
+
             
         }
 

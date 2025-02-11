@@ -5,7 +5,6 @@ using System.Text;
 
 namespace Kkakdugi
 {
-
     internal class Result
     {
         internal class Player
@@ -69,8 +68,8 @@ namespace Kkakdugi
 
             if (intput == 0)
             {
-                SceneManager sceneManager = new SceneManager();
-                sceneManager.MainScene(); // 게임 종료시 메인화면
+                // 게임 종료시 메인화면
+                SceneManager.GetInstance().MainScene();
             }
 
         }
