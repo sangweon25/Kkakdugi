@@ -28,7 +28,7 @@ namespace Kkakdugi
             {
                 string displayName = getitems[i].IsEquip ? "[E] " + getitems[i].Name : getitems[i].Name;// IsEquip이 true라면 [E] 표시 아니라면 아이템 이름만
                 Console.WriteLine($"{i + 1}. {displayName}"); // 아이템 번호와 이름 출력
-              
+                
             }
             if (getitems.Count == 0)
             {
