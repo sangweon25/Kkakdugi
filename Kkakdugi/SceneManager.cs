@@ -46,10 +46,11 @@ namespace Kkakdugi
             Console.WriteLine("1. 상태 보기");
             Console.WriteLine("2. 전투 시작");
             Console.WriteLine("3. 상점");
+            Console.WriteLine("4. 회복아이템");
             Console.WriteLine();
             // 출력.예외 포함..if
             //GetInput(switch문 케이스 범위만큼 입력)
-            int input = InputManager.GetInput(1, 3);
+            int input = InputManager.GetInput(1, 4);
             switch (input)
             {
                 case 1:
@@ -64,6 +65,10 @@ namespace Kkakdugi
                 case 3:
                     Console.Clear();
                     StoreScene();
+                    break;
+                case 4:
+                    Console.Clear();
+                    PotionScene();
                     break;
             }
         }
@@ -381,5 +386,27 @@ namespace Kkakdugi
             Console.WriteLine("{0,-15}| {1,-15}| {2,-15}| {3,-15}| {4,-15}|", "분류", "이름", "능력치", "설명", "가격");
         }
 
+        // 회복 포션 사용
+        public void PotionScene()
+        {
+            Console.WriteLine("회복");
+            Console.WriteLine("포션을 사용하면 체력을 30 회복 할 수 있습니다. (남은 포션 : //3 )");
+
+            Console.WriteLine("\n1. 사용하기");
+            Console.WriteLine("0. 나가기\n");
+            int input = InputManager.GetInput(0, 1);
+            switch (input)
+            {
+                case 1:
+                    Console.Clear();
+                    StoreBuyScene();
+                    break;
+
+                default:
+                    Console.Clear();
+                    MainScene();
+                    break;
+            }
+        }
     }//class SceneManager
 }//namespace

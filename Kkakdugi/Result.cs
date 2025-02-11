@@ -6,7 +6,8 @@ using System.Text;
 namespace Kkakdugi
 {
 
-    internal class Result
+    internal class BattleResult
+
     {
         internal class Player
         {
@@ -35,7 +36,7 @@ namespace Kkakdugi
                 Atk = atk;
             }
         }
-        public static void Result1(string name, int lv, int maxHp, int atk)
+        public static void BattleEnd(string name, int lv, int maxHp, int atk)
         {
             int monster = 4;
 
