@@ -5,7 +5,6 @@ using System.Text;
 
 namespace Kkakdugi
 {
-
     internal class Result
     {
         public void Result1()
@@ -40,12 +39,12 @@ namespace Kkakdugi
             Console.WriteLine("0. 다음");
             Console.Write(">>");
             Console.ReadLine();
-            //int intput = InputManager.GetInput(0, 0);
+            int intput = InputManager.GetInput(0, 0);
 
-            //if (intput == 0)
-            //{
-            //    sceneManager.MainScene();
-            //}
+            if (intput == 0)
+            {
+                SceneManager.GetInstance().MainScene();
+            }
         }
 
     }

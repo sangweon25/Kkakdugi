@@ -10,9 +10,23 @@ namespace Kkakdugi
 {
     internal class SceneManager
     {
-        Player player1 = new Player("김치", "음식", 1, 100, 15, 1000);
+        //Player player1 = new Player("김치", "음식", 1, 100, 15, 1000);
         Attack_ attack = new Attack_();
+        Result result = new Result();
+        private static SceneManager? sceneManager;
 
+        //GetInstance 메서드 호출시 싱글톤 객체인 sceneManager를 리턴
+        //다른 클래스에서 sceneManager의 메서드를 호출할수있다.
+        public static SceneManager GetInstance()
+        {
+            if (sceneManager == null)
+            {
+                sceneManager = new SceneManager();
+            }
+            return sceneManager;
+        }
+
+        //itemList 안에 넣고 싶은 아이템 초기화
         List<Item> itemList = new List<Item>
         {
             new Item(AbilityType.방어구,"무껍질",2,"무를 보호해주는 껍질이다.",500),
@@ -27,17 +41,20 @@ namespace Kkakdugi
         // 테스트 용으로 모든 값을 임의로 집어넣었습니다 !
         Player player = new Player("손효정", "직업 없음", 1, 100, 10, 1000);
 
+        //씬 매니저 생성자
         public SceneManager()
         {
-            // 몬스터 정보 출력    
-
-            monsters = new List<Monster>
-            {
-                new Monster("몬스터1",2,15,5,false),
-                new Monster("몬스터2",3,10,9,false),
-                new Monster("몬스터3",5,25,8,false),
-            };
+            //// 몬스터 정보 출력    
+            //monsters = new List<Monster>
+            //{
+            //    new Monster("솔트", 1, 10, 3,false),
+            //    new Monster("슈가", 2, 10, 5,false),
+            //    new Monster("다이콘", 3, 15, 10,false),
+            //    new Monster("레드파우더", 5, 25, 15,false)
+            //};
         }
+
+        //게임 초기화면 메인 씬
         public void MainScene()
         {
             Console.Clear();
@@ -67,13 +84,14 @@ namespace Kkakdugi
                     break;
             }
         }
+        //상태보기 창
         public void StatusScreen()
         {
             Console.Clear();
             Console.WriteLine("상태 보기");
             Console.WriteLine("캐릭터의 정보가 표시됩니다.");
             Console.WriteLine();
-
+            //플레이어 데이터 값 출력 함수
             player.StatusDisplay();
             Console.WriteLine();
             Console.WriteLine("1");
@@ -90,6 +108,7 @@ namespace Kkakdugi
                     break;
             }
         }
+        //2.전투시작 입장시 화면
         public void MonsterPrintInfo()
         {
             Console.WriteLine("Battle!!");
@@ -105,12 +124,13 @@ namespace Kkakdugi
             List<Monster> randmonsters = new List<Monster>();
 
             int rand = random.Next(1, monsters.Count + 1);
-
+            //생성자에서 초기화한 monsters의 정보를 랜덤한 값으로 randomonsters에 저장
             for (int i = 0; i < rand; i++)
             {
                 int monsterIndex = random.Next(monsters.Count); // 0~3번까지의 인덱스 랜덤선택
                 randmonsters.Add(monsters[monsterIndex]); // 랜덤 인덱스를 랜덤으로 생겨난 몬스터 리스트에 저장
             }
+            //저장된 randomonsters 반복하며 출력하는 함수
             foreach (Monster m in randmonsters)
             {
                 m.MonsterState(m);
@@ -119,78 +139,89 @@ namespace Kkakdugi
             player.PrintPlayer();
 
             Console.WriteLine();
+            Console.WriteLine("0. 전투취소");
             Console.WriteLine("1. 공격");
-            Console.WriteLine();
-            if (InputManager.GetInput(1, 1) == 1)
+
+            //1이외에 값을 입력하면 재입력
+            if (InputManager.GetInput(0, 1) == 1)
             {
                 Console.Clear();
-                //AttackInfo(randmonsters);
+                //랜덤으로 생성된 몬스터들 번호를 메겨 선택 화면 출력
                 AttackStart(randmonsters, player); //효정 추가
+            }
+            else
+            {
+                MainScene();
             }
         }//MonsterPrintInfo Method
 
-        static void AttackStart(List<Monster> monster, Player player)
+        public void AttackStart(List<Monster> monster, Player player)
         {
-            // 기본 화면 구성해보기 (우선 예제와 똑같이 했습니다)
-            Console.WriteLine("Battle!!");
-            Console.WriteLine(); // 한 줄 공백
-
-            // 반복문 이용해서 리스트 출력
-            for (int i = 0; i < monster.Count; i++)
+            bool inBattle = true;
+            while(inBattle)
             {
-                if (monster[i].isDead == true)
+                Console.Clear();
+                // 기본 화면 구성해보기 (우선 예제와 똑같이 했습니다)
+                Console.WriteLine("Battle!!");
+                Console.WriteLine(); // 한 줄 공백
+
+                // 반복문 이용해서 리스트 출력
+                for (int i = 0; i < monster.Count; i++)
                 {
-                    Console.ForegroundColor = ConsoleColor.DarkGray;
-                    Console.WriteLine($"{i + 1}. Lv.{monster[i].Lev} {monster[i].Name} HP dead");
-                    Console.ResetColor();
+                    if (monster[i].isDead == true)
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
+                        Console.WriteLine($"{i + 1}. Lv.{monster[i].Lev} {monster[i].Name} HP dead");
+                        Console.ResetColor();
+                    }
+                    else
+                    {
+                        Console.WriteLine($"{i + 1}. Lv.{monster[i].Lev} {monster[i].Name} HP {monster[i].Hp}");
+                    }
+
                 }
-                else
+
+                Console.WriteLine();
+
+                Console.WriteLine("[내정보]");
+                Console.WriteLine();
+                Console.WriteLine($"Lv.{player.Lv} {player.Name} ({player.Job})");
+                Console.WriteLine($"HP {player.Hp}/100");
+                Console.WriteLine();
+                Console.WriteLine("0. 취소");
+                Console.WriteLine();
+                Console.WriteLine("대상을 선택해주세요.");
+                Console.Write(">>");
+
+                //input 값 받아서 그에 맞는 조건문 넣기
+                string Input = Console.ReadLine();
+                int num = int.Parse(Input);
+
+                //번호 확인 
+                if (num == 0)
                 {
-                    Console.WriteLine($"{i + 1}. Lv.{monster[i].Lev} {monster[i].Name} HP {monster[i].Hp}");
+                    Console.WriteLine("전투 취소");
+                    //이전 화면으로 돌아가기 (?)
+                    MainScene();
                 }
-
-            }
-
-            Console.WriteLine();
-
-
-            Console.WriteLine("[내정보]");
-            Console.WriteLine();
-            Console.WriteLine($"Lv.{player.Lv} {player.Name} ({player.Job})");
-            Console.WriteLine($"HP {player.Hp}/100");
-            Console.WriteLine();
-            Console.WriteLine("0. 취소");
-            Console.WriteLine();
-            Console.WriteLine("대상을 선택해주세요.");
-            Console.Write(">>");
-
-            //input 값 받아서 그에 맞는 조건문 넣기
-            string Input = Console.ReadLine();
-            int num = int.Parse(Input);
-
-            //번호 확인 
-            if (num == 0)
-            {
-                Console.WriteLine("전투 취소");
-                //이전 화면으로 돌아가기 (?)
-            }
-            else if (num > 0 && num <= monster.Count + 1)
-            {
-                if (monster[num - 1].isDead == false) //안 죽었을 때
+                else if (num > 0 && num <= monster.Count + 1) 
                 {
-                    Console.WriteLine($"선택한 몬스터는 {monster[num - 1]}");
-                    //공격
-                    Attack_.Attack(monster[num - 1], player);
+                    if (monster[num - 1].isDead == false) //안 죽었을 때
+                    {
+                        Console.WriteLine($"선택한 몬스터는 {monster[num - 1]}");
+                        //공격
+                        attack.Attack(monster[num - 1], player);
+                    }
+                    else // 죽었다면? 이미 죽은 몬스터 선택시
+                    {
+                        Console.WriteLine("잘못된 입력입니다.");
+                    }
+
                 }
-                else // 죽었다면?
+                else // 0도 아니고 몬스터 카운트보다 작은 숫자도 아닐 때 
                 {
                     Console.WriteLine("잘못된 입력입니다.");
                 }
-
-            }
-            else // 0도 아니고 몬스터 카운트보다 작은 숫자도 아닐 때 
-            {
-                Console.WriteLine("잘못된 입력입니다.");
             }
         }
 
@@ -236,19 +267,33 @@ namespace Kkakdugi
         //매개변수로 들어온 몬스터가 공격 
         public void EnemyPhase(Monster monster, Player player)
         {
+            //적이 죽지않고 hp가 0보다 클때 이쪽으로 와야함.
             Console.Clear();
             Console.WriteLine("Battle!!\n");
-            Console.WriteLine($"{player} 을(를) 맞췄습니다. [데미지 :{monster.Atk}]");
-
-            //if 플레이어가 Dead상태가 아니라면 공격하지 않는다.
-            //플레이어 데미지 받는 함수는 플레이어 내부에 구현 예정
+            //몬스터 공격
+            Console.WriteLine($"Lv.{monster.Lev} {monster.Name} 의 공격!\n");
+            //플레이어 이름, 받은 데미지
+            Console.WriteLine($"{player.Name} 을(를) 맞췄습니다. [데미지 :{monster.Atk}]");
             Console.WriteLine($"Lv. {player.Lv} {player.Name}");
+            //플레이어 체력 감소
             Console.WriteLine($"HP {player.Hp} -> {player.RecieveDamage(monster.Atk)}\n");
 
+            //0으로 다음 넘어가는 함수
             if(InputManager.inputNext() == 0)
             {
                 Console.Clear();
-                AttackStart(monsters,player);
+                if(player.Hp > 0)
+                {
+                    //플레이어가 죽지 않았을때 플레이어의 차례로 넘어가야함.
+                    //첫번째 매개변수 배열아니라 EnemyPhase에서 받은 monster넣어줘야하는데 AttackStart는 배열로 받아서 처리하기때문에
+                    //안딘다.
+                    //AttackStart(monsters, player);
+                }
+                else
+                {
+                    //만약 플레이어가 죽었다면 result화면으로 가야함.
+                    result.Result1();
+                }
             }
 
         }//EnemyPhase Method

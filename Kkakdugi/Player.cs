@@ -59,7 +59,7 @@ namespace Kkakdugi
         public int RecieveDamage(int damage)
         {
             if (Hp > 0)
-                return Hp - damage;
+                return Hp -= damage;
             else
                 return Hp =0;
         }
