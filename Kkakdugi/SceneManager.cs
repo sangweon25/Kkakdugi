@@ -313,7 +313,7 @@ namespace Kkakdugi
 
         public void InventoryChoice()
         {
-            Console.WriteLine("1. 장착 관리\n");
+            Console.WriteLine("\n\n1. 장착 관리\n");
             Console.WriteLine("0. 나가기");
             int input = InputManager.GetInput(0, 1);
             
@@ -333,6 +333,16 @@ namespace Kkakdugi
         {
             Inventory_ inventory = new Inventory_();
             inventory.ItemprintInfo();
+            Console.WriteLine("\n\n0. 나가기");
+            int input = InputManager.GetInput(0, 0);
+            switch (input)
+            {
+                case 0:
+                    Console.Clear();
+                    InventoryChoice();
+                    break;
+            }
+
 
         }
         //==================================================================
