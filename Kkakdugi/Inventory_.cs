@@ -19,9 +19,9 @@ namespace Kkakdugi
             getitems = new List<Item>();
         }
 
-        public void AddItem(string name)
+        public void AddItem(Item item)
         {
-            getitems.Add(new Item(name)); // 아이템 추가
+            getitems.Add(item); // 아이템 추가
         }
         // 인벤토리 창 선택시 아이템 목록 출력
         public void ItemprintInfo()
