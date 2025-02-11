@@ -13,6 +13,7 @@ namespace Kkakdugi
         //Player player1 = new Player("김치", "음식", 1, 100, 15, 1000);
         Attack_ attack = new Attack_();
         Result result = new Result();
+        Inventory_ inventory = new Inventory_();
         private static SceneManager? sceneManager;
 
         //GetInstance 메서드 호출시 싱글톤 객체인 sceneManager를 리턴
@@ -67,7 +68,7 @@ namespace Kkakdugi
             Console.WriteLine();
             // 출력.예외 포함..if
             //GetInput(switch문 케이스 범위만큼 입력)
-            Inventory_ inventory = new Inventory_();
+            
             
             int input = InputManager.GetInput(1, 4);
             switch (input)
@@ -331,7 +332,7 @@ namespace Kkakdugi
         }
         public void EquipChoice()
         {
-            Inventory_ inventory = new Inventory_();
+            //Inventory_ inventory = new Inventory_();
             inventory.ItemprintInfo();
             Console.WriteLine("\n\n0. 나가기");
             int input = InputManager.GetInput(0, 0);
@@ -354,7 +355,7 @@ namespace Kkakdugi
             Console.WriteLine("Store");
 
             //아이템 목록 출력 함수 
-            PrintStore();
+            PrintStore(false);
             Console.WriteLine("\n1. 아이템 구매");
             Console.WriteLine("2. 아이템 판매");
             Console.WriteLine("0. 나가기\n");
@@ -379,10 +380,11 @@ namespace Kkakdugi
         public void StoreBuyScene()
         {
             bool state = true;
+            bool buyScene = true;
             while (state)
             {
                 Console.WriteLine("Store - Buy");
-                PrintStore();
+                PrintStore(buyScene);
                 Console.WriteLine("0. 나가기\n");
                 int input = InputManager.GetInput(0, itemList.Count);
                 if (0 < input && input <= itemList.Count)
@@ -400,6 +402,7 @@ namespace Kkakdugi
                         {
                             player.BuyItem(itemList[input - 1].Gold);
                             //플레이어 인벤토리에 Add(itemList[input - 1]) 추가해야함.
+                            inventory.AddItem(itemList[input-1]);
                             itemList[input - 1].IsSold = true;
                             Console.Clear();
                             Console.WriteLine("구매를 완료했습니다.\n");
@@ -421,7 +424,7 @@ namespace Kkakdugi
         public void StoreSellScene()
         {
             Console.WriteLine("Store - Sell");
-            PrintStore();
+            PrintStore(true);
             Console.WriteLine("0. 나가기\n");
             int input = InputManager.GetInput(0, 0);
             switch (input)
@@ -434,7 +437,7 @@ namespace Kkakdugi
 
         }//StoreSellScene Method
 
-        public void PrintStore()
+        public void PrintStore(bool buyScene)
         {
             Console.WriteLine("\n[아이템 목록]");
             Console.WriteLine();
@@ -443,6 +446,8 @@ namespace Kkakdugi
             Console.WriteLine("===================================================================");
             for (int i = 0; i < itemList.Count; i++)
             {
+                if (buyScene == true)
+                    Console.Write($"{i+1}.");
                 itemList[i].PrintItems();
             }
         }
