@@ -70,7 +70,7 @@ namespace Kkakdugi
             if (intput == 0)
             {
                 SceneManager sceneManager = new SceneManager();
-                sceneManager.MainScene();
+                sceneManager.MainScene(); // 게임 종료시 메인화면
             }
             
         }
