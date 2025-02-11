@@ -339,7 +339,7 @@ namespace Kkakdugi
             {
                 case 0:
                     Console.Clear();
-                    InventoryChoice();
+                    MainScene();
                     break;
             }
 
