@@ -9,28 +9,43 @@ namespace Kkakdugi
     internal class Inventory_
     {
         // 보유한 아이템 리스트 생성
-        private List<Item> item;
+        private List<Item> getitems;
+
         public Inventory_()
         {
-            item = new List<Item>();
+            getitems = new List<Item>();
         }
 
+        public void AddItem(Item item)
+        {
+            getitems.Add(item); // 아이템 추가
+        }
         // 인벤토리 창 선택시 아이템 목록 출력
         public void ItemprintInfo()
         {
-            Console.WriteLine("[아이템 목록]\n"); 
-            if (item == null)
+            Console.WriteLine("[아이템 목록]\n\n");
+            for (int i = 0; i < getitems.Count; i++) // 인벤토리 아이템 출력
             {
-                Console.WriteLine("인벤토리가 비어 있습니다.");
-            }
-            else
-            {
-                foreach ( Item items in item)
+                string displayName = getitems[i].IsEquip ? "[E] " + getitems[i].Name : getitems[i].Name;// IsEquip이 true라면 [E] 표시 아니라면 아이템 이름만
+                Console.WriteLine($"{i + 1}. {displayName}"); // 아이템 번호와 이름 출력
+                if (getitems.Count == 0)
                 {
-                    Console.WriteLine(items);
+                    Console.WriteLine("인벤토리가 비어 있습니다.");
+                    
                 }
-            }         
+            }
+
+        }
+        public void ToggleEquipItem(int index)
+        {
+            if (index >= 0 && index < getitems.Count)
+            {
+                getitems[index].ToggleEquip(); // 선택한 아이템 장착 및 해제 변경
+                
+            }
+
         }
 
     }
+
 }

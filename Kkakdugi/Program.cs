@@ -5,9 +5,8 @@
         
         static void Main(string[] args)
         {
-            SceneManager sceneManager = new SceneManager();
-
-            sceneManager.MainScene();
+            SceneManager.GetInstance().MainScene();
+            
 
             //Console.WriteLine("상태 보기");
             //Console.WriteLine("캐릭터의 정보가 표시됩니다.");
@@ -32,6 +31,7 @@
             //}
             
         }//Main Method
+
 
         public void StatusScreen()
         {
@@ -60,6 +60,9 @@
             string name = Console.ReadLine();
             
         }
+
+ 
+
     }//class Program
     
 }//namespace

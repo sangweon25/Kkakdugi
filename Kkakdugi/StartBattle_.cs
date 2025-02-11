@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -33,6 +34,12 @@ namespace Kkakdugi
             Atk = atk;
             isDead= Dead; //효정 추가 
         }
+
+        public Monster Clone() //각각의 몬스터 객체를 만들기 위한 메서드 효
+        {
+            return new Monster(Name, Lev, Hp, Atk, isDead);
+        }
+
         public void MonsterState(Monster m)
         {
             Console.WriteLine($"Lv.{m.Lev} {m.Name} Hp {m.Hp}");
