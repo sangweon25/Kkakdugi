@@ -163,12 +163,6 @@ namespace Kkakdugi
                     monster.Hp -= totalDamage;
 
                     TargetCheck(monster);
-                    //// 몬스터의 HP가 0 이하이면 isDead를 true로 설정
-                    //if (monster.Hp <= 0)
-                    //{
-                    //    monster.Hp = 0;  // HP가 0 이하로 떨어지지 않도록 설정
-                    //    monster.isDead = true;  // 죽은 몬스터로 설정
-                    //}
                 }
                
 

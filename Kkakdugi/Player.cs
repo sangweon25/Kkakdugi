@@ -82,26 +82,23 @@ namespace Kkakdugi
             switch (job)
             {
                 case JobType.전사:
-                    // 전사 스킬만 추가
                     Skills.Add(SkillList.Skills[0]);  // 알파 스트라이크
                     Skills.Add(SkillList.Skills[1]);  // 더블 스트라이크
                     break;
 
                 case JobType.마법사:
-                    // 마법사 스킬만 추가
                     Skills.Add(SkillList.Skills[2]);  // 파이어볼
                     Skills.Add(SkillList.Skills[3]);  // 메테오
                     break;
 
                 case JobType.도적:
-                    // 도적 스킬만 추가
                     Skills.Add(SkillList.Skills[4]);  // 백스탭
-                    Skills.Add(SkillList.Skills[5]);  // 독화살
+                    Skills.Add(SkillList.Skills[5]);  // 칼날 폭풍
                     break;
             }
         }
 
-        public void StatusDisplay() //효정 직업관련 수정
+        public void StatusDisplay() 
         {
             Console.WriteLine($"Lv. {Lv.ToString("00")}");
             Console.WriteLine($"{Name} ({Job})"); 
@@ -116,7 +113,7 @@ namespace Kkakdugi
         }
 
         //플레이어 필드 내용 출력 함수
-        public void PrintPlayer() //효정 직업관련 수정
+        public void PrintPlayer() 
         {
             Console.WriteLine("\n\n[내정보]\n");
             Console.WriteLine($"Lv.{Lv} {Name} ({Job})"); 
