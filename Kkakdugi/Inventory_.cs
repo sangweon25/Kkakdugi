@@ -9,7 +9,7 @@ namespace Kkakdugi
     internal class Inventory_
     {
         // 보유한 아이템 리스트 생성
-        private List<Item> getitems;
+        public List<Item> getitems { get; private set; }
 
         public Inventory_()
         {
