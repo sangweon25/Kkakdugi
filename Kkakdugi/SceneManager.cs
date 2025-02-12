@@ -11,7 +11,7 @@ namespace Kkakdugi
 {
     internal class SceneManager
     {
-        Player player = new Player("김치", "음식", 1, 100, 10, 1500);
+        Player player = new Player("무", "전사", 1, 100, 10,5, 1500);
         Attack_ attack = new Attack_();
         Inventory_ inventory = new Inventory_();
         private static SceneManager? sceneManager;
@@ -184,7 +184,7 @@ namespace Kkakdugi
             player.BeforeHp = player.Hp;
             while(inBattle)
             {
-                Console.Clear();
+                
                 Console.WriteLine("Battle!!");
                 Console.WriteLine(); 
 
@@ -227,7 +227,7 @@ namespace Kkakdugi
                     //이전 화면으로 돌아가기 (?)
                     MainScene();
                 }
-                else if (num > 0 && num <= monster.Count + 1) 
+                else if (num > 0 && num <= monster.Count) 
                 {
                     if (monster[num - 1].isDead == false) //안 죽었을 때
                     {
@@ -237,13 +237,15 @@ namespace Kkakdugi
                     }
                     else // 죽었다면? 이미 죽은 몬스터 선택시
                     {
-                        Console.WriteLine("잘못된 입력입니다.");
+                        Console.Clear();
+                        Console.WriteLine("잘못된 입력입니다.\n");
                     }
 
                 }
                 else // 0도 아니고 몬스터 카운트보다 작은 숫자도 아닐 때 
                 {
-                    Console.WriteLine("잘못된 입력입니다.");
+                    Console.Clear();
+                    Console.WriteLine("잘못된 입력입니다.\n");
                 }
 
                 if (monster.All(m => m.isDead)) //몬스터가 모두 죽었다면
@@ -306,14 +308,14 @@ namespace Kkakdugi
             Console.WriteLine("Battle!!\n");
             Console.ResetColor();
             //몬스터 공격
-            Console.WriteLine($"Lv.{monster.Lev} {monster.Name} 의 공격!\n");
+            Console.WriteLine($"Lv.{monster.Lev} {monster.Name} 의 공격!");
             //플레이어 이름, 받은 데미지
 
             Console.Write($"{player.Name} 을(를) 맞췄습니다. [데미지 :");
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Write($"{monster.Atk}");
             Console.ResetColor();
-            Console.WriteLine("]");
+            Console.WriteLine("]\n");
             Console.WriteLine($"Lv. {player.Lv} {player.Name}");
             //플레이어 체력 감소
             Console.WriteLine($"HP {player.Hp} -> {player.RecieveDamage(monster.Atk)}\n");
