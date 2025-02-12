@@ -58,7 +58,7 @@ namespace Kkakdugi
         public void MainScene()
         {
             Console.Clear();
-            Console.WriteLine("스파르타 던전에 오신 여러분 환영합니다.");
+            Console.WriteLine("깍두기 공장에 오신 여러분 환영합니다.");
             
             //도전기능.캐릭터생성
             
@@ -67,7 +67,7 @@ namespace Kkakdugi
             Console.WriteLine($"{name}");
             player = new Player(name, "직업 없음", 1, 100, 10, 1000);
             
-            Console.WriteLine("이제 전투를 시작할 수 있습니다.\n");
+            Console.WriteLine("이제 조리를 시작할 수 있습니다.\n");
             Console.WriteLine("1. 상태 보기");
             Console.WriteLine("2. 인벤토리");
             Console.WriteLine("3. 상점");
