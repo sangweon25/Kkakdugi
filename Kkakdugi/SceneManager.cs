@@ -326,19 +326,31 @@ namespace Kkakdugi
         public void EquipChoice()
         {
             //Inventory_ inventory = new Inventory_();
-            inventory.ItemprintInfo();
-            Console.WriteLine("\n\n0. 나가기");
-            int input = InputManager.GetInput(0, 0);
-            switch (input)
+            
+            while (true)
             {
-                case 0:
+                inventory.ItemprintInfo();
+                Console.WriteLine("\n\n0. 나가기");
+
+                // 인벤토리의 보유한 아이템 리스트 수만큼 입력받기
+                int input = InputManager.GetInput(0, inventory.getitems.Count);
+
+                inventory.ToggleEquipItem(input - 1); // 인덱스 번호 - 1을 하면 선택한 번호의 아이템 착용
+                Console.Clear(); 
+                if (input == 0)
+                {
                     Console.Clear();
                     MainScene();
-                    break;
+                }
+
             }
+           
+            
+            
         }
+
         //==================================================================
-        
+
         //===============================상점===============================
 
         public void StoreScene()
