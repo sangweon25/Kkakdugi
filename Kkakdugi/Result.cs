@@ -3,24 +3,38 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Text;
+using System.Threading;
 using System.Xml.Linq;
 
 namespace Kkakdugi
 {
-    public class Result // ()매개변수 안에다가 이미 정의된 플레이어와 몬스터함수를 가져오고 밑에 변수 고치기
+    public class EndResult // ()매개변수 안에다가 이미 정의된 플레이어와 몬스터함수를 가져오고 밑에 변수 고치기
     {
-            Player player = new Player("깍두기","무", 1, 100, 10, 1000);
-            Monster monster = new Monster(" ", 1, 10, 11, false);
-            public void Player(string name, int lv, int maxHp)
-            {
+        Player player = new Player("깍두기", "음식", 1, 100, 15, 1000);
+        public List<Monster> monsters = new List<Monster>
+        {
+            new Monster("솔트", 1, 10, 3,false),
+            new Monster("슈가", 2, 10, 5,false),
+            new Monster("다이콘", 3, 15, 10,false),
+            new Monster("레드파우더", 5, 25, 15,false)
+        };
+        public void Player(string name, int lv, int maxHp)
+        {
             player.Name = name;
             player.Lv = lv;
             player.Hp = maxHp;
-            }
-        public void Monster(string name, int lv, int maxHp)
+        }
+        public void MonsterState(Monster m)
         {
-            monster.Name = name;
-            monster.atk =
+            m.Atk;
+        }
+        public void Monster(string name, int lev, int hp, int atk, bool Dead)
+        {
+            monsters.Name = name;
+            monster.Lev = lev;
+            monster.Hp = hp;
+            monsters.Atk = atk;
+            monster.isDead = Dead;
         }
 
         public static void BattleEnd(string name, int lv, int maxHp, int atk)
