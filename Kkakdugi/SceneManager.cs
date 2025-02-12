@@ -13,7 +13,6 @@ namespace Kkakdugi
     {
         Player player = new Player("김치", "음식", 1, 50, 10, 1000);
         Attack_ attack = new Attack_();
-        Result result = new Result();
         Inventory_ inventory = new Inventory_();
         private static SceneManager? sceneManager;
 
