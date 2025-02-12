@@ -12,7 +12,7 @@ namespace Kkakdugi
 {
     internal class SceneManager
     {
-        Player player = new Player("김치", 1, 10, 15, 1000, Player.JobType.전사);
+        Player player = new Player("김치", 1, 50, 100, 10, 1000, Player.JobType.전사);
         Attack_ attack = new Attack_();
         Result result = new Result();
         Inventory_ inventory = new Inventory_();
@@ -47,7 +47,7 @@ namespace Kkakdugi
             SetRandomMonsters();
         }
 
-        public void JobSelect()
+        public void JobSelect() //직업 선택 창
         {
             Console.Clear();
             Console.WriteLine("원하시는 직업을 선택해주세요.");

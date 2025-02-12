@@ -18,7 +18,8 @@ namespace Kkakdugi
         //플레이어 능력치, 세부정보
         public string Name { get; set; }
         public int Lv { get; set; }
-        //public string Job { get; set; } 
+        public int Mp { get; set; }
+        public int MaxMp { get; set; }
         public int Hp { get; set; }
         public int MaxHp { get; set; }
         public int Atk { get; set; }
@@ -28,13 +29,12 @@ namespace Kkakdugi
         public int Gold { get; set; }
 
         public JobType Job { get; set; } //효정 추가
-        public Player(string name, int lv, int maxHp, int atk, int gold,JobType Job)
+        public Player(string name, int lv, int mp, int hp, int atk, int gold,JobType Job)
         {
             Name = name;
-            //Job = job;
             Lv = lv;
-            MaxHp = maxHp;
-            Hp = maxHp;
+            Mp = mp;
+            Hp = hp;
             Atk = atk;
             Gold = gold;
             SetStats(Job);
@@ -52,27 +52,30 @@ namespace Kkakdugi
                 case JobType.전사:
                     MaxHp = 110;
                     Hp = 110;
+                    MaxMp = 50;
                     Atk = 8;
                     Def = 10;
                     break;
                 case JobType.마법사:
                     MaxHp = 100;
                     Hp = 100;
+                    MaxMp = 50;
                     Atk = 12;
                     Def = 6;
                     break;
                 case JobType.도적:
                     MaxHp = 105;
                     Hp = 105;
+                    MaxMp = 50;
                     Atk = 11;
                     Def = 6;
                     break;
             }
         }
-        public void StatusDisplay()
+        public void StatusDisplay() //효정 직업관련 수정
         {
             Console.WriteLine($"Lv. {Lv.ToString("00")}");
-            Console.WriteLine($"{Name} ({Job})"); //효정 직업관련 수정
+            Console.WriteLine($"{Name} ({Job})"); 
 
             string str = EquipAtk == 0 ? $"공격력 : {Atk}" : $"공격력: {Atk + EquipAtk} (+{EquipAtk})";
             Console.WriteLine(str);
@@ -84,11 +87,13 @@ namespace Kkakdugi
         }
 
         //플레이어 필드 내용 출력 함수
-        public void PrintPlayer()
+        public void PrintPlayer() //효정 직업관련 수정
         {
             Console.WriteLine("\n\n[내정보]\n");
-            Console.WriteLine($"Lv.{Lv} {Name} ({Job})"); //효정 직업관련 수정
+            Console.WriteLine($"Lv.{Lv} {Name} ({Job})"); 
             Console.WriteLine($"HP {Hp}/{MaxHp}");
+            Console.WriteLine($"MP {Mp}/{MaxMp}");
+            Console.WriteLine();
         }
 
 
