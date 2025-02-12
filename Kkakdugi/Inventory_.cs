@@ -10,11 +10,11 @@ namespace Kkakdugi
     {
         // 보유한 아이템 리스트 생성
         public List<Item> getitems { get; private set; }
-
         public Inventory_()
         {
             getitems = new List<Item>();
         }
+   
 
         public void AddItem(Item item)
         {

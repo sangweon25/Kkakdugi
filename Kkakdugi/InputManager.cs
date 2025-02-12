@@ -48,12 +48,16 @@ namespace Kkakdugi
             }
         }
 
-        public static int QuestInput()
+        public static int QuestInput(bool isClear)
         {
             while (true)
             {
                 Console.WriteLine("0.나가기");
-                Console.WriteLine("1.수락");
+                if(isClear)
+                    Console.WriteLine("1.보상 받기\n");
+                else
+                    Console.WriteLine("1.수락\n");
+                Console.Write("원하시는 행동을 입력해주세요.\n>>");
                 if (int.TryParse(Console.ReadLine(), out int input) && input == 0 || input == 1)
                     return input;
                 else
