@@ -6,12 +6,13 @@ using System.Numerics;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using static Kkakdugi.Player;
 
 namespace Kkakdugi
 {
     internal class SceneManager
     {
-        Player player = new Player("무", "전사", 1, 100, 10,5, 1500);
+        Player player = new Player("무", "전사",50, 1, 100, 10,5, 1500);
         Attack_ attack = new Attack_();
         Inventory_ inventory = new Inventory_();
         private static SceneManager? sceneManager;
@@ -73,6 +74,42 @@ namespace Kkakdugi
             SetRandomMonsters();
         }
 
+        public void JobSelect() //직업 선택 창
+        {
+            Console.Clear();
+            Console.WriteLine("원하시는 직업을 선택해주세요.");
+            Console.WriteLine();
+            Console.WriteLine("1. 전사");
+            Console.WriteLine("2. 마법사");
+            Console.WriteLine("3. 도적 ");
+            Console.WriteLine();
+
+            int input = InputManager.GetInput(1, 3);
+            JobType selectedJob = (JobType)(input - 1);  // 입력값을 JobType으로 변환
+
+            player.SetJob(selectedJob);
+            Console.Clear();
+            //재미용 슬로우 주기 (테스트 할 땐 귀찮네요)
+            //Console.Write(".");
+            //Thread.Sleep(500);
+            //Console.Write(".");
+            //Thread.Sleep(900);
+            //Console.WriteLine(".");
+            //Thread.Sleep(1000);
+            //Console.WriteLine("직업 설정 완료 !!");
+            //Console.WriteLine();
+            //Thread.Sleep(300);
+
+            //직업 선택 출력
+            Console.WriteLine($"[{selectedJob}] 을(를) 선택했습니다!");
+            Console.WriteLine();
+            Console.WriteLine("게임을 시작합니다...!");
+            Thread.Sleep(800); 
+            MainScene();
+        }
+        //GetInstance 메서드 호출시 싱글톤 객체인 sceneManager를 리턴
+        //다른 클래스에서 sceneManager의 메서드를 호출할수있다.
+        
         //게임 초기화면 메인 씬
         public void MainScene()
         {
@@ -171,7 +208,7 @@ namespace Kkakdugi
             if (input == 1)
             {
                 Console.Clear();
-                AttackStart(randmonsters, player);  // 기존 몬스터 리스트 사용
+                AttackInfo(randmonsters, player);  // 기존 몬스터 리스트 사용
             }
             else
             {
@@ -179,15 +216,15 @@ namespace Kkakdugi
             }
         }//MonsterPrintInfo Method
 
-        public void AttackStart(List<Monster> monster, Player player)
+        public void AttackInfo(List<Monster> monster, Player player) //공격 정보창
         {
             bool inBattle = true;
             player.BeforeHp = player.Hp;
-            while(inBattle)
+            while (inBattle)
             {
-                
+
                 Console.WriteLine("Battle!!");
-                Console.WriteLine(); 
+                Console.WriteLine();
 
                 // 반복문 이용해서 리스트 출력
                 for (int i = 0; i < monster.Count; i++)
@@ -195,64 +232,172 @@ namespace Kkakdugi
                     if (monster[i].isDead == true)
                     {
                         Console.ForegroundColor = ConsoleColor.DarkGray;
-                        Console.WriteLine($"{i + 1}. Lv.{monster[i].Lev} {monster[i].Name} HP dead");
+                        Console.WriteLine($"Lv.{monster[i].Lev} {monster[i].Name} HP dead");
                         Console.ResetColor();
                     }
                     else
                     {
-                        Console.WriteLine($"{i + 1}. Lv.{monster[i].Lev} {monster[i].Name} HP {monster[i].Hp}");
+                        Console.WriteLine($"Lv.{monster[i].Lev} {monster[i].Name} HP {monster[i].Hp}");
                     }
 
                 }
 
                 Console.WriteLine();
-
                 player.PrintPlayer();
                 Console.WriteLine("0. 취소");
-                Console.WriteLine();
-                Console.WriteLine("대상을 선택해주세요.");
-                Console.Write(">>");
+                Console.WriteLine("1. 공격");
+                Console.WriteLine("2. 스킬");
 
-                //input 값 받아서 그에 맞는 조건문 넣기
-                string Input = Console.ReadLine();
-                int num = int.Parse(Input);
+                int input = InputManager.GetInput(0, 2);
+                if (input == 1)
+                {
+                    Console.Clear();
+                    AttackStart(randmonsters, player);  // 기존 몬스터 리스트 사용
+                }
+                else if (input == 2) // 스킬 선택 기능 추가
+                {
+                    SelectSkill(randmonsters, player);
+                }
+            }
+        }
+
+        public void SelectSkill(List<Monster> monsters, Player player)
+        {
+            Console.WriteLine("사용할 스킬을 선택하세요\n");
+
+            // 플레이어가 보유한 스킬 목록 출력
+            for (int i = 0; i < player.Skills.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {player.Skills[i].Name} (MP: {player.Skills[i].MpCost})");
+                Console.WriteLine($"   {player.Skills[i].Description}");
+            }
+            Console.WriteLine();
+            int skillIndex = InputManager.GetInput(1, player.Skills.Count) - 1;
+            Skill selectedSkill = player.Skills[skillIndex];
+
+            // MP가 충분한지 확인
+            if (player.Mp < selectedSkill.MpCost)
+            {
+                Console.WriteLine("MP가 부족합니다!");
+                Thread.Sleep(800);
+                return;
+            }
+
+            player.Mp -= selectedSkill.MpCost;  // MP 차감
+
+            // 스킬 사용
+            selectedSkill.Execute(player, monsters);
+            player.Mp += 5; //스킬 사용 후엔 Mp 5 회복
+
+            // 스킬 사용 후 결과 화면 출력
+            //Console.Clear();
+            Console.WriteLine($"[{selectedSkill.Name}] 스킬을 사용했습니다!\n");
+
+            // 결과 출력: 스킬로 인한 변화 출력 (예: 피해량, 상태 변화 등)
+            foreach (Monster monster in monsters)
+            {
+                if (monster.isDead)
+                {
+                    Console.WriteLine($"{monster.Name}은(는) 죽었습니다.");
+                }
+                else
+                {
+                    Console.WriteLine($"{monster.Name}의 남은 HP: {monster.Hp}");
+                }
+            }
+
+            // 플레이어 상태 출력
+            Console.WriteLine($"{player.Name}의 남은 MP: {player.Mp}");
+
+            // 모든 몬스터가 죽었는지 체크
+            bool allMonstersDead = monsters.All(m => m.isDead);
+            if (allMonstersDead)
+            {
+                if (InputManager.InputNext() == 0)
+                {
+                    // 모든 몬스터가 죽었을 경우 
+                    BattleEnd(player.Name, player.Lv, player.BeforeHp, player.Hp, player.Atk);
+                }
                 
-                //번호 확인 
-                if (num == 0)
-                {
-                    Console.WriteLine("전투 취소");
-                    //이전 화면으로 돌아가기 (?)
-                    MainScene();
-                }
-                else if (num > 0 && num <= monster.Count) 
-                {
-                    if (monster[num - 1].isDead == false) //안 죽었을 때
-                    {
-                        Console.WriteLine($"선택한 몬스터는 {monster[num - 1].Name}");
-                        //공격
-                        attack.Attack(monster[num - 1], player);
-                    }
-                    else // 죽었다면? 이미 죽은 몬스터 선택시
-                    {
-                        Console.Clear();
-                        Console.WriteLine("잘못된 입력입니다.\n");
-                    }
+            }
 
+            if (InputManager.InputNext() == 0)
+            {
+                // EnemyPhase로 넘어가기
+                EnemyPhase(monsters.First(m => !m.isDead), player);  // 살아있는 첫 번째 몬스터로 적 공격
+            }
+
+        }
+        public void AttackStart(List<Monster> monster, Player player) // 공격 번호 선택 창
+        {
+            Console.Clear();
+            Console.WriteLine("Battle!!");
+            Console.WriteLine();
+
+            // 반복문 이용해서 리스트 출력
+            for (int i = 0; i < monster.Count; i++)
+            {
+                if (monster[i].isDead == true)
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                    Console.WriteLine($"{i + 1}. Lv.{monster[i].Lev} {monster[i].Name} HP dead");
+                    Console.ResetColor();
                 }
-                else // 0도 아니고 몬스터 카운트보다 작은 숫자도 아닐 때 
+                else
+                {
+                    Console.WriteLine($"{i + 1}. Lv.{monster[i].Lev} {monster[i].Name} HP {monster[i].Hp}");
+                }
+
+            }
+
+            Console.WriteLine();
+
+            player.PrintPlayer();
+            Console.WriteLine();
+            Console.WriteLine("0. 취소");
+            Console.WriteLine();
+            Console.WriteLine("대상을 선택해주세요.");
+            Console.Write(">>");
+
+            //input 값 받아서 그에 맞는 조건문 넣기
+            string Input = Console.ReadLine();
+            int num = int.Parse(Input);
+
+            //번호 확인 
+            if (num == 0)
+            {
+                Console.WriteLine("전투 취소");
+                //이전 화면으로 돌아가기 (?)
+                MainScene();
+            }
+            else if (num > 0 && num <= monster.Count + 1)
+            {
+                if (monster[num - 1].isDead == false) //안 죽었을 때
+                {
+                    Console.WriteLine($"선택한 몬스터는 {monster[num - 1].Name}");
+                    //공격
+                    attack.Attack(monster[num - 1], player);
+                }
+                else // 죽었다면? 이미 죽은 몬스터 선택시
                 {
                     Console.Clear();
                     Console.WriteLine("잘못된 입력입니다.\n");
                 }
-
-                if (monster.All(m => m.isDead)) //몬스터가 모두 죽었다면
-                {
-                    inBattle = false;
-                    BattleEnd(player.Name, player.Lv, player.BeforeHp, player.Hp,  player.Atk);
-                    EndBattle();  // 전투 종료 후 새로운 랜덤 몬스터 설정
-                }
-                
             }
+            else // 0도 아니고 몬스터 카운트보다 작은 숫자도 아닐 때 
+            {
+                Console.WriteLine("잘못된 입력입니다.");
+            }
+
+            if (monster.All(m => m.isDead)) //몬스터가 모두 죽었다면
+            {
+                //inBattle = false;
+                BattleEnd(player.Name, player.Lv, player.BeforeHp, player.Hp, player.Atk);
+                EndBattle();  // 전투 종료 후 새로운 랜덤 몬스터 설정
+            }
+
+
+
         }
         public void BattleEnd(string name, int lv, int beforeHp, int Hp, int atk)
         {
@@ -323,6 +468,7 @@ namespace Kkakdugi
                 Console.Clear();
                 if(player.Hp > 0)
                 {
+                    AttackInfo(randmonsters, player);
                     //플레이어가 죽지 않았을때 플레이어의 차례로 넘어가야함.
                     //첫번째 매개변수 배열아니라 EnemyPhase에서 받은 monster넣어줘야하는데 AttackStart는 배열로 받아서 처리하기때문에
                     //안딘다.
