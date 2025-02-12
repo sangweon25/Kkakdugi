@@ -7,15 +7,13 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using static Kkakdugi.Player;
-using static Kkakdugi.Result;
 
 namespace Kkakdugi
 {
     internal class SceneManager
     {
-        Player player = new Player("김치", 1, 50, 100, 10, 1000);
+        Player player = new Player("무", "전사",50, 1, 100, 10,5, 1500);
         Attack_ attack = new Attack_();
-        Result result = new Result();
         Inventory_ inventory = new Inventory_();
         private static SceneManager? sceneManager;
 
@@ -28,6 +26,34 @@ namespace Kkakdugi
             new Monster("다이콘", 3, 15, 10,false),
             new Monster("레드파우더", 5, 25, 15,false)
         };
+
+        //GetInstance 메서드 호출시 싱글톤 객체인 sceneManager를 리턴
+        //다른 클래스에서 sceneManager의 메서드를 호출할수있다.
+        public static SceneManager GetInstance()
+        {
+            if (sceneManager == null)
+            {
+                sceneManager = new SceneManager();
+            }
+            return sceneManager;
+        }
+        //퀘스트 배열 생성
+        List<Quest> quests = new List<Quest>()
+        {
+            new Quest("구매 퀘스트","상점에서 나뭇가지를 구매하세요","500골드"),
+            new Quest("장착 퀘스트","구입한 나뭇가지를 장착하세요","300골드"),
+            new Quest("처치 퀘스트","몬스터를 5마리 처치하세요.","무껍질",5)
+        };
+
+        //itemList 안에 넣고 싶은 아이템 초기화
+        List<Item> itemList = new List<Item>
+        {
+            new Item(AbilityType.방어구,"무껍질",2,"무를 보호해주는 껍질이다.",500),
+            new Item(AbilityType.방어구,"나무판자",4,"나무 판자안에 무는 더욱 안전해보인다.",1000),
+            new Item(AbilityType.무기,"나뭇가지",2,"흔해빠진 나뭇가지다.",500),
+            new Item(AbilityType.무기,"돌칼",4,"약간은 날카로운 돌이다.",1000),
+        };
+
         public void SetRandomMonsters()
         {
             randmonsters.Clear();  // 기존 리스트를 초기화
@@ -83,40 +109,7 @@ namespace Kkakdugi
         }
         //GetInstance 메서드 호출시 싱글톤 객체인 sceneManager를 리턴
         //다른 클래스에서 sceneManager의 메서드를 호출할수있다.
-        public static SceneManager GetInstance()
-        {
-            if (sceneManager == null)
-            {
-                sceneManager = new SceneManager();
-            }
-            return sceneManager;
-        }
-
-        //itemList 안에 넣고 싶은 아이템 초기화
-        List<Item> itemList = new List<Item>
-        {
-            new Item(AbilityType.방어구,"무껍질",2,"무를 보호해주는 껍질이다.",500),
-            new Item(AbilityType.방어구,"나무판자",4,"나무 판자안에 무는 더욱 안전해보인다.",1000),
-            new Item(AbilityType.무기,"나뭇가지",2,"흔해빠진 나뭇가지다.",500),
-            new Item(AbilityType.무기,"돌칼",4,"약간은 날카로운 돌이다.",1000),
-        };
-
-        //List<Monster> monsters;
-
-       
-        //씬 매니저 생성자
-        public SceneManager()
-        {
-            //// 몬스터 정보 출력    
-            //monsters = new List<Monster>
-            //{
-            //    new Monster("솔트", 1, 10, 3,false),
-            //    new Monster("슈가", 2, 10, 5,false),
-            //    new Monster("다이콘", 3, 15, 10,false),
-            //    new Monster("레드파우더", 5, 25, 15,false)
-            //};
-        }
-
+        
         //게임 초기화면 메인 씬
         public void MainScene()
         {
@@ -127,12 +120,13 @@ namespace Kkakdugi
             Console.WriteLine("2. 인벤토리");
             Console.WriteLine("3. 상점");
             Console.WriteLine("4. 전투 시작");
+            Console.WriteLine("5. 퀘스트");
             Console.WriteLine();
             // 출력.예외 포함..if
             //GetInput(switch문 케이스 범위만큼 입력)
             
             
-            int input = InputManager.GetInput(1, 4);
+            int input = InputManager.GetInput(1, 5);
             switch (input)
             {
                 case 1:
@@ -154,19 +148,25 @@ namespace Kkakdugi
                     Console.Clear();
                     MonsterPrintInfo();
                     break;
+                case 5:
+                    //퀘스트 창으로 이동
+                    Console.Clear();
+                    QuestSelectScene();
+                    break;
             }
         }
         //상태보기 창
         public void StatusScreen()
         {
             Console.Clear();
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine("상태 보기");
+            Console.ResetColor();
             Console.WriteLine("캐릭터의 정보가 표시됩니다.");
             Console.WriteLine();
             //플레이어 데이터 값 출력 함수
             player.StatusDisplay();
             Console.WriteLine();
-            Console.WriteLine("1");
             Console.WriteLine();
             Console.WriteLine("0. 나가기");
             Console.WriteLine();
@@ -185,6 +185,7 @@ namespace Kkakdugi
         {
             Console.Clear();
             Console.WriteLine("Battle!!");
+            Console.WriteLine();
 
             SetRandomMonsters();
 
@@ -196,9 +197,11 @@ namespace Kkakdugi
 
             // 플레이어 출력
             player.PrintPlayer();
+            Console.WriteLine();
 
             Console.WriteLine("0. 전투 취소");
             Console.WriteLine("1. 공격");
+            Console.WriteLine();
 
             int input = InputManager.GetInput(0, 1);
             if (input == 1)
@@ -215,9 +218,10 @@ namespace Kkakdugi
         public void AttackInfo(List<Monster> monster, Player player) //공격 정보창
         {
             bool inBattle = true;
+            player.BeforeHp = player.Hp;
             while (inBattle)
             {
-                Console.Clear();
+
                 Console.WriteLine("Battle!!");
                 Console.WriteLine();
 
@@ -242,7 +246,7 @@ namespace Kkakdugi
                 Console.WriteLine("0. 취소");
                 Console.WriteLine("1. 공격");
                 Console.WriteLine("2. 스킬");
-              
+
                 int input = InputManager.GetInput(0, 2);
                 if (input == 1)
                 {
@@ -252,10 +256,6 @@ namespace Kkakdugi
                 else if (input == 2) // 스킬 선택 기능 추가
                 {
                     SelectSkill(randmonsters, player);
-                }
-                else
-                {
-                    MonsterPrintInfo();
                 }
             }
         }
@@ -312,15 +312,15 @@ namespace Kkakdugi
             bool allMonstersDead = monsters.All(m => m.isDead);
             if (allMonstersDead)
             {
-                if (InputManager.inputNext() == 0)
+                if (InputManager.InputNext() == 0)
                 {
                     // 모든 몬스터가 죽었을 경우 
-                    Result.Result1(player.Name, player.Lv, player.Hp, player.Atk);
+                    BattleEnd(player.Name, player.Lv, player.BeforeHp, player.Hp, player.Atk);
                 }
                 
             }
 
-            if (InputManager.inputNext() == 0)
+            if (InputManager.InputNext() == 0)
             {
                 // EnemyPhase로 넘어가기
                 EnemyPhase(monsters.First(m => !m.isDead), player);  // 살아있는 첫 번째 몬스터로 적 공격
@@ -379,9 +379,9 @@ namespace Kkakdugi
                 }
                 else // 죽었다면? 이미 죽은 몬스터 선택시
                 {
-                    Console.WriteLine("잘못된 입력입니다.");
+                    Console.Clear();
+                    Console.WriteLine("잘못된 입력입니다.\n");
                 }
-
             }
             else // 0도 아니고 몬스터 카운트보다 작은 숫자도 아닐 때 
             {
@@ -390,28 +390,79 @@ namespace Kkakdugi
 
             if (monster.All(m => m.isDead)) //몬스터가 모두 죽었다면
             {
+                //inBattle = false;
+                BattleEnd(player.Name, player.Lv, player.BeforeHp, player.Hp, player.Atk);
                 EndBattle();  // 전투 종료 후 새로운 랜덤 몬스터 설정
-                Result.Result1(player.Name, player.Lv, player.Hp, player.Atk);
             }
+
+
+
+        }
+        public void BattleEnd(string name, int lv, int beforeHp, int Hp, int atk)
+        {
+            int killCount = randmonsters.Count(m => m.isDead);
+
+
+            Console.Clear();
+            Console.WriteLine("Battle!! - Result");
+            Console.WriteLine();
+
+            if (player.Hp > 0 && killCount == randmonsters.Count)// 플레이어가 살아 있고, 몬스터를 다 잡았을 때
+            {
+                // AttackStart 에서 몬스터가 죽을때 카운터 올라가는 코드 추가
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                Console.WriteLine("Victory");
+                Console.ResetColor();
+                Console.WriteLine();
+                Console.WriteLine($"던전에서 몬스터 {killCount}마리를 잡았습니다.\n");
+                Console.WriteLine($"Lv.{lv} {name}\nHp {beforeHp} -> {player.Hp}\n");
+            }
+
+            else if (player.Hp <= 0) // 플레이어 체력이 0 이하 일때
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("You Lose\n");
+                Console.ResetColor();
+                Console.WriteLine($"Lv.{lv} {name}\nHp {beforeHp} -> 0\n");
+            } // 플레이어가 죽거나, 몬스터를 모두 처치하면 종료.
+
+            
+            Console.WriteLine("0. 다음");
+            Console.WriteLine();
+            int intput = InputManager.GetInput(0, 0);
+
+            if (intput == 0)
+            {
+                // 게임 종료시 메인화면
+                SceneManager.GetInstance().MainScene();
+            }
+
         }
 
-       
+
         //매개변수로 들어온 몬스터가 공격 
         public void EnemyPhase(Monster monster, Player player)
         {
             //적이 죽지않고 hp가 0보다 클때 이쪽으로 와야함.
             Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("Battle!!\n");
+            Console.ResetColor();
             //몬스터 공격
-            Console.WriteLine($"Lv.{monster.Lev} {monster.Name} 의 공격!\n");
+            Console.WriteLine($"Lv.{monster.Lev} {monster.Name} 의 공격!");
             //플레이어 이름, 받은 데미지
-            Console.WriteLine($"{player.Name} 을(를) 맞췄습니다. [데미지 :{monster.Atk}]");
+
+            Console.Write($"{player.Name} 을(를) 맞췄습니다. [데미지 :");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write($"{monster.Atk}");
+            Console.ResetColor();
+            Console.WriteLine("]\n");
             Console.WriteLine($"Lv. {player.Lv} {player.Name}");
             //플레이어 체력 감소
             Console.WriteLine($"HP {player.Hp} -> {player.RecieveDamage(monster.Atk)}\n");
 
             //0으로 다음 넘어가는 함수
-            if(InputManager.inputNext() == 0)
+            if(InputManager.InputNext() == 0)
             {
                 Console.Clear();
                 if(player.Hp > 0)
@@ -425,7 +476,7 @@ namespace Kkakdugi
                 else
                 {
                     //만약 플레이어가 죽었다면 result화면으로 가야함.
-                    Result.Result1(player.Name, player.Lv, player.Hp, player.Atk);
+                    BattleEnd(player.Name, player.Lv, player.BeforeHp, player.Hp, player.Atk);
                 }
             }
 
@@ -455,24 +506,35 @@ namespace Kkakdugi
         public void EquipChoice()
         {
             //Inventory_ inventory = new Inventory_();
-            inventory.ItemprintInfo();
-            Console.WriteLine("\n\n0. 나가기");
-            int input = InputManager.GetInput(0, 0);
-            switch (input)
+            
+            while (true)
             {
-                case 0:
+                inventory.ItemprintInfo();
+                Console.WriteLine("\n\n0. 나가기");
+
+                // 인벤토리의 보유한 아이템 리스트 수만큼 입력받기
+                int input = InputManager.GetInput(0, inventory.getitems.Count);
+                
+                inventory.ToggleEquipItem(input - 1,player); // 인덱스 번호 - 1을 하면 선택한 번호의 아이템 착용
+                Console.Clear(); 
+                if (input == 0)
+                {
                     Console.Clear();
                     MainScene();
-                    break;
+                }
+
             }
         }
+
         //==================================================================
-        
+
         //===============================상점===============================
 
         public void StoreScene()
         {
-            Console.WriteLine("Store");
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine("상점");
+            Console.ResetColor();
 
             //아이템 목록 출력 함수 
             PrintStore(false);
@@ -503,7 +565,9 @@ namespace Kkakdugi
             bool buyScene = true;
             while (state)
             {
-                Console.WriteLine("Store - Buy");
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine("상점 - 구매");
+                Console.ResetColor();
                 PrintStore(buyScene);
                 Console.WriteLine("0. 나가기\n");
                 int input = InputManager.GetInput(0, itemList.Count);
@@ -543,7 +607,9 @@ namespace Kkakdugi
 
         public void StoreSellScene()
         {
-            Console.WriteLine("Store - Sell");
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine("상점 - 판매");
+            Console.ResetColor();
             PrintStore(true);
             Console.WriteLine("0. 나가기\n");
             int input = InputManager.GetInput(0, 0);
@@ -577,6 +643,36 @@ namespace Kkakdugi
         {
             Console.WriteLine("{0,-15}| {1,-15}| {2,-15}| {3,-15}| {4,-15}|", "분류", "이름", "능력치", "설명", "가격");
         }
+        //==================================================================
+
+        //===============================퀘스트===============================
+        public void QuestSelectScene()
+        {
+            
+            Console.WriteLine("Quest!!\n");
+            //퀘스트 배열을 출력
+
+            //퀘스트 배열 이름만출력
+            for (int i = 0; i < quests.Count; i++)
+            {
+                Console.Write($"{i+1}. ");
+                Console.Write(quests[i].QuestName);
+                //IsClear ==true일때 퀘스트완료 , 수락시 진행 중, 수락 안했으면 공백
+                Console.WriteLine(quests[i].IsAccept ? "[진행 중]": quests[i].IsClear ? "[퀘스트 완료]" : " " ); 
+            }
+            Console.WriteLine("\n");
+            Console.WriteLine("0. 나가기\n");
+            int input = InputManager.GetInput(0, quests.Count);
+
+            if (0 == input)
+                MainScene();
+            else
+            {
+                quests[input - 1].QuestAcceptScene();
+            }
+        }//QuestScene Method
+
+
 
     }//class SceneManager
 }//namespace

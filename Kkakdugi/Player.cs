@@ -22,6 +22,7 @@ namespace Kkakdugi
         public int MaxMp { get; set; }
         public int Hp { get; set; }
         public int MaxHp { get; set; }
+        public int BeforeHp { get; set; }
         public int Atk { get; set; }
         public int EquipAtk { get; set; }
         public int Def { get; set; }
@@ -30,14 +31,21 @@ namespace Kkakdugi
 
         public JobType Job { get; set; } //효정 추가
         public List<Skill> Skills { get; set; } //스킬 클래스 선언
-        public Player(string name, int lv, int mp, int hp, int atk, int gold)
+       
+        public Player(string name, string job,int mp, int lv, int maxHp, int atk,int def, int gold)
         {
             Name = name;
             Lv = lv;
+
             Mp = mp;
             MaxMp = 50;
-            Hp = hp;
+
+            MaxHp = maxHp;
+            BeforeHp = maxHp;
+            Hp = maxHp;
+
             Atk = atk;
+            Def = def;
             Gold = gold;
 
             Skills = new List<Skill>(); //스킬 리스트 초기화
@@ -103,20 +111,20 @@ namespace Kkakdugi
             Console.WriteLine($"Lv. {Lv.ToString("00")}");
             Console.WriteLine($"{Name} ({Job})"); 
 
-            string str = EquipAtk == 0 ? $"공격력 : {Atk}" : $"공격력: {Atk + EquipAtk} (+{EquipAtk})";
+            string str = EquipAtk == 0 ? $"공격력 : {Atk}" : $"공격력: {Atk} (+{EquipAtk})";
             Console.WriteLine(str);
-            str = EquipDef == 0 ? $"방어력 : {Def}" : $"방어력 : {Def + EquipDef} (+{EquipDef})";
+            str = EquipDef == 0 ? $"방어력 : {Def}" : $"방어력 : {Def} (+{EquipDef})";
             Console.WriteLine(str);
 
-            Console.WriteLine($"체력: {Hp} / {MaxHp}");
+            Console.WriteLine($"체력: {Hp} ");
             Console.WriteLine($"Gold : {Gold} G");
         }
 
         //플레이어 필드 내용 출력 함수
         public void PrintPlayer() 
         {
-            Console.WriteLine("\n\n[내정보]\n");
-            Console.WriteLine($"Lv.{Lv} {Name} ({Job})"); 
+            Console.WriteLine("\n[내정보]\n");
+            Console.WriteLine($"Lv.{Lv} {Name} ({Job})");
             Console.WriteLine($"HP {Hp}/{MaxHp}");
             Console.WriteLine($"MP {Mp}/{MaxMp}");
             Console.WriteLine();
@@ -124,14 +132,31 @@ namespace Kkakdugi
 
         public int RecieveDamage(int damage)
         {
-            if (Hp > 0)
-                return Hp -= damage;
-            else
-                return Hp =0;
+            //Hp가 음수면 0리턴
+            if (Hp - damage < 0)
+                return Hp = 0;
+            // Hp가 0보다 크면 Hp에서 데미지를 뺀다 아니면 0
+            return Hp > 0 ? Hp -= damage : Hp = 0;
         }
         public int BuyItem(int gold)
         {
             return Gold -= gold;
+        }
+        
+        public void EquipItem(int itemAtk = 0,int itemDef = 0)//장착할때 아이템의 능력치를 더해줌
+        {
+            EquipAtk += itemAtk;
+            Atk += itemAtk;
+            EquipDef += itemDef;
+            Def += itemDef;
+        }
+
+        public void UnEquipItem(int itemAtk = 0, int itemDef = 0)//해제할때 아이템의 능력치를 빼줌
+        {
+            Atk -= itemAtk;
+            EquipAtk -= itemAtk;
+            Def -= itemDef;
+            EquipDef -= itemDef;
         }
 
     }//Player Class
