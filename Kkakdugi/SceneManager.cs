@@ -12,7 +12,7 @@ namespace Kkakdugi
 {
     internal class SceneManager
     {
-        Player player = new Player("김치", "음식", 1, 100, 15, 1000, Player.JobType.전사);
+        Player player = new Player("김치", 1, 10, 15, 1000, Player.JobType.전사);
         Attack_ attack = new Attack_();
         Result result = new Result();
         Inventory_ inventory = new Inventory_();
@@ -60,7 +60,7 @@ namespace Kkakdugi
             int input = InputManager.GetInput(1, 3);
             JobType selectedJob = (JobType)(input - 1);  // 입력값을 JobType으로 변환
 
-            player = new Player("김치", "음식", 1, 100, 15, 1000, selectedJob); ;
+            player.SetJob(selectedJob);
             Console.Clear();
             //재미용 슬로우 주기
             Console.Write(".");

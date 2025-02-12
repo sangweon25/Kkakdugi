@@ -18,7 +18,7 @@ namespace Kkakdugi
         //플레이어 능력치, 세부정보
         public string Name { get; set; }
         public int Lv { get; set; }
-        public string Job { get; set; } 
+        //public string Job { get; set; } 
         public int Hp { get; set; }
         public int MaxHp { get; set; }
         public int Atk { get; set; }
@@ -27,35 +27,43 @@ namespace Kkakdugi
         public int EquipDef { get; set; }
         public int Gold { get; set; }
 
-        public JobType Job_ { get; set; } //효정 추가
-        public Player(string name, string job, int lv, int maxHp, int atk, int gold,JobType job_)
+        public JobType Job { get; set; } //효정 추가
+        public Player(string name, int lv, int maxHp, int atk, int gold,JobType Job)
         {
             Name = name;
-            Job = job;
+            //Job = job;
             Lv = lv;
             MaxHp = maxHp;
             Hp = maxHp;
             Atk = atk;
             Gold = gold;
-            SetStats(Job_);
+            SetStats(Job);
         }
 
-        private void SetStats(JobType job_)
+        public void SetJob(JobType newJob)
         {
-            switch (job_)
+            Job = newJob;
+            SetStats(newJob);
+        }
+        private void SetStats(JobType Job)
+        {
+            switch (Job)
             {
                 case JobType.전사:
-                    Hp = 100;
+                    MaxHp = 110;
+                    Hp = 110;
                     Atk = 8;
                     Def = 10;
                     break;
                 case JobType.마법사:
+                    MaxHp = 100;
                     Hp = 100;
                     Atk = 12;
                     Def = 6;
                     break;
                 case JobType.도적:
-                    Hp = 100;
+                    MaxHp = 105;
+                    Hp = 105;
                     Atk = 11;
                     Def = 6;
                     break;
@@ -64,7 +72,7 @@ namespace Kkakdugi
         public void StatusDisplay()
         {
             Console.WriteLine($"Lv. {Lv.ToString("00")}");
-            Console.WriteLine($"{Name} ({Job})");
+            Console.WriteLine($"{Name} ({Job})"); //효정 직업관련 수정
 
             string str = EquipAtk == 0 ? $"공격력 : {Atk}" : $"공격력: {Atk + EquipAtk} (+{EquipAtk})";
             Console.WriteLine(str);
@@ -79,7 +87,7 @@ namespace Kkakdugi
         public void PrintPlayer()
         {
             Console.WriteLine("\n\n[내정보]\n");
-            Console.WriteLine($"Lv.{Lv} {Name} ({Job})");
+            Console.WriteLine($"Lv.{Lv} {Name} ({Job})"); //효정 직업관련 수정
             Console.WriteLine($"HP {Hp}/{MaxHp}");
         }
 
