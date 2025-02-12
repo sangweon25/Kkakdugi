@@ -27,6 +27,47 @@ namespace Kkakdugi
             new Monster("레드파우더", 5, 25, 15,false)
         };
 
+        //GetInstance 메서드 호출시 싱글톤 객체인 sceneManager를 리턴
+        //다른 클래스에서 sceneManager의 메서드를 호출할수있다.
+        public static SceneManager GetInstance()
+        {
+            if (sceneManager == null)
+            {
+                sceneManager = new SceneManager();
+            }
+            return sceneManager;
+        }
+        //퀘스트 배열 생성
+        List<Quest> quests = new List<Quest>()
+        {
+            new Quest("구매 퀘스트","상점에서 나뭇가지를 구매하세요","500골드"),
+            new Quest("장착 퀘스트","구입한 나뭇가지를 장착하세요","300골드"),
+            new Quest("처치 퀘스트","몬스터를 5마리 처치하세요.","무껍질",5)
+        };
+
+        //itemList 안에 넣고 싶은 아이템 초기화
+        List<Item> itemList = new List<Item>
+        {
+            new Item(AbilityType.방어구,"무껍질",2,"무를 보호해주는 껍질이다.",500),
+            new Item(AbilityType.방어구,"나무판자",4,"나무 판자안에 무는 더욱 안전해보인다.",1000),
+            new Item(AbilityType.무기,"나뭇가지",2,"흔해빠진 나뭇가지다.",500),
+            new Item(AbilityType.무기,"돌칼",4,"약간은 날카로운 돌이다.",1000),
+        };
+
+        //List<Monster> monsters;
+
+        //씬 매니저 생성자
+        public SceneManager()
+        {
+            //// 몬스터 정보 출력    
+            //monsters = new List<Monster>
+            //{
+            //    new Monster("솔트", 1, 10, 3,false),
+            //    new Monster("슈가", 2, 10, 5,false),
+            //    new Monster("다이콘", 3, 15, 10,false),
+            //    new Monster("레드파우더", 5, 25, 15,false)
+            //};
+        }
         public void SetRandomMonsters()
         {
             randmonsters.Clear();  // 기존 리스트를 초기화
@@ -45,48 +86,6 @@ namespace Kkakdugi
         {
             // 전투 끝났을 때 새로운 랜덤 몬스터 리스트로 설정
             SetRandomMonsters();
-        }
-
-        //GetInstance 메서드 호출시 싱글톤 객체인 sceneManager를 리턴
-        //다른 클래스에서 sceneManager의 메서드를 호출할수있다.
-        public static SceneManager GetInstance()
-        {
-            if (sceneManager == null)
-            {
-                sceneManager = new SceneManager();
-            }
-            return sceneManager;
-        }
-        List<Quest> quests = new List<Quest>()
-        {
-            new Quest("구매 퀘스트","상점에서 나뭇가지를 구매하세요","500골드"),
-            new Quest("장착 퀘스트","구입한 나뭇가지를 장착하세요","300골드"),
-            new Quest("처치 퀘스트","몬스터를 5마리 처치하세요.","무껍질")
-        };
-
-        //itemList 안에 넣고 싶은 아이템 초기화
-        List<Item> itemList = new List<Item>
-        {
-            new Item(AbilityType.방어구,"무껍질",2,"무를 보호해주는 껍질이다.",500),
-            new Item(AbilityType.방어구,"나무판자",4,"나무 판자안에 무는 더욱 안전해보인다.",1000),
-            new Item(AbilityType.무기,"나뭇가지",2,"흔해빠진 나뭇가지다.",500),
-            new Item(AbilityType.무기,"돌칼",4,"약간은 날카로운 돌이다.",1000),
-        };
-
-        //List<Monster> monsters;
-
-       
-        //씬 매니저 생성자
-        public SceneManager()
-        {
-            //// 몬스터 정보 출력    
-            //monsters = new List<Monster>
-            //{
-            //    new Monster("솔트", 1, 10, 3,false),
-            //    new Monster("슈가", 2, 10, 5,false),
-            //    new Monster("다이콘", 3, 15, 10,false),
-            //    new Monster("레드파우더", 5, 25, 15,false)
-            //};
         }
 
         //게임 초기화면 메인 씬
@@ -334,7 +333,7 @@ namespace Kkakdugi
 
                 // 인벤토리의 보유한 아이템 리스트 수만큼 입력받기
                 int input = InputManager.GetInput(0, inventory.getitems.Count);
-
+                
                 inventory.ToggleEquipItem(input - 1); // 인덱스 번호 - 1을 하면 선택한 번호의 아이템 착용
                 Console.Clear(); 
                 if (input == 0)
@@ -406,6 +405,7 @@ namespace Kkakdugi
                             player.BuyItem(itemList[input - 1].Gold);
                             //플레이어 인벤토리에 Add(itemList[input - 1]) 추가해야함.
                             inventory.AddItem(itemList[input-1]);
+                            quests[0].BuyCheck(itemList[input - 1]);
                             itemList[input - 1].IsSold = true;
                             Console.Clear();
                             Console.WriteLine("구매를 완료했습니다.\n");
@@ -465,6 +465,7 @@ namespace Kkakdugi
         //===============================퀘스트===============================
         public void QuestSelectScene()
         {
+            
             Console.WriteLine("Quest!!\n");
             //퀘스트 배열을 출력
 
@@ -472,7 +473,9 @@ namespace Kkakdugi
             for (int i = 0; i < quests.Count; i++)
             {
                 Console.Write($"{i+1}. ");
-                Console.WriteLine(quests[i].QuestName);
+                Console.Write(quests[i].QuestName);
+                //IsClear ==true일때 퀘스트완료 , 수락시 진행 중, 수락 안했으면 공백
+                Console.WriteLine(quests[i].IsAccept ? "[진행 중]": quests[i].IsClear ? "[퀘스트 완료]" : " " ); 
             }
             Console.WriteLine("\n");
             Console.WriteLine("0. 나가기\n");
