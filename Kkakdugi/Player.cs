@@ -40,19 +40,19 @@ namespace Kkakdugi
             Console.WriteLine($"Lv. {Lv.ToString("00")}");
             Console.WriteLine($"{Name} ({Job})");
 
-            string str = EquipAtk == 0 ? $"공격력 : {Atk}" : $"공격력: {Atk + EquipAtk} (+{EquipAtk})";
+            string str = EquipAtk == 0 ? $"공격력 : {Atk}" : $"공격력: {Atk} (+{EquipAtk})";
             Console.WriteLine(str);
-            str = EquipDef == 0 ? $"방어력 : {Def}" : $"방어력 : {Def + EquipDef} (+{EquipDef})";
+            str = EquipDef == 0 ? $"방어력 : {Def}" : $"방어력 : {Def} (+{EquipDef})";
             Console.WriteLine(str);
 
-            Console.WriteLine($"체력: {Hp} / {MaxHp}");
+            Console.WriteLine($"체력: {Hp} ");
             Console.WriteLine($"Gold : {Gold} G");
         }
 
         //플레이어 필드 내용 출력 함수
         public void PrintPlayer()
         {
-            Console.WriteLine("\n\n[내정보]\n");
+            Console.WriteLine("\n[내정보]\n");
             Console.WriteLine($"Lv.{Lv} {Name} ({Job})");
             Console.WriteLine($"HP {Hp}/{MaxHp}");
         }
@@ -68,6 +68,22 @@ namespace Kkakdugi
         public int BuyItem(int gold)
         {
             return Gold -= gold;
+        }
+        
+        public void EquipItem(int itemAtk = 0,int itemDef = 0)//장착할때 아이템의 능력치를 더해줌
+        {
+            EquipAtk += itemAtk;
+            Atk += itemAtk;
+            EquipDef += itemDef;
+            Def += itemDef;
+        }
+
+        public void UnEquipItem(int itemAtk = 0, int itemDef = 0)//해제할때 아이템의 능력치를 빼줌
+        {
+            Atk -= itemAtk;
+            EquipAtk -= itemAtk;
+            Def -= itemDef;
+            EquipDef -= itemDef;
         }
 
     }//Player Class

@@ -11,7 +11,7 @@ namespace Kkakdugi
 {
     internal class SceneManager
     {
-        Player player = new Player("김치", "음식", 1, 50, 10, 1000);
+        Player player = new Player("김치", "음식", 1, 100, 10, 1500);
         Attack_ attack = new Attack_();
         Inventory_ inventory = new Inventory_();
         private static SceneManager? sceneManager;
@@ -53,20 +53,6 @@ namespace Kkakdugi
             new Item(AbilityType.무기,"돌칼",4,"약간은 날카로운 돌이다.",1000),
         };
 
-        //List<Monster> monsters;
-
-        //씬 매니저 생성자
-        public SceneManager()
-        {
-            //// 몬스터 정보 출력    
-            //monsters = new List<Monster>
-            //{
-            //    new Monster("솔트", 1, 10, 3,false),
-            //    new Monster("슈가", 2, 10, 5,false),
-            //    new Monster("다이콘", 3, 15, 10,false),
-            //    new Monster("레드파우더", 5, 25, 15,false)
-            //};
-        }
         public void SetRandomMonsters()
         {
             randmonsters.Clear();  // 기존 리스트를 초기화
@@ -136,13 +122,14 @@ namespace Kkakdugi
         public void StatusScreen()
         {
             Console.Clear();
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine("상태 보기");
+            Console.ResetColor();
             Console.WriteLine("캐릭터의 정보가 표시됩니다.");
             Console.WriteLine();
             //플레이어 데이터 값 출력 함수
             player.StatusDisplay();
             Console.WriteLine();
-            Console.WriteLine("1");
             Console.WriteLine();
             Console.WriteLine("0. 나가기");
             Console.WriteLine();
@@ -161,6 +148,7 @@ namespace Kkakdugi
         {
             Console.Clear();
             Console.WriteLine("Battle!!");
+            Console.WriteLine();
 
             SetRandomMonsters();
 
@@ -172,9 +160,11 @@ namespace Kkakdugi
 
             // 플레이어 출력
             player.PrintPlayer();
+            Console.WriteLine();
 
             Console.WriteLine("0. 전투 취소");
             Console.WriteLine("1. 공격");
+            Console.WriteLine();
 
             int input = InputManager.GetInput(0, 1);
             if (input == 1)
@@ -272,24 +262,30 @@ namespace Kkakdugi
 
             Console.Clear();
             Console.WriteLine("Battle!! - Result");
+            Console.WriteLine();
 
             if (player.Hp > 0 && killCount == randmonsters.Count)// 플레이어가 살아 있고, 몬스터를 다 잡았을 때
             {
                 // AttackStart 에서 몬스터가 죽을때 카운터 올라가는 코드 추가
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
                 Console.WriteLine("Victory");
+                Console.ResetColor();
+                Console.WriteLine();
                 Console.WriteLine($"던전에서 몬스터 {killCount}를 잡았습니다.\n");
                 Console.WriteLine($"Lv.{lv} {name}\nHp {beforeHp} -> {player.Hp}\n");
             }
 
             else if (player.Hp <= 0) // 플레이어 체력이 0 이하 일때
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("You Lose\n");
+                Console.ResetColor();
                 Console.WriteLine($"Lv.{lv} {name}\nHp {beforeHp} -> 0\n");
             } // 플레이어가 죽거나, 몬스터를 모두 처치하면 종료.
 
             
             Console.WriteLine("0. 다음");
-            Console.Write(">>");
+            Console.WriteLine();
             int intput = InputManager.GetInput(0, 0);
 
             if (intput == 0)
@@ -306,11 +302,18 @@ namespace Kkakdugi
         {
             //적이 죽지않고 hp가 0보다 클때 이쪽으로 와야함.
             Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("Battle!!\n");
+            Console.ResetColor();
             //몬스터 공격
             Console.WriteLine($"Lv.{monster.Lev} {monster.Name} 의 공격!\n");
             //플레이어 이름, 받은 데미지
-            Console.WriteLine($"{player.Name} 을(를) 맞췄습니다. [데미지 :{monster.Atk}]");
+
+            Console.Write($"{player.Name} 을(를) 맞췄습니다. [데미지 :");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write($"{monster.Atk}");
+            Console.ResetColor();
+            Console.WriteLine("]");
             Console.WriteLine($"Lv. {player.Lv} {player.Name}");
             //플레이어 체력 감소
             Console.WriteLine($"HP {player.Hp} -> {player.RecieveDamage(monster.Atk)}\n");
@@ -368,7 +371,7 @@ namespace Kkakdugi
                 // 인벤토리의 보유한 아이템 리스트 수만큼 입력받기
                 int input = InputManager.GetInput(0, inventory.getitems.Count);
                 
-                inventory.ToggleEquipItem(input - 1); // 인덱스 번호 - 1을 하면 선택한 번호의 아이템 착용
+                inventory.ToggleEquipItem(input - 1,player); // 인덱스 번호 - 1을 하면 선택한 번호의 아이템 착용
                 Console.Clear(); 
                 if (input == 0)
                 {
@@ -385,7 +388,9 @@ namespace Kkakdugi
 
         public void StoreScene()
         {
-            Console.WriteLine("Store");
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine("상점");
+            Console.ResetColor();
 
             //아이템 목록 출력 함수 
             PrintStore(false);
@@ -416,7 +421,9 @@ namespace Kkakdugi
             bool buyScene = true;
             while (state)
             {
-                Console.WriteLine("Store - Buy");
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine("상점 - 구매");
+                Console.ResetColor();
                 PrintStore(buyScene);
                 Console.WriteLine("0. 나가기\n");
                 int input = InputManager.GetInput(0, itemList.Count);
@@ -436,7 +443,6 @@ namespace Kkakdugi
                             player.BuyItem(itemList[input - 1].Gold);
                             //플레이어 인벤토리에 Add(itemList[input - 1]) 추가해야함.
                             inventory.AddItem(itemList[input-1]);
-                            quests[0].BuyCheck(itemList[input - 1]);
                             itemList[input - 1].IsSold = true;
                             Console.Clear();
                             Console.WriteLine("구매를 완료했습니다.\n");
@@ -457,7 +463,9 @@ namespace Kkakdugi
 
         public void StoreSellScene()
         {
-            Console.WriteLine("Store - Sell");
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine("상점 - 판매");
+            Console.ResetColor();
             PrintStore(true);
             Console.WriteLine("0. 나가기\n");
             int input = InputManager.GetInput(0, 0);
