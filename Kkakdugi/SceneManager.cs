@@ -6,12 +6,13 @@ using System.Numerics;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using static Kkakdugi.Player;
 
 namespace Kkakdugi
 {
     internal class SceneManager
     {
-        Player player = new Player("김치", "음식", 1, 100, 15, 1000);
+        Player player = new Player("김치", "음식", 1, 100, 15, 1000, Player.JobType.전사);
         Attack_ attack = new Attack_();
         Result result = new Result();
         Inventory_ inventory = new Inventory_();
@@ -26,7 +27,6 @@ namespace Kkakdugi
             new Monster("다이콘", 3, 15, 10,false),
             new Monster("레드파우더", 5, 25, 15,false)
         };
-
         public void SetRandomMonsters()
         {
             randmonsters.Clear();  // 기존 리스트를 초기화
@@ -47,6 +47,38 @@ namespace Kkakdugi
             SetRandomMonsters();
         }
 
+        public void JobSelect()
+        {
+            Console.Clear();
+            Console.WriteLine("원하시는 직업을 선택해주세요.");
+            Console.WriteLine();
+            Console.WriteLine("1. 전사");
+            Console.WriteLine("2. 마법사");
+            Console.WriteLine("3. 도적 ");
+            Console.WriteLine();
+
+            int input = InputManager.GetInput(1, 3);
+            JobType selectedJob = (JobType)(input - 1);  // 입력값을 JobType으로 변환
+
+            player = new Player("김치", "음식", 1, 100, 15, 1000, selectedJob); ;
+            Console.Clear();
+            //재미용 슬로우 주기
+            Console.Write(".");
+            Thread.Sleep(500);
+            Console.Write(".");
+            Thread.Sleep(900);
+            Console.WriteLine(".");
+            Thread.Sleep(1000);
+            Console.WriteLine("직업 설정 완료 !!");
+            Console.WriteLine();
+            Thread.Sleep(300);
+            //직업 선택 출력
+            Console.WriteLine($"[{selectedJob}] 을(를) 선택했습니다!");
+            Console.WriteLine();
+            Console.WriteLine("게임을 시작합니다...!");
+            Thread.Sleep(2000);
+            MainScene();
+        }
         //GetInstance 메서드 호출시 싱글톤 객체인 sceneManager를 리턴
         //다른 클래스에서 sceneManager의 메서드를 호출할수있다.
         public static SceneManager GetInstance()

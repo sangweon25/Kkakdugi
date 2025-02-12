@@ -9,11 +9,16 @@ namespace Kkakdugi
 {
     internal class Player
     {
-
+        public enum JobType
+        {
+            전사,
+            마법사,
+            도적
+        }
         //플레이어 능력치, 세부정보
         public string Name { get; set; }
         public int Lv { get; set; }
-        public string Job { get; set; }
+        public string Job { get; set; } 
         public int Hp { get; set; }
         public int MaxHp { get; set; }
         public int Atk { get; set; }
@@ -22,7 +27,8 @@ namespace Kkakdugi
         public int EquipDef { get; set; }
         public int Gold { get; set; }
 
-        public Player(string name, string job, int lv, int maxHp, int atk, int gold)
+        public JobType Job_ { get; set; } //효정 추가
+        public Player(string name, string job, int lv, int maxHp, int atk, int gold,JobType job_)
         {
             Name = name;
             Job = job;
@@ -31,8 +37,30 @@ namespace Kkakdugi
             Hp = maxHp;
             Atk = atk;
             Gold = gold;
+            SetStats(Job_);
         }
 
+        private void SetStats(JobType job_)
+        {
+            switch (job_)
+            {
+                case JobType.전사:
+                    Hp = 100;
+                    Atk = 8;
+                    Def = 10;
+                    break;
+                case JobType.마법사:
+                    Hp = 100;
+                    Atk = 12;
+                    Def = 6;
+                    break;
+                case JobType.도적:
+                    Hp = 100;
+                    Atk = 11;
+                    Def = 6;
+                    break;
+            }
+        }
         public void StatusDisplay()
         {
             Console.WriteLine($"Lv. {Lv.ToString("00")}");
