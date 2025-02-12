@@ -2,11 +2,25 @@
 {
     internal class Program
     {
-        
+
         static void Main(string[] args)
         {
             SceneManager.GetInstance().MainScene();
+            Inventory_ inventory = new Inventory_();
             
+            while (true)
+            {
+                inventory.ItemprintInfo();
+               
+                string input = Console.ReadLine();
+
+                if (int.TryParse(input, out int itemNumber))
+                {
+                    inventory.ToggleEquipItem(itemNumber - 1);
+                   
+                }
+                
+
                 //Console.WriteLine("상태 보기");
                 //Console.WriteLine("캐릭터의 정보가 표시됩니다.");
 
@@ -30,7 +44,7 @@
                 //}
 
             }//Main Method
- 
+        }
     }//class Program
     
 }//namespace
