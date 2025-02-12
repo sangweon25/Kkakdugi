@@ -249,13 +249,14 @@ namespace Kkakdugi
                 {
                     inBattle = false;
                     EndBattle();  // 전투 종료 후 새로운 랜덤 몬스터 설정
-                    Result.Result1(player.Name, player.Lv, player.Hp, player.Atk);
+                    BattleEnd(player.Name, player.Lv, player.Hp, player.Atk);
+
                 }
                 
             }
         }
+        
 
-       
         //매개변수로 들어온 몬스터가 공격 
         public void EnemyPhase(Monster monster, Player player)
         {
