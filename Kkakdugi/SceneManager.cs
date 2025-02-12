@@ -371,7 +371,7 @@ namespace Kkakdugi
                 // 인벤토리의 보유한 아이템 리스트 수만큼 입력받기
                 int input = InputManager.GetInput(0, inventory.getitems.Count);
                 
-                inventory.ToggleEquipItem(input - 1); // 인덱스 번호 - 1을 하면 선택한 번호의 아이템 착용
+                inventory.ToggleEquipItem(input - 1,player); // 인덱스 번호 - 1을 하면 선택한 번호의 아이템 착용
                 Console.Clear(); 
                 if (input == 0)
                 {
@@ -443,7 +443,6 @@ namespace Kkakdugi
                             player.BuyItem(itemList[input - 1].Gold);
                             //플레이어 인벤토리에 Add(itemList[input - 1]) 추가해야함.
                             inventory.AddItem(itemList[input-1]);
-                            quests[0].BuyCheck(itemList[input - 1]);
                             itemList[input - 1].IsSold = true;
                             Console.Clear();
                             Console.WriteLine("구매를 완료했습니다.\n");

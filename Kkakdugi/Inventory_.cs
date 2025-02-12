@@ -40,16 +40,37 @@ namespace Kkakdugi
 
             }
         }
-        public void ToggleEquipItem(int index)
+        public void ToggleEquipItem(int index,Player player)
         {
             if (index >= 0 && index < getitems.Count)
             {
+                //미장착
                 getitems[index].ToggleEquip(); // 선택한 아이템 장착 및 해제 변경
+                // 미장착이라면 장착 , 장착이었다면 해제
                 
+                //장착할때 무기면 공격력을 방어구면 방어력을 올려준다.
+                if (getitems[index].IsEquip == true )
+                {
+                    if (getitems[index].Type == AbilityType.무기)
+                        player.EquipItem(getitems[index].Ability);
+                    else if (getitems[index].Type == AbilityType.방어구)
+                        player.EquipItem(0,getitems[index].Ability);
+                }
+                //해제할때 무기면 공격력을 방어구면 방어력을 감소해준다.
+                else if (getitems[index].IsEquip == false)
+                {
+                    if (getitems[index].Type == AbilityType.무기)
+                        player.UnEquipItem(getitems[index].Ability);
+                    else if (getitems[index].Type == AbilityType.방어구)
+                        player.UnEquipItem(0, getitems[index].Ability);
+                }
+
+
+
             }
 
         }
-
+        
     }
 
 }
