@@ -23,7 +23,7 @@ namespace Kkakdugi
         public int EquipDef { get; set; }
         public int Gold { get; set; }
 
-        public Player(string name, string job, int lv, int maxHp, int atk, int gold)
+        public Player(string name, string job, int lv, int maxHp, int atk,int def, int gold)
         {
             Name = name;
             Job = job;
@@ -32,6 +32,7 @@ namespace Kkakdugi
             BeforeHp = maxHp;
             Hp = maxHp;
             Atk = atk;
+            Def = def;
             Gold = gold;
         }
 
