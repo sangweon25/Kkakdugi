@@ -26,6 +26,12 @@ namespace Kkakdugi
             }
             return sceneManager;
         }
+        List<Quest> quests = new List<Quest>()
+        {
+            new Quest("구매 퀘스트","상점에서 나뭇가지를 구매하세요","500골드"),
+            new Quest("장착 퀘스트","구입한 나뭇가지를 장착하세요","300골드"),
+            new Quest("처치 퀘스트","몬스터를 5마리 처치하세요.","무껍질")
+        };
 
         //itemList 안에 넣고 싶은 아이템 초기화
         List<Item> itemList = new List<Item>
@@ -65,12 +71,13 @@ namespace Kkakdugi
             Console.WriteLine("2. 인벤토리");
             Console.WriteLine("3. 상점");
             Console.WriteLine("4. 전투 시작");
+            Console.WriteLine("5. 퀘스트");
             Console.WriteLine();
             // 출력.예외 포함..if
             //GetInput(switch문 케이스 범위만큼 입력)
             
             
-            int input = InputManager.GetInput(1, 4);
+            int input = InputManager.GetInput(1, 5);
             switch (input)
             {
                 case 1:
@@ -91,6 +98,11 @@ namespace Kkakdugi
                     //전투시작 창으로 이동
                     Console.Clear();
                     MonsterPrintInfo();
+                    break;
+                case 5:
+                    //퀘스트 창으로 이동
+                    Console.Clear();
+                    QuestSelectScene();
                     break;
             }
         }
@@ -457,6 +469,35 @@ namespace Kkakdugi
         {
             Console.WriteLine("{0,-15}| {1,-15}| {2,-15}| {3,-15}| {4,-15}|", "분류", "이름", "능력치", "설명", "가격");
         }
+        //==================================================================
+
+        //===============================퀘스트===============================
+        public void QuestSelectScene()
+        {
+            Console.WriteLine("Quest!!\n");
+            //퀘스트 배열을 출력
+
+            //퀘스트 배열 이름만출력
+            for (int i = 0; i < quests.Count; i++)
+            {
+                Console.Write($"{i+1}. ");
+                Console.WriteLine(quests[i].QuestName);
+            }
+            Console.WriteLine("\n");
+            Console.WriteLine("0. 나가기\n");
+            int input = InputManager.GetInput(0, quests.Count);
+
+            if (0 == input)
+                MainScene();
+            else
+                QuestAcceptScene();
+        }//QuestScene Method
+        public void QuestAcceptScene()
+        {
+            Console.Clear();
+            Console.WriteLine("Quest!!\n");
+        }
+
 
     }//class SceneManager
 }//namespace
