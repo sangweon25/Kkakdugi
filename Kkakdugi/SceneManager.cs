@@ -39,7 +39,7 @@ namespace Kkakdugi
 
         // 내 정보 받아오기
         // 테스트 용으로 모든 값을 임의로 집어넣었습니다 !
-        Player player = new Player("손효정", "직업 없음", 1, 100, 10, 1000);
+        Player player = new Player("name", "직업 없음", 1, 100, 10, 1000);
 
         //씬 매니저 생성자
         public SceneManager()
@@ -59,6 +59,14 @@ namespace Kkakdugi
         {
             Console.Clear();
             Console.WriteLine("스파르타 던전에 오신 여러분 환영합니다.");
+            
+            //도전기능.캐릭터생성
+            
+            Console.Write("원하시는 이름을 설정해주세요.");
+            string name = Console.ReadLine();
+            Console.WriteLine($"{name}");
+            player = new Player(name, "직업 없음", 1, 100, 10, 1000);
+            
             Console.WriteLine("이제 전투를 시작할 수 있습니다.\n");
             Console.WriteLine("1. 상태 보기");
             Console.WriteLine("2. 인벤토리");
