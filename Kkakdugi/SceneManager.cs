@@ -124,6 +124,7 @@ namespace Kkakdugi
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine("상태 보기");
+            Console.WriteLine();
             Console.ResetColor();
             Console.WriteLine("캐릭터의 정보가 표시됩니다.");
             Console.WriteLine();
@@ -446,6 +447,10 @@ namespace Kkakdugi
                             //플레이어 인벤토리에 Add(itemList[input - 1]) 추가해야함.
                             inventory.AddItem(itemList[input-1]);
                             itemList[input - 1].IsSold = true;
+                            if (quests[0].IsAccept == true && itemList[input - 1].Name == "나뭇가지")
+
+                                
+
                             Console.Clear();
                             Console.WriteLine("구매를 완료했습니다.\n");
                         }
@@ -506,17 +511,22 @@ namespace Kkakdugi
         //===============================퀘스트===============================
         public void QuestSelectScene()
         {
-            
-            Console.WriteLine("Quest!!\n");
+
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine("퀘스트\n");
+            Console.ResetColor();
             //퀘스트 배열을 출력
 
             //퀘스트 배열 이름만출력
             for (int i = 0; i < quests.Count; i++)
             {
                 Console.Write($"{i+1}. ");
+                if (quests[i].IsClear)
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
                 Console.Write(quests[i].QuestName);
                 //IsClear ==true일때 퀘스트완료 , 수락시 진행 중, 수락 안했으면 공백
-                Console.WriteLine(quests[i].IsAccept ? "[진행 중]": quests[i].IsClear ? "[퀘스트 완료]" : " " ); 
+                Console.WriteLine(quests[i].IsAccept ? " [진행 중]": quests[i].IsClear ? " [퀘스트 완료]" : " " );
+                Console.ResetColor();
             }
             Console.WriteLine("\n");
             Console.WriteLine("0. 나가기\n");

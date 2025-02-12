@@ -33,7 +33,9 @@ namespace Kkakdugi
             //퀘스트 이름, 내용출력
             bool isClear = false;
             Console.Clear();
-            Console.WriteLine("Quest!!\n");
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine("퀘스트\n");
+            Console.ResetColor();
             Console.WriteLine(QuestName);
             Console.WriteLine();
             Console.WriteLine(QuestDescription);
