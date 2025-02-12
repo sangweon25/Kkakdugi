@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Kkakdugi
 {
-    internal class Player
+    public class Player
     {
-        public enum JobType
+        public enum JobType //임의로 넣은 직업 타입
         {
             전사,
             마법사,
@@ -29,7 +29,8 @@ namespace Kkakdugi
         public int Gold { get; set; }
 
         public JobType Job { get; set; } //효정 추가
-        public Player(string name, int lv, int mp, int hp, int atk, int gold,JobType Job)
+        public List<Skill> Skills { get; set; } //스킬 클래스 선언
+        public Player(string name, int lv, int mp, int hp, int atk, int gold)
         {
             Name = name;
             Lv = lv;
@@ -38,13 +39,15 @@ namespace Kkakdugi
             Hp = hp;
             Atk = atk;
             Gold = gold;
-            SetStats(Job);
+
+            Skills = new List<Skill>(); //스킬 리스트 초기화
         }
 
         public void SetJob(JobType newJob)
         {
             Job = newJob;
-            SetStats(newJob);
+            SetStats(newJob); //직업에 맞는 스탯 세팅
+            SetSkills(newJob); //직업에 맞는 스킬 세팅
         }
         private void SetStats(JobType Job)
         {
@@ -70,6 +73,34 @@ namespace Kkakdugi
                     break;
             }
         }
+
+        public void SetSkills(JobType job)
+        {
+            Skills.Clear(); //기존 스킬 제거
+
+            // 직업에 맞는 스킬만 추가
+            switch (job)
+            {
+                case JobType.전사:
+                    // 전사 스킬만 추가
+                    Skills.Add(SkillList.Skills[0]);  // 알파 스트라이크
+                    Skills.Add(SkillList.Skills[1]);  // 더블 스트라이크
+                    break;
+
+                case JobType.마법사:
+                    // 마법사 스킬만 추가
+                    Skills.Add(SkillList.Skills[2]);  // 파이어볼
+                    Skills.Add(SkillList.Skills[3]);  // 메테오
+                    break;
+
+                case JobType.도적:
+                    // 도적 스킬만 추가
+                    Skills.Add(SkillList.Skills[4]);  // 백스탭
+                    Skills.Add(SkillList.Skills[5]);  // 독화살
+                    break;
+            }
+        }
+
         public void StatusDisplay() //효정 직업관련 수정
         {
             Console.WriteLine($"Lv. {Lv.ToString("00")}");
@@ -93,7 +124,6 @@ namespace Kkakdugi
             Console.WriteLine($"MP {Mp}/{MaxMp}");
             Console.WriteLine();
         }
-
 
         public int RecieveDamage(int damage)
         {
