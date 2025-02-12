@@ -207,11 +207,7 @@ namespace Kkakdugi
 
                 Console.WriteLine();
 
-                Console.WriteLine("[내정보]");
-                Console.WriteLine();
-                Console.WriteLine($"Lv.{player.Lv} {player.Name} ({player.Job})");
-                Console.WriteLine($"HP {player.Hp}/100");
-                Console.WriteLine();
+                player.PrintPlayer();
                 Console.WriteLine("0. 취소");
                 Console.WriteLine();
                 Console.WriteLine("대상을 선택해주세요.");
@@ -274,7 +270,7 @@ namespace Kkakdugi
                 Console.WriteLine("Victory");
                 Console.ResetColor();
                 Console.WriteLine();
-                Console.WriteLine($"던전에서 몬스터 {killCount}를 잡았습니다.\n");
+                Console.WriteLine($"던전에서 몬스터 {killCount}마리를 잡았습니다.\n");
                 Console.WriteLine($"Lv.{lv} {name}\nHp {beforeHp} -> {player.Hp}\n");
             }
 
