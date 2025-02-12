@@ -70,7 +70,7 @@ namespace Kkakdugi
         }//QuestAcceptScene Method
         public void BuyCheck(Item item)
         {
-            item.Name = "나뭇가지"
+            item.Name = "나뭇가지";
         }
 
     }
