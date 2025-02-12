@@ -9,16 +9,18 @@ namespace Kkakdugi
 {
     public class Result // ()매개변수 안에다가 이미 정의된 플레이어와 몬스터함수를 가져오고 밑에 변수 고치기
     {
-        public Player  // 플레이어와 몬스터를 다른방법으,로 가져오기
-        {
             Player player = new Player("깍두기","무", 1, 100, 10, 1000);
             Monster monster = new Monster(" ", 1, 10, 11, false);
             public void Player(string name, int lv, int maxHp)
             {
-                player.Name = name;
+            player.Name = name;
             player.Lv = lv;
             player.Hp = maxHp;
             }
+        public void Monster(string name, int lv, int maxHp)
+        {
+            monster.Name = name;
+            monster.atk =
         }
 
         public static void BattleEnd(string name, int lv, int maxHp, int atk)
