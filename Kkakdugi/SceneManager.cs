@@ -40,9 +40,9 @@ namespace Kkakdugi
         //퀘스트 배열 생성
         List<Quest> quests = new List<Quest>()
         {
-            new Quest("구매 퀘스트","상점에서 나뭇가지를 구매하세요","500골드"),
-            new Quest("장착 퀘스트","구입한 나뭇가지를 장착하세요","300골드"),
-            new Quest("처치 퀘스트","몬스터를 5마리 처치하세요.","무껍질",5)
+            new Quest("구매 퀘스트","상점에서 나뭇가지를 구매하세요",500),
+            new Quest("장착 퀘스트","구입한 나뭇가지를 장착하세요",300),
+            new Quest("처치 퀘스트","몬스터를 5마리 처치하세요.",0,"무껍질",5)
         };
 
         //itemList 안에 넣고 싶은 아이템 초기화
@@ -316,7 +316,7 @@ namespace Kkakdugi
                 if (InputManager.InputNext() == 0)
                 {
                     // 모든 몬스터가 죽었을 경우 
-                    BattleEnd(player.Name, player.Lv, player.BeforeHp, player.Hp, player.Atk);
+                    BattleEnd(player.Name, player.Lv, player.BeforeHp, player.Hp, player.Atk, 0,player.Exp);
                 }
                 
             }
@@ -333,6 +333,7 @@ namespace Kkakdugi
             Console.Clear();
             Console.WriteLine("Battle!!");
             Console.WriteLine();
+            int monsterLevel = 0;
 
             // 반복문 이용해서 리스트 출력
             for (int i = 0; i < monster.Count; i++)
@@ -346,6 +347,7 @@ namespace Kkakdugi
                 else
                 {
                     Console.WriteLine($"{i + 1}. Lv.{monster[i].Lev} {monster[i].Name} HP {monster[i].Hp}");
+                    monsterLevel += monster[i].Lev;
                 }
 
             }
@@ -392,14 +394,15 @@ namespace Kkakdugi
             if (monster.All(m => m.isDead)) //몬스터가 모두 죽었다면
             {
                 //inBattle = false;
-                BattleEnd(player.Name, player.Lv, player.BeforeHp, player.Hp, player.Atk);
+                
+                BattleEnd(player.Name, player.Lv, player.BeforeHp, player.Hp, player.Atk, monsterLevel,player.Exp);
                 EndBattle();  // 전투 종료 후 새로운 랜덤 몬스터 설정
             }
 
 
 
         }
-        public void BattleEnd(string name, int lv, int beforeHp, int Hp, int atk)
+        public void BattleEnd(string name, int lv, int beforeHp, int Hp, int atk,int exp,int beforeExp)
         {
             int killCount = randmonsters.Count(m => m.isDead);
 
@@ -411,12 +414,18 @@ namespace Kkakdugi
             if (player.Hp > 0 && killCount == randmonsters.Count)// 플레이어가 살아 있고, 몬스터를 다 잡았을 때
             {
                 // AttackStart 에서 몬스터가 죽을때 카운터 올라가는 코드 추가
+                player.AddExp(exp);
                 Console.ForegroundColor = ConsoleColor.DarkGreen;
                 Console.WriteLine("Victory");
                 Console.ResetColor();
                 Console.WriteLine();
                 Console.WriteLine($"던전에서 몬스터 {killCount}마리를 잡았습니다.\n");
-                Console.WriteLine($"Lv.{lv} {name}\nHp {beforeHp} -> {player.Hp}\n");
+                Console.Write($"Lv.{lv} {name}");
+                if (player.LevelUpCheck() == true)
+                    Console.WriteLine($" -> Lv.{lv} {name}");
+                //lv1 -> lv2 추가 레벨업시 공격력 방어력 증가 추가
+                Console.WriteLine($"{name}\nHp {beforeHp} -> {player.Hp}\n");
+                Console.WriteLine($"exp.{beforeExp} -> {player.Exp}\n");
             }
 
             else if (player.Hp <= 0) // 플레이어 체력이 0 이하 일때
@@ -477,7 +486,7 @@ namespace Kkakdugi
                 else
                 {
                     //만약 플레이어가 죽었다면 result화면으로 가야함.
-                    BattleEnd(player.Name, player.Lv, player.BeforeHp, player.Hp, player.Atk);
+                    BattleEnd(player.Name, player.Lv, player.BeforeHp, player.Hp, player.Atk, 0, player.Exp);
                 }
             }
 
@@ -515,8 +524,16 @@ namespace Kkakdugi
 
                 // 인벤토리의 보유한 아이템 리스트 수만큼 입력받기
                 int input = InputManager.GetInput(0, inventory.getitems.Count);
-                
+
+              
                 inventory.ToggleEquipItem(input - 1,player); // 인덱스 번호 - 1을 하면 선택한 번호의 아이템 착용
+                //if(quests[1].IsAccept ==true)
+                //{
+                //    if (inventory.getitems[input].Name == "나뭇가지")
+                //    {
+                //        quests[1].IsClear = true;
+                //    }
+                //}
                 Console.Clear(); 
                 if (input == 0)
                 {
@@ -590,8 +607,7 @@ namespace Kkakdugi
                             inventory.AddItem(itemList[input-1]);
                             itemList[input - 1].IsSold = true;
                             if (quests[0].IsAccept == true && itemList[input - 1].Name == "나뭇가지")
-
-                                
+                                quests[0].IsClear = true;
 
                             Console.Clear();
                             Console.WriteLine("구매를 완료했습니다.\n");
@@ -667,7 +683,7 @@ namespace Kkakdugi
                     Console.ForegroundColor = ConsoleColor.DarkGray;
                 Console.Write(quests[i].QuestName);
                 //IsClear ==true일때 퀘스트완료 , 수락시 진행 중, 수락 안했으면 공백
-                Console.WriteLine(quests[i].IsAccept ? " [진행 중]": quests[i].IsClear ? " [퀘스트 완료]" : " " );
+                Console.WriteLine(quests[i].IsClear ? " [퀘스트 완료]" :quests[i].IsAccept ? " [진행 중]"  : " " );
                 Console.ResetColor();
             }
             Console.WriteLine("\n");
@@ -678,7 +694,7 @@ namespace Kkakdugi
                 MainScene();
             else
             {
-                quests[input - 1].QuestAcceptScene();
+                quests[input - 1].QuestAcceptScene(player);
             }
         }//QuestScene Method
 
