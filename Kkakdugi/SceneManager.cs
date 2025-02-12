@@ -249,13 +249,48 @@ namespace Kkakdugi
                 {
                     inBattle = false;
                     EndBattle();  // 전투 종료 후 새로운 랜덤 몬스터 설정
-                    BattleEnd(player.Name, player.Lv, player.Hp, player.Atk);
+                    BattleEnd(player.Name, player.Lv, player.Hp, player.MaxHp, player.Atk);
 
                 }
                 
             }
         }
-        
+        public void BattleEnd(string name, int lv, int maxHp, int Hp, int atk)
+        {
+            int killCount = randmonsters.Count(m => m.isDead);
+
+
+            Console.Clear();
+            Console.WriteLine("Battle!! - Result");
+
+            if (player.Hp > 0 && killCount == randmonsters.Count)// 플레이어가 살아 있고, 몬스터를 다 잡았을 때
+            {
+                // AttackStart 에서 몬스터가 죽을때 카운터 올라가는 코드 추가
+                Console.WriteLine("Victory");
+                Console.WriteLine($"던전에서 몬스터 {killCount}를 잡았습니다.\n");
+                Console.WriteLine($"Lv.{lv} {name}\nHp {maxHp} -> {player.Hp}\n");
+            }
+
+            else if (player.Hp <= 0) // 플레이어 체력이 0 이하 일때
+            {
+                Console.WriteLine("You Lose\n");
+                Console.WriteLine($"Lv.{lv} {name}\nHp {maxHp} -> 0\n");
+            } // 플레이어가 죽거나, 몬스터를 모두 처치하면 종료.
+
+            
+            Console.WriteLine("0. 다음");
+            Console.Write(">>");
+            Console.ReadLine();
+            int intput = InputManager.GetInput(0, 0);
+
+            if (intput == 0)
+            {
+                // 게임 종료시 메인화면
+                SceneManager.GetInstance().MainScene();
+            }
+
+        }
+
 
         //매개변수로 들어온 몬스터가 공격 
         public void EnemyPhase(Monster monster, Player player)
