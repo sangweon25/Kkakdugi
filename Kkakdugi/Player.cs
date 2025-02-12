@@ -16,6 +16,7 @@ namespace Kkakdugi
         public string Job { get; set; }
         public int Hp { get; set; }
         public int MaxHp { get; set; }
+        public int BeforeHp { get; set; }
         public int Atk { get; set; }
         public int EquipAtk { get; set; }
         public int Def { get; set; }
@@ -28,6 +29,7 @@ namespace Kkakdugi
             Job = job;
             Lv = lv;
             MaxHp = maxHp;
+            BeforeHp = maxHp;
             Hp = maxHp;
             Atk = atk;
             Gold = gold;
@@ -55,13 +57,13 @@ namespace Kkakdugi
             Console.WriteLine($"HP {Hp}/{MaxHp}");
         }
 
-
         public int RecieveDamage(int damage)
         {
-            if (Hp > 0)
-                return Hp -= damage;
-            else
-                return Hp =0;
+            //Hp가 음수면 0리턴
+            if (Hp - damage < 0)
+                return Hp = 0;
+            // Hp가 0보다 크면 Hp에서 데미지를 뺀다 아니면 0
+            return Hp > 0 ? Hp -= damage : Hp = 0;
         }
         public int BuyItem(int gold)
         {

@@ -11,7 +11,7 @@ namespace Kkakdugi
 {
     internal class SceneManager
     {
-        Player player = new Player("김치", "음식", 1, 100, 15, 1000);
+        Player player = new Player("김치", "음식", 1, 50, 10, 1000);
         Attack_ attack = new Attack_();
         Result result = new Result();
         Inventory_ inventory = new Inventory_();
@@ -192,6 +192,7 @@ namespace Kkakdugi
         public void AttackStart(List<Monster> monster, Player player)
         {
             bool inBattle = true;
+            player.BeforeHp = player.Hp;
             while(inBattle)
             {
                 Console.Clear();
@@ -229,7 +230,7 @@ namespace Kkakdugi
                 //input 값 받아서 그에 맞는 조건문 넣기
                 string Input = Console.ReadLine();
                 int num = int.Parse(Input);
-
+                
                 //번호 확인 
                 if (num == 0)
                 {
@@ -259,14 +260,13 @@ namespace Kkakdugi
                 if (monster.All(m => m.isDead)) //몬스터가 모두 죽었다면
                 {
                     inBattle = false;
+                    BattleEnd(player.Name, player.Lv, player.BeforeHp, player.Hp,  player.Atk);
                     EndBattle();  // 전투 종료 후 새로운 랜덤 몬스터 설정
-                    BattleEnd(player.Name, player.Lv, player.Hp, player.MaxHp, player.Atk);
-
                 }
                 
             }
         }
-        public void BattleEnd(string name, int lv, int maxHp, int Hp, int atk)
+        public void BattleEnd(string name, int lv, int beforeHp, int Hp, int atk)
         {
             int killCount = randmonsters.Count(m => m.isDead);
 
@@ -279,19 +279,18 @@ namespace Kkakdugi
                 // AttackStart 에서 몬스터가 죽을때 카운터 올라가는 코드 추가
                 Console.WriteLine("Victory");
                 Console.WriteLine($"던전에서 몬스터 {killCount}를 잡았습니다.\n");
-                Console.WriteLine($"Lv.{lv} {name}\nHp {maxHp} -> {player.Hp}\n");
+                Console.WriteLine($"Lv.{lv} {name}\nHp {beforeHp} -> {player.Hp}\n");
             }
 
             else if (player.Hp <= 0) // 플레이어 체력이 0 이하 일때
             {
                 Console.WriteLine("You Lose\n");
-                Console.WriteLine($"Lv.{lv} {name}\nHp {maxHp} -> 0\n");
+                Console.WriteLine($"Lv.{lv} {name}\nHp {beforeHp} -> 0\n");
             } // 플레이어가 죽거나, 몬스터를 모두 처치하면 종료.
 
             
             Console.WriteLine("0. 다음");
             Console.Write(">>");
-            Console.ReadLine();
             int intput = InputManager.GetInput(0, 0);
 
             if (intput == 0)
@@ -331,7 +330,7 @@ namespace Kkakdugi
                 else
                 {
                     //만약 플레이어가 죽었다면 result화면으로 가야함.
-                    //result.Result1();
+                    BattleEnd(player.Name, player.Lv, player.BeforeHp, player.Hp, player.Atk);
                 }
             }
 
@@ -379,9 +378,6 @@ namespace Kkakdugi
                 }
 
             }
-           
-            
-            
         }
 
         //==================================================================
