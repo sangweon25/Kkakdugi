@@ -23,6 +23,10 @@ namespace Kkakdugi
         // 인벤토리 창 선택시 아이템 목록 출력
         public void ItemprintInfo()
         {
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine("인벤토리\n");
+            Console.ResetColor();
+
             Console.WriteLine("[아이템 목록]\n");
             for (int i = 0; i < getitems.Count; i++) // 인벤토리 아이템 출력
             {

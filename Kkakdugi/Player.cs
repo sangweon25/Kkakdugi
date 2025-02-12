@@ -45,14 +45,14 @@ namespace Kkakdugi
             str = EquipDef == 0 ? $"방어력 : {Def}" : $"방어력 : {Def + EquipDef} (+{EquipDef})";
             Console.WriteLine(str);
 
-            Console.WriteLine($"체력: {Hp} / {MaxHp}");
+            Console.WriteLine($"체력: {Hp} ");
             Console.WriteLine($"Gold : {Gold} G");
         }
 
         //플레이어 필드 내용 출력 함수
         public void PrintPlayer()
         {
-            Console.WriteLine("\n\n[내정보]\n");
+            Console.WriteLine("\n[내정보]\n");
             Console.WriteLine($"Lv.{Lv} {Name} ({Job})");
             Console.WriteLine($"HP {Hp}/{MaxHp}");
         }
