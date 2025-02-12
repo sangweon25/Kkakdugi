@@ -36,7 +36,7 @@ namespace Kkakdugi
             }
         }
 
-        public static int inputNext()
+        public static int InputNext()
         {
             while (true)
             {
@@ -48,12 +48,13 @@ namespace Kkakdugi
             }
         }
 
-        public static int WrongInput()
+        public static int QuestInput()
         {
             while (true)
             {
-                Console.WriteLine("0. 다음");
-                if (int.TryParse(Console.ReadLine(), out int input) && input == 0)
+                Console.WriteLine("0.나가기");
+                Console.WriteLine("1.수락");
+                if (int.TryParse(Console.ReadLine(), out int input) && input == 0 || input == 1)
                     return input;
                 else
                     Console.WriteLine("잘못된 입력입니다.\n");

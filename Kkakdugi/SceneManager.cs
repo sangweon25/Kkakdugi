@@ -283,7 +283,7 @@ namespace Kkakdugi
             Console.WriteLine($"HP {player.Hp} -> {player.RecieveDamage(monster.Atk)}\n");
 
             //0으로 다음 넘어가는 함수
-            if(InputManager.inputNext() == 0)
+            if(InputManager.InputNext() == 0)
             {
                 Console.Clear();
                 if(player.Hp > 0)
@@ -469,13 +469,11 @@ namespace Kkakdugi
             if (0 == input)
                 MainScene();
             else
-                QuestAcceptScene();
+            {
+                quests[input - 1].QuestAcceptScene();
+            }
         }//QuestScene Method
-        public void QuestAcceptScene()
-        {
-            Console.Clear();
-            Console.WriteLine("Quest!!\n");
-        }
+
 
 
     }//class SceneManager
