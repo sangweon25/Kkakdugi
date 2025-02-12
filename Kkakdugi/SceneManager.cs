@@ -62,21 +62,22 @@ namespace Kkakdugi
 
             player.SetJob(selectedJob);
             Console.Clear();
-            //재미용 슬로우 주기
-            Console.Write(".");
-            Thread.Sleep(500);
-            Console.Write(".");
-            Thread.Sleep(900);
-            Console.WriteLine(".");
-            Thread.Sleep(1000);
-            Console.WriteLine("직업 설정 완료 !!");
-            Console.WriteLine();
-            Thread.Sleep(300);
+            //재미용 슬로우 주기 (테스트 할 땐 귀찮네요)
+            //Console.Write(".");
+            //Thread.Sleep(500);
+            //Console.Write(".");
+            //Thread.Sleep(900);
+            //Console.WriteLine(".");
+            //Thread.Sleep(1000);
+            //Console.WriteLine("직업 설정 완료 !!");
+            //Console.WriteLine();
+            //Thread.Sleep(300);
+
             //직업 선택 출력
             Console.WriteLine($"[{selectedJob}] 을(를) 선택했습니다!");
             Console.WriteLine();
             Console.WriteLine("게임을 시작합니다...!");
-            Thread.Sleep(2000);
+            Thread.Sleep(800); 
             MainScene();
         }
         //GetInstance 메서드 호출시 싱글톤 객체인 sceneManager를 리턴
@@ -197,12 +198,18 @@ namespace Kkakdugi
 
             Console.WriteLine("0. 전투 취소");
             Console.WriteLine("1. 공격");
+            Console.WriteLine("2. 스킬");
 
-            int input = InputManager.GetInput(0, 1);
+            int input = InputManager.GetInput(0, 2);
             if (input == 1)
             {
                 Console.Clear();
                 AttackStart(randmonsters, player);  // 기존 몬스터 리스트 사용
+            }
+            else if (input == 2) // 스킬 선택 기능 추가
+            {
+                Console.Clear();
+                Console.WriteLine("2. 스킬을 선택하셨습니다.");
             }
             else
             {

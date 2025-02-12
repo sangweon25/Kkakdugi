@@ -34,6 +34,7 @@ namespace Kkakdugi
             Name = name;
             Lv = lv;
             Mp = mp;
+            MaxMp = 50;
             Hp = hp;
             Atk = atk;
             Gold = gold;
@@ -52,21 +53,18 @@ namespace Kkakdugi
                 case JobType.전사:
                     MaxHp = 110;
                     Hp = 110;
-                    MaxMp = 50;
                     Atk = 8;
                     Def = 10;
                     break;
                 case JobType.마법사:
                     MaxHp = 100;
                     Hp = 100;
-                    MaxMp = 50;
                     Atk = 12;
                     Def = 6;
                     break;
                 case JobType.도적:
                     MaxHp = 105;
                     Hp = 105;
-                    MaxMp = 50;
                     Atk = 11;
                     Def = 6;
                     break;
