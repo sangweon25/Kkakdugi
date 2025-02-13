@@ -114,6 +114,7 @@ namespace Kkakdugi
         public void MainScene()
         {
             Console.Clear();
+            Console.WriteLine("                                                                        _____      \r\n|    ..'' |    ..''       .'.       |    ..'' |``````.  |         |  .-~     ~.  | \r\n|..''     |..''         .''```.     |..''     |       | |         | :            | \r\n|``..     |``..       .'       `.   |``..     |       | |         | :     _____  | \r\n|    ``.. |    ``.. .'           `. |    ``.. |......'  `._______.'  `-._____.'| | \r\n                                                                                   ");
             Console.WriteLine("스파르타 던전에 오신 여러분 환영합니다.");
             Console.WriteLine("이제 전투를 시작할 수 있습니다.\n");
             Console.WriteLine("1. 상태 보기");
