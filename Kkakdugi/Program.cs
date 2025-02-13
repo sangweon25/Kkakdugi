@@ -5,7 +5,7 @@
 
         static void Main(string[] args)
         {
-            SceneManager.GetInstance().MainScene();
+            SceneManager.GetInstance().JobSelect();
             Inventory_ inventory = new Inventory_();
 
             //Console.WriteLine("상태 보기");

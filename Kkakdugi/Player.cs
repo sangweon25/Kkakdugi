@@ -7,13 +7,19 @@ using System.Threading.Tasks;
 
 namespace Kkakdugi
 {
-    internal class Player
+    public class Player
     {
-
+        public enum JobType //임의로 넣은 직업 타입
+        {
+            전사,
+            마법사,
+            도적
+        }
         //플레이어 능력치, 세부정보
         public string Name { get; set; }
         public int Lv { get; set; }
-        public string Job { get; set; }
+        public int Mp { get; set; }
+        public int MaxMp { get; set; }
         public int Hp { get; set; }
         public int MaxHp { get; set; }
         public int BeforeHp { get; set; }
@@ -23,22 +29,87 @@ namespace Kkakdugi
         public int EquipDef { get; set; }
         public int Gold { get; set; }
 
-        public Player(string name, string job, int lv, int maxHp, int atk, int gold)
+        public JobType Job { get; set; } //효정 추가
+        public List<Skill> Skills { get; set; } //스킬 클래스 선언
+       
+        public Player(string name, string job,int mp, int lv, int maxHp, int atk,int def, int gold)
         {
             Name = name;
-            Job = job;
             Lv = lv;
+
+            Mp = mp;
+            MaxMp = 50;
+
             MaxHp = maxHp;
             BeforeHp = maxHp;
             Hp = maxHp;
+
             Atk = atk;
+            Def = def;
             Gold = gold;
+
+            Skills = new List<Skill>(); //스킬 리스트 초기화
         }
 
-        public void StatusDisplay()
+        public void SetJob(JobType newJob)
+        {
+            Job = newJob;
+            SetStats(newJob); //직업에 맞는 스탯 세팅
+            SetSkills(newJob); //직업에 맞는 스킬 세팅
+        }
+        private void SetStats(JobType Job)
+        {
+            switch (Job)
+            {
+                case JobType.전사:
+                    MaxHp = 110;
+                    Hp = 110;
+                    Atk = 8;
+                    Def = 10;
+                    break;
+                case JobType.마법사:
+                    MaxHp = 100;
+                    Hp = 100;
+                    Atk = 12;
+                    Def = 6;
+                    break;
+                case JobType.도적:
+                    MaxHp = 105;
+                    Hp = 105;
+                    Atk = 11;
+                    Def = 6;
+                    break;
+            }
+        }
+
+        public void SetSkills(JobType job)
+        {
+            Skills.Clear(); //기존 스킬 제거
+
+            // 직업에 맞는 스킬만 추가
+            switch (job)
+            {
+                case JobType.전사:
+                    Skills.Add(SkillList.Skills[0]);  // 알파 스트라이크
+                    Skills.Add(SkillList.Skills[1]);  // 더블 스트라이크
+                    break;
+
+                case JobType.마법사:
+                    Skills.Add(SkillList.Skills[2]);  // 파이어볼
+                    Skills.Add(SkillList.Skills[3]);  // 메테오
+                    break;
+
+                case JobType.도적:
+                    Skills.Add(SkillList.Skills[4]);  // 백스탭
+                    Skills.Add(SkillList.Skills[5]);  // 칼날 폭풍
+                    break;
+            }
+        }
+
+        public void StatusDisplay() 
         {
             Console.WriteLine($"Lv. {Lv.ToString("00")}");
-            Console.WriteLine($"{Name} ({Job})");
+            Console.WriteLine($"{Name} ({Job})"); 
 
             string str = EquipAtk == 0 ? $"공격력 : {Atk}" : $"공격력: {Atk} (+{EquipAtk})";
             Console.WriteLine(str);
@@ -50,11 +121,13 @@ namespace Kkakdugi
         }
 
         //플레이어 필드 내용 출력 함수
-        public void PrintPlayer()
+        public void PrintPlayer() 
         {
             Console.WriteLine("\n[내정보]\n");
             Console.WriteLine($"Lv.{Lv} {Name} ({Job})");
             Console.WriteLine($"HP {Hp}/{MaxHp}");
+            Console.WriteLine($"MP {Mp}/{MaxMp}");
+            Console.WriteLine();
         }
 
         public int RecieveDamage(int damage)
