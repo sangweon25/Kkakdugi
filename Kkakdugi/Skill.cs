@@ -56,7 +56,7 @@ namespace Kkakdugi
                     }
 
                     // 적이 살아있다면 공격
-                    int damage = player.Atk * 2;
+                    int damage = (int) player.Atk * 2;
                     Console.WriteLine($"{player.Name}은(는) {target.Name}에게 {damage}만큼 공격했다!");
                     target.Hp -= damage;
 
@@ -156,7 +156,7 @@ namespace Kkakdugi
 
             new Skill("메테오", 40, (player, monsters) =>
             {
-                int totalDamage = player.Atk * 2;
+                int totalDamage = (int)player.Atk * 2;
                 Console.WriteLine($"{player.Name}은(는) 하늘에서 메테오를 소환하여 모든 적에게 {totalDamage}의 피해를 주었다!");
                 foreach (var monster in monsters)
                 {
@@ -179,7 +179,7 @@ namespace Kkakdugi
                     }
 
                     // 적이 살아있다면 공격
-                    int damage = player.Atk * 2;
+                    int damage = (int) player.Atk * 2;
                     Console.WriteLine($"{player.Name}은(는) {target.Name}에게 {damage}만큼 공격했다!");
                     target.Hp -= damage;
 
