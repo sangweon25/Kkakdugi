@@ -333,8 +333,7 @@ namespace Kkakdugi
             Console.Clear();
             Console.WriteLine("Battle!!");
             Console.WriteLine();
-            int monsterLevel = 0;
-
+            
             // 반복문 이용해서 리스트 출력
             for (int i = 0; i < monster.Count; i++)
             {
@@ -347,7 +346,7 @@ namespace Kkakdugi
                 else
                 {
                     Console.WriteLine($"{i + 1}. Lv.{monster[i].Lev} {monster[i].Name} HP {monster[i].Hp}");
-                    monsterLevel += monster[i].Lev;
+                    
                 }
 
             }
@@ -393,7 +392,18 @@ namespace Kkakdugi
 
             if (monster.All(m => m.isDead)) //몬스터가 모두 죽었다면
             {
+                int monsterLevel = 0;
                 //inBattle = false;
+                foreach (var m in monster)
+                {
+                    monsterLevel += m.Lev;
+                }
+                if (quests[2].IsAccept == true)
+                {
+                    quests[2].CurrentValue += randmonsters.Count(m => m.isDead);
+                    if (quests[2].CurrentValue >= 5)
+                        quests[2].IsClear = true;
+                }
                 
                 BattleEnd(player.Name, player.Lv, player.BeforeHp, player.Hp, player.Atk, monsterLevel,player.Exp);
                 EndBattle();  // 전투 종료 후 새로운 랜덤 몬스터 설정
@@ -402,7 +412,7 @@ namespace Kkakdugi
 
 
         }
-        public void BattleEnd(string name, int lv, int beforeHp, int Hp, int atk,int exp,int beforeExp)
+        public void BattleEnd(string name, int lv, int beforeHp, int Hp, float atk,int exp,int beforeExp)
         {
             int killCount = randmonsters.Count(m => m.isDead);
 
@@ -420,11 +430,10 @@ namespace Kkakdugi
                 Console.ResetColor();
                 Console.WriteLine();
                 Console.WriteLine($"던전에서 몬스터 {killCount}마리를 잡았습니다.\n");
-                Console.Write($"Lv.{lv} {name}");
+                Console.Write($"Lv.{player.Lv} {name}");
                 if (player.LevelUpCheck() == true)
-                    Console.WriteLine($" -> Lv.{lv} {name}");
-                //lv1 -> lv2 추가 레벨업시 공격력 방어력 증가 추가
-                Console.WriteLine($"{name}\nHp {beforeHp} -> {player.Hp}\n");
+                    Console.WriteLine($" -> Lv.{player.Lv} {name}");
+                Console.WriteLine($"\nHp {beforeHp} -> {player.Hp}\n");
                 Console.WriteLine($"exp.{beforeExp} -> {player.Exp}\n");
             }
 
@@ -524,16 +533,16 @@ namespace Kkakdugi
 
                 // 인벤토리의 보유한 아이템 리스트 수만큼 입력받기
                 int input = InputManager.GetInput(0, inventory.getitems.Count);
-
               
                 inventory.ToggleEquipItem(input - 1,player); // 인덱스 번호 - 1을 하면 선택한 번호의 아이템 착용
-                //if(quests[1].IsAccept ==true)
-                //{
-                //    if (inventory.getitems[input].Name == "나뭇가지")
-                //    {
-                //        quests[1].IsClear = true;
-                //    }
-                //}
+                if (quests[1].IsAccept == true)
+                {
+                    foreach (var item in inventory.getitems)
+                    {
+                        if (item.IsEquip == true && item.Name == "나뭇가지")
+                            quests[1].IsClear = true;
+                    }
+                }
                 Console.Clear(); 
                 if (input == 0)
                 {
@@ -694,7 +703,7 @@ namespace Kkakdugi
                 MainScene();
             else
             {
-                quests[input - 1].QuestAcceptScene(player);
+                quests[input - 1].QuestAcceptScene(player, inventory, itemList[0]);
             }
         }//QuestScene Method
 

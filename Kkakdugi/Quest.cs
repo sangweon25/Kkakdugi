@@ -17,7 +17,7 @@ namespace Kkakdugi
         public bool IsClear { get; set; }
         public bool IsEnd { get; private set; }
         public int Requirements { get; private set; }
-        public int CurrentValue { get; private set; }
+        public int CurrentValue { get;  set; }
 
         public Quest(string name, string desc, int gold = 0, string reward = "", int requirements = 0)
         {
@@ -32,7 +32,7 @@ namespace Kkakdugi
             CurrentValue = 0;
         }
 
-        public void QuestAcceptScene(Player player)
+        public void QuestAcceptScene(Player player,Inventory_ inventory,Item item)
         {
             //퀘스트 이름, 내용출력
             bool isClear = false;
@@ -72,9 +72,12 @@ namespace Kkakdugi
                         Console.WriteLine("이미 수락된 퀘스트입니다.\n");
                     else if(IsClear == true && IsEnd ==false)
                     {
-                        if(CurrentValue == 5 && Requirements == 5)
+                        if(CurrentValue >= Requirements && CurrentValue != 0)
                         {
                             //몬스터 처치
+
+                            inventory.AddItem(item);
+                            IsEnd = true;
                         }
                         else
                         {
