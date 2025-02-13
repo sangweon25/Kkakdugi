@@ -74,9 +74,23 @@ namespace Kkakdugi
             SetRandomMonsters();
         }
 
-        public void JobSelect() //직업 선택 창
+        public void NameSelect()
         {
             Console.Clear();
+            Console.WriteLine("원하시는 이름을 입력해주세요.");
+            string Name = Console.ReadLine();
+            Console.WriteLine();
+            Console.Write($"입력하신 이름은 ");
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.Write($"{Name}");
+            Console.ResetColor();
+            Console.WriteLine("입니다.\n");
+            player.SetName(Name);
+
+            JobSelect(); //직업 선택 화면
+        }
+        public void JobSelect() //직업 선택 창
+        {
             Console.WriteLine("원하시는 직업을 선택해주세요.");
             Console.WriteLine();
             Console.WriteLine("1. 전사");
@@ -101,7 +115,11 @@ namespace Kkakdugi
             //Thread.Sleep(300);
 
             //직업 선택 출력
-            Console.WriteLine($"[{selectedJob}] 을(를) 선택했습니다!");
+            Console.Write("[");
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.Write($"{selectedJob}");
+            Console.ResetColor();
+            Console.WriteLine("] 을(를) 선택했습니다!");
             Console.WriteLine();
             Console.WriteLine("게임을 시작합니다...!");
             Thread.Sleep(800); 
@@ -184,7 +202,9 @@ namespace Kkakdugi
         public void MonsterPrintInfo()
         {
             Console.Clear();
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine("Battle!!");
+            Console.ResetColor();
             Console.WriteLine();
 
             SetRandomMonsters();

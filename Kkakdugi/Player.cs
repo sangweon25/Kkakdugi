@@ -57,6 +57,11 @@ namespace Kkakdugi
             SetStats(newJob); //직업에 맞는 스탯 세팅
             SetSkills(newJob); //직업에 맞는 스킬 세팅
         }
+
+        public void SetName(string name)
+        {
+            Name = name;
+        }
         private void SetStats(JobType Job)
         {
             switch (Job)
