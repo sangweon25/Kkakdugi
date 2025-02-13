@@ -98,7 +98,7 @@ namespace Kkakdugi
                 Console.ResetColor();
                 Console.Write($"{monster.Name}을(를) 맞췄습니다. [데미지 : ");
                 Console.ForegroundColor = ConsoleColor.DarkRed;
-                Console.Write($"{FinalAtk}");
+                Console.Write($"{Math.Floor(FinalAtk)}");
                 Console.ResetColor();
                 Console.Write("]");
 

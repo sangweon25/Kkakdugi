@@ -18,12 +18,13 @@ namespace Kkakdugi
         //플레이어 능력치, 세부정보
         public string Name { get; set; }
         public int Lv { get; set; }
+        public int Exp { get; set; }
         public int Mp { get; set; }
         public int MaxMp { get; set; }
         public int Hp { get; set; }
         public int MaxHp { get; set; }
         public int BeforeHp { get; set; }
-        public int Atk { get; set; }
+        public float Atk { get; set; }
         public int EquipAtk { get; set; }
         public int Def { get; set; }
         public int EquipDef { get; set; }
@@ -36,6 +37,7 @@ namespace Kkakdugi
         {
             Name = name;
             Lv = lv;
+            Exp = 0;
 
             Mp = mp;
             MaxMp = 50;
@@ -142,7 +144,45 @@ namespace Kkakdugi
         {
             return Gold -= gold;
         }
-        
+        public void AddGold(int gold)
+        {
+            Gold += gold;
+        }
+        public void AddExp(int exp)
+        {
+            Exp += exp;
+        }
+        public bool LevelUpCheck()
+        {
+            if (Exp >= 10)
+            {
+                LevelUp();
+                return true;
+            }
+            else if (Exp >= 35)
+            {
+                LevelUp();
+                return true;
+            }
+            else if (Exp >= 65)
+            {
+                LevelUp();
+                return true;
+            }
+            else if (Exp >= 100)
+            {
+                LevelUp();
+                return true;
+            }
+            return false;
+        }
+        public void LevelUp()
+        {
+            Atk += 0.5f;
+            Def += 1;
+            Lv++;
+        }
+
         public void EquipItem(int itemAtk = 0,int itemDef = 0)//장착할때 아이템의 능력치를 더해줌
         {
             EquipAtk += itemAtk;
