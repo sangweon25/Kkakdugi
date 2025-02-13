@@ -103,16 +103,6 @@ namespace Kkakdugi
 
             player.SetJob(selectedJob);
             Console.Clear();
-            //재미용 슬로우 주기 (테스트 할 땐 귀찮네요)
-            //Console.Write(".");
-            //Thread.Sleep(500);
-            //Console.Write(".");
-            //Thread.Sleep(900);
-            //Console.WriteLine(".");
-            //Thread.Sleep(1000);
-            //Console.WriteLine("직업 설정 완료 !!");
-            //Console.WriteLine();
-            //Thread.Sleep(300);
 
             //직업 선택 출력
             Console.Write("[");
@@ -237,46 +227,40 @@ namespace Kkakdugi
 
         public void AttackInfo(List<Monster> monster, Player player) //공격 정보창
         {
-            bool inBattle = true;
-            player.BeforeHp = player.Hp;
-            while (inBattle)
+            Console.WriteLine("Battle!!");
+            Console.WriteLine();
+
+            // 반복문 이용해서 리스트 출력
+            for (int i = 0; i < monster.Count; i++)
             {
-
-                Console.WriteLine("Battle!!");
-                Console.WriteLine();
-
-                // 반복문 이용해서 리스트 출력
-                for (int i = 0; i < monster.Count; i++)
+                if (monster[i].isDead == true)
                 {
-                    if (monster[i].isDead == true)
-                    {
-                        Console.ForegroundColor = ConsoleColor.DarkGray;
-                        Console.WriteLine($"Lv.{monster[i].Lev} {monster[i].Name} HP dead");
-                        Console.ResetColor();
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Lv.{monster[i].Lev} {monster[i].Name} HP {monster[i].Hp}");
-                    }
-
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                    Console.WriteLine($"Lv.{monster[i].Lev} {monster[i].Name} HP dead");
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.WriteLine($"Lv.{monster[i].Lev} {monster[i].Name} HP {monster[i].Hp}");
                 }
 
-                Console.WriteLine();
-                player.PrintPlayer();
-                Console.WriteLine("0. 취소");
-                Console.WriteLine("1. 공격");
-                Console.WriteLine("2. 스킬");
+            }
 
-                int input = InputManager.GetInput(0, 2);
-                if (input == 1)
-                {
-                    Console.Clear();
-                    AttackStart(randmonsters, player);  // 기존 몬스터 리스트 사용
-                }
-                else if (input == 2) // 스킬 선택 기능 추가
-                {
-                    SelectSkill(randmonsters, player);
-                }
+            Console.WriteLine();
+            player.PrintPlayer();
+            Console.WriteLine("0. 취소");
+            Console.WriteLine("1. 공격");
+            Console.WriteLine("2. 스킬");
+
+            int input = InputManager.GetInput(0, 2);
+            if (input == 1)
+            {
+                Console.Clear();
+                AttackStart(randmonsters, player);  // 기존 몬스터 리스트 사용
+            }
+            else if (input == 2) // 스킬 선택 기능 추가
+            {
+                SelectSkill(randmonsters, player);
             }
         }
 
