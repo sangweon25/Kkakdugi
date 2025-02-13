@@ -20,10 +20,12 @@ namespace Kkakdugi
 
         public List<Monster> monsters = new List<Monster>
         {
-            new Monster("솔트", 1, 10, 3,false),
-            new Monster("슈가", 2, 10, 5,false),
-            new Monster("다이콘", 3, 15, 10,false),
-            new Monster("레드파우더", 5, 25, 15,false)
+            new Monster("소금", 1, 10, 3,false),
+            new Monster("맛소금", 1, 10, 3,false),
+            new Monster("설탕", 2, 10, 5,false),
+            new Monster("무", 3, 15, 10,false),
+            new Monster("중국산 고춧가루", 3, 15, 11,false),
+            new Monster("고춧가루", 5, 25, 15,false)
         };
 
         //GetInstance 메서드 호출시 싱글톤 객체인 sceneManager를 리턴
@@ -48,6 +50,7 @@ namespace Kkakdugi
         List<Item> itemList = new List<Item>
         {
             new Item(AbilityType.방어구,"무껍질",2,"무를 보호해주는 껍질이다.",500),
+            new Item(AbilityType.방어구,"고무장갑",3,"양념들의 공격으로 부터 효과적으로 막는다.",700),
             new Item(AbilityType.방어구,"나무판자",4,"나무 판자안에 무는 더욱 안전해보인다.",1000),
             new Item(AbilityType.무기,"나뭇가지",2,"흔해빠진 나뭇가지다.",500),
             new Item(AbilityType.무기,"돌칼",4,"약간은 날카로운 돌이다.",1000),
